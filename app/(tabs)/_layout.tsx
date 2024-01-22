@@ -19,10 +19,46 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
+        tabBarActiveTintColor: Colors.secondary,
+        tabBarStyle: {
+          backgroundColor: Colors.lighter,
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          height: 70,
+          padding: 5,
+          margin: 'auto',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          shadowOffset: {
+            width: 0,
+            height: 12,
+          },
+          shadowOpacity: 0.58,
+          shadowRadius: 16.0,
+          elevation: 24,
+          borderTopLeftRadius: 21,
+          borderTopRightRadius: 21,
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          zIndex: 0,
+        },
+        tabBarItemStyle: {
+          width: 50,
+          height: 50,
+          margin: 'auto'
+
+        },
+        tabBarInactiveTintColor: Colors.dark,
         tabBarLabelStyle: {
           fontFamily: 'poppins-semibold',
-          fontSize: 12
+          fontSize: 10,
+          letterSpacing: 1.2,
+          textAlign: 'center',
+          fontWeight: '400',
+          marginTop: 5
         }
       }}>
 
@@ -30,6 +66,14 @@ export default function TabLayout() {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => <TabBarIcon name="home" color={color} size={size} />,
+        }}
+
+      />
+
+      <Tabs.Screen name='profile'
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="user-circle-o" color={color} size={size} />,
         }}
 
       />

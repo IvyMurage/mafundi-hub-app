@@ -1,11 +1,9 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
-import { useColorScheme } from '@/components/useColorScheme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -14,7 +12,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(get-started)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -22,10 +20,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'poppins': require('../assets/fonts/Poppins-Regular.ttf'),
+    'poppins': require('@/assets/fonts/Poppins-Regular.ttf'),
     'poppins-medium': require('@/assets/fonts/Poppins-Medium.ttf'),
     'poppins-bold': require('@/assets/fonts/Poppins-Bold.ttf'),
-    'poppins-semibold': require('@/assets/fonts/Poppins-Semibold.ttf'),
+    'poppins-semibold': require('@/assets/fonts/Poppins-SemiBold.ttf'),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -47,11 +45,14 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
 
   return (
     <Stack initialRouteName='get-started'>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name='get-started' options={{
+        headerShown: false,
+
+      }} />
     </Stack>
   );
 }
