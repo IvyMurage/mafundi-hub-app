@@ -12,7 +12,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(get-started)',
+  initialRouteName: 'get-started',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -49,10 +49,20 @@ function RootLayoutNav() {
   return (
     <Stack initialRouteName='get-started'>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name='get-started' options={{
-        headerShown: false,
-
-      }} />
+      <Stack.Screen name='get-started' options={{ headerShown: false, }} />
+      <Stack.Screen name="(modals)/login"
+        options={
+          {
+            headerShown: false,
+            headerTransparent: true,
+            headerTitle: '',
+            headerBackTitle: 'Back',
+            headerStyle: {
+              backgroundColor: 'transparent',
+            },
+          }
+        }
+      />
     </Stack>
   );
 }
