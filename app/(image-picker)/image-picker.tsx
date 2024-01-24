@@ -1,30 +1,193 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { Button, Image, View, StyleSheet, SafeAreaView, ScrollView, Pressable, Text, FlatList, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Colors from '@/constants/Colors';
+import * as FileSystem from 'expo-file-system'
+import { FontAwesome5 } from '@expo/vector-icons';
 
+
+const imgDir = FileSystem.documentDirectory + 'images/';
+
+const ensureDirExists = async () => {
+    const dir = await FileSystem.getInfoAsync(imgDir);
+    if (!dir.exists) {
+        await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
+    }
+}
 export default function ImagePickerExample() {
-    const [image, setImage] = useState(null);
+
+    const [images, setImages] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false)
+
+
+    function ImageIcon(props: {
+        name: React.ComponentProps<typeof FontAwesome5>['name'];
+        color: string;
+        size: number
+    }) {
+        return <FontAwesome5 style={{ marginBottom: -3, textAlign: 'center' }} {...props} />;
+    }
+    useEffect(() => {
+        loadImage()
+    }, [])
+
+    const loadImage = async () => {
+        ensureDirExists()
+        const files = await FileSystem.readDirectoryAsync(imgDir,);
+        if (files.length > 0) {
+            setImages(files.map(f => imgDir + f))
+        }
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
 
-        console.log(result);
 
         if (!result.canceled) {
-            console.log('hello')
+            saveImage(result.assets![0].uri)
         }
     };
 
+    const saveImage = async (uri: string) => {
+        await ensureDirExists();
+        const filename = new Date().getTime() + '.jpg';
+        const dest = imgDir + filename;
+        await FileSystem.copyAsync({
+            from: uri,
+            to: dest
+        })
+        setImages([...images, dest])
+
+    }
+
+    const deleteImage = async (uri: string) => {
+        await FileSystem.deleteAsync(uri)
+        setImages(images.filter(i => i != uri))
+    }
+    const uplaodImage = async (uri: string) => {
+        setLoading(true)
+        try {
+            const formData = new FormData();
+            formData.append('file', uri)
+            const response = await fetch('https://api.imgur.com/3/image', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Client-ID 4b5d8f1b8a7d0e8'
+                },
+                body: formData
+            })
+            const data = await response.json()
+            if (response.ok) {
+                alert('Image uploaded successfully')
+            }
+        }
+        catch (error) {
+            alert('Image upload failed')
+        }
+
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const renderItem = ({ item }: { item: string }) => {
+        const filename = item.split('/').pop()
+
+        return (
+            <View style={imagePickerStyles.imageList}>
+                <Image source={{ uri: item }} style={{ width: 80, height: 80 }} />
+                <Text style={imagePickerStyles.imageText}>{filename}</Text>
+                <Pressable onPress={() => { uplaodImage(item) }}>
+                    <ImageIcon size={24} color={Colors.secondary} name='upload' />
+                </Pressable>
+                <Pressable onPress={() => { deleteImage(item) }}>
+                    <ImageIcon size={24} color={Colors.secondary} name='trash' />
+                </Pressable>
+            </View>
+        )
+    }
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-        </View>
+        <SafeAreaView style={imagePickerStyles.safeAreaStyle}>
+            <Text style={imagePickerStyles.title}>Uplaod images of your work now</Text>
+            <View style={imagePickerStyles.pickerStyle}>
+                <Pressable style={imagePickerStyles.pickerBtn} onPress={pickImage}><Text style={imagePickerStyles.pickerBtnText}>Upload Image</Text></Pressable>
+            </View>
+
+            <FlatList style={{ alignSelf: 'flex-start', paddingVertical: 25, paddingHorizontal: 20 }} data={images} renderItem={renderItem} />
+
+            {loading && <View style={[StyleSheet.absoluteFill, {
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }]}>
+                <ActivityIndicator color={"#fff"} animating size='large' />
+            </View>}
+
+        </SafeAreaView>
     );
 }
+
+const imagePickerStyles = StyleSheet.create({
+    pickerStyle: {
+        width: 355,
+        height: 190,
+        borderWidth: 4,
+        borderRadius: 10,
+        borderStyle: 'dotted',
+        borderColor: Colors.secondary,
+        padding: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    safeAreaStyle: {
+        flex: 1,
+        backgroundColor: Colors.primary,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        paddingTop: 20,
+    },
+    pickerBtn: {
+        backgroundColor: Colors.secondary,
+        paddingHorizontal: 60,
+        paddingVertical: 20,
+        borderRadius: 12
+    },
+    pickerBtnText: {
+        fontFamily: 'poppins-semibold',
+        fontSize: 14,
+        letterSpacing: 1.8,
+        textAlign: 'left',
+        color: Colors.lighter
+    },
+    title: {
+        fontFamily: 'poppins-semibold',
+        fontSize: 16,
+        letterSpacing: 1.8,
+        textAlign: 'center',
+        color: Colors.secondary,
+        marginTop: 40,
+        marginBottom: 20,
+        marginLeft: 20
+    },
+    imageList: {
+        flexDirection: 'row',
+        margin: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 5,
+        width: '100%'
+    },
+    imageText: {
+        color: Colors.lighter,
+        fontFamily: 'poppins',
+        fontSize: 14,
+        letterSpacing: 1.8,
+    }
+})
