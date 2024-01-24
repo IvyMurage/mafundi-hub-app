@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 const RegisterOptions = () => {
     const router = useRouter()
     const handlePress = () => {
-        router.push('/(tabs)/')
+        router.push('/(modals)/handyman-register')
     }
     function RegisterIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
