@@ -51,8 +51,9 @@ function RootLayoutNav() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name='get-started' options={{ headerShown: false, }} />
       <Stack.Screen name="(onboard)/auth-options" options={{ headerShown: false, }} />
+      <Stack.Screen name="(onboard)/register-option" options={{ headerShown: false, animation: 'simple_push' }} />
       <Stack.Screen name="(modals)/login" options={{ headerShown: false, }} />
-      <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, }} />
+      <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, animation: 'simple_push',  }} />
     </Stack>
   );
 }

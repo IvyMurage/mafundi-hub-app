@@ -3,9 +3,14 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 
 const Login = () => {
+    const router = useRouter()
+
+    const handleImpress = () => {
+        router.push('/(onboard)/register-option')
+    }
     return (
         <View style={[defaultStyles.container]}>
             <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
@@ -27,7 +32,7 @@ const Login = () => {
             />
 
             <Pressable style={[defaultStyles.authButton]}>
-                <Text style={[defaultStyles.authButtonText]}>Login</Text>
+                <Text onPress={handleImpress} style={[defaultStyles.authButtonText]}>Login</Text>
             </Pressable>
 
             <Text style={[defaultStyles.authOption]}>Don't Have an account? <Link href={'/(modals)/sign-up'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Link></Text>

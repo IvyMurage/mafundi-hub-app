@@ -2,8 +2,13 @@ import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
+import { Link, useRouter } from 'expo-router'
 
 const SignUp = () => {
+    const router = useRouter()
+    const handlePress = () => {
+        router.push('/(modals)/login')
+    }
     return (
         <View style={[defaultStyles.container]}>
             <Text style={[defaultStyles.loginHeader]}>Mafundi <Text style={{ color: Colors.lighter }}>Hub</Text></Text>
@@ -34,10 +39,10 @@ const SignUp = () => {
             />
 
             <Pressable style={[defaultStyles.authButton]}>
-                <Text style={[defaultStyles.authButtonText]}>Sign Up</Text>
+                <Text onPress={handlePress} style={[defaultStyles.authButtonText]}>Sign Up</Text>
             </Pressable>
 
-            <Text style={[defaultStyles.authOption]}>Already Have an account? <Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Text>
+            <Text style={[defaultStyles.authOption]}>Already Have an account?<Link href={'/(modals)/login'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}>Login</Text></Link></Text>
         </View>
     )
 }

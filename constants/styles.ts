@@ -49,13 +49,15 @@ export const defaultStyles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 5,
     backgroundColor: Colors.secondary,
+    justifyContent:'center',
+    alignItems:'center'
   },
   authButtonText: {
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.light,
     textAlign: "center",
     padding: 10,
     letterSpacing: 1.8,
-    fontFamily: "poppins-bold",
+    fontFamily: "poppins-semibold",
   },
 });

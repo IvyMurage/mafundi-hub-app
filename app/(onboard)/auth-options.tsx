@@ -54,13 +54,16 @@ const authOptionStyles = StyleSheet.create({
         margin: 10,
         width: 156,
         height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+
     },
 
     authButtonText: {
         color: Colors.lighter,
         textAlign: 'center',
-        fontFamily: 'poppins-bold',
-        fontSize: 18,
+        fontFamily: 'poppins-semibold',
+        fontSize: 16,
         letterSpacing: 2,
     },
     authSubText: {
