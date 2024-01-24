@@ -13,34 +13,35 @@ export const defaultStyles = StyleSheet.create({
   loginSubHeader: {
     color: Colors.lighter,
     fontSize: 24,
-    fontWeight: "600",
+    fontFamily: "poppins-semibold",
     letterSpacing: 2.4,
   },
 
   loginHeader: {
     color: Colors.secondary,
     fontSize: 28,
-    fontWeight: "700",
+    fontFamily: "poppins-bold",
     letterSpacing: 2.88,
   },
 
   inputTextField: {
+    fontSize: 14,
+    letterSpacing: 1.68,
     width: 357,
     height: 56,
     margin: 12,
     padding: 15,
     borderRadius: 10,
     backgroundColor: Colors.light,
+    fontFamily: "poppins",
   },
 
   authOption: {
     fontSize: 14,
     letterSpacing: 1.68,
     color: Colors.lighter,
-    fontWeight: "400",
-    borderColor: "red",
+    fontFamily: "poppins",
   },
-
 
   authButton: {
     width: 357,
@@ -55,6 +56,6 @@ export const defaultStyles = StyleSheet.create({
     textAlign: "center",
     padding: 10,
     letterSpacing: 1.8,
-    fontWeight: "700",
+    fontFamily: "poppins-bold",
   },
 });

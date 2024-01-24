@@ -50,19 +50,9 @@ function RootLayoutNav() {
     <Stack initialRouteName='get-started'>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name='get-started' options={{ headerShown: false, }} />
-      <Stack.Screen name="(modals)/login"
-        options={
-          {
-            headerShown: false,
-            headerTransparent: true,
-            headerTitle: '',
-            headerBackTitle: 'Back',
-            headerStyle: {
-              backgroundColor: 'transparent',
-            },
-          }
-        }
-      />
+      <Stack.Screen name="(onboard)/auth-options" options={{ headerShown: false, }} />
+      <Stack.Screen name="(modals)/login" options={{ headerShown: false, }} />
+      <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, }} />
     </Stack>
   );
 }

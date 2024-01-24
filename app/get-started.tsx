@@ -9,7 +9,7 @@ export default function GetStarted() {
     const router = useRouter()
 
     const handlePress = () => {
-        router.push('/(modals)/login')
+        router.push('/(onboard)/auth-options')
     }
     return (
         <View style={styles.container}>
@@ -19,7 +19,7 @@ export default function GetStarted() {
             </View>
             <Image style={{ width: 200, height: 200 }} source={require('@/assets/images/welcome-image.svg')} />
 
-            <Link href={"/(modals)/login"} >
+            <Link href={"/(onboard)/auth-options"} >
                 <Pressable style={styles.startButton}>
                     <Text style={styles.buttonText} onPress={handlePress} >Get Started</Text>
                 </Pressable>
@@ -40,22 +40,20 @@ const styles = StyleSheet.create({
     mafundi: {
         fontSize: 30,
         fontFamily: 'poppins-bold',
-        fontWeight: '700',
         letterSpacing: 2.16,
         color: Colors.secondary
 
     },
     hub: {
         color: Colors.lighter,
-        fontFamily: 'poppins',
+        fontFamily: 'poppins-bold',
         fontSize: 30,
         fontStyle: 'normal',
-        fontWeight: '700',
         letterSpacing: 3.6,
     },
     title: {
         fontSize: 18,
-        fontWeight: '700',
+        fontFamily: 'poppins-bold',
         letterSpacing: 2.16,
         color: '#FEFEFE'
 
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: Colors.lighter,
         fontSize: 16,
-        fontWeight: '700',
         letterSpacing: 1.6,
         textAlign: 'center',
         fontFamily: 'poppins-semibold',

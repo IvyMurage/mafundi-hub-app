@@ -1,8 +1,9 @@
-import { View, Text, TextInput, Pressable, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
+import { Link } from 'expo-router'
 
 const Login = () => {
     return (
@@ -29,7 +30,7 @@ const Login = () => {
                 <Text style={[defaultStyles.authButtonText]}>Login</Text>
             </Pressable>
 
-            <Text style={[defaultStyles.authOption]}>Already Have an account? <Text  style={{ color: Colors.secondary, fontWeight:'700'}}> Sign Up </Text> </Text>
+            <Text style={[defaultStyles.authOption]}>Already Have an account? <Link href={'/(modals)/sign-up'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Link></Text>
         </View>
     )
 }
