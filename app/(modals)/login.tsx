@@ -30,7 +30,7 @@ const Login = () => {
                 <Text style={[defaultStyles.authButtonText]}>Login</Text>
             </Pressable>
 
-            <Text style={[defaultStyles.authOption]}>Already Have an account? <Link href={'/(modals)/sign-up'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Link></Text>
+            <Text style={[defaultStyles.authOption]}>Don't Have an account? <Link href={'/(modals)/sign-up'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Link></Text>
         </View>
     )
 }

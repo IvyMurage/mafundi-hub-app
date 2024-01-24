@@ -1,17 +1,19 @@
-import { View, Text, TextInput, Pressable, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
-import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 
 const SignUp = () => {
     return (
         <View style={[defaultStyles.container]}>
-            <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
-
-            <Image style={{ width: 300, height: 200 }} source={require('@/assets/images/auth-image.svg')} />
-
-            <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
+            <Text style={[defaultStyles.loginHeader]}>Mafundi <Text style={{ color: Colors.lighter }}>Hub</Text></Text>
+            <Text style={{
+                fontFamily: 'poppins',
+                letterSpacing: 1.4,
+                color: Colors.lighter,
+            }}>
+                Create Your account
+            </Text>
 
             <TextInput
                 autoCapitalize='none'
@@ -25,11 +27,17 @@ const SignUp = () => {
                 style={[defaultStyles.inputTextField]}
             />
 
+            <TextInput
+                autoCapitalize='none'
+                placeholder='Confirm Password'
+                style={[defaultStyles.inputTextField]}
+            />
+
             <Pressable style={[defaultStyles.authButton]}>
-                <Text style={[defaultStyles.authButtonText]}>Login</Text>
+                <Text style={[defaultStyles.authButtonText]}>Sign Up</Text>
             </Pressable>
 
-            <Text style={[defaultStyles.authOption]}>Already Have an account? <Text  style={{ color: Colors.secondary, fontWeight:'700'}}> Sign Up </Text> </Text>
+            <Text style={[defaultStyles.authOption]}>Already Have an account? <Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Text>
         </View>
     )
 }
