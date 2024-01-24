@@ -2,20 +2,15 @@ import { View, Text, Image, StyleSheet, TextInput, Pressable, ScrollView } from 
 import React from 'react'
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/styles'
-import SelectDropdown from 'react-native-select-dropdown'
-import { FontAwesome5 } from '@expo/vector-icons'
 import Select from '@/components/select'
+import { useRouter } from 'expo-router'
 
 
 
 const HandymanRegister = () => {
-
-    function SearchIcon(props: {
-        name: React.ComponentProps<typeof FontAwesome5>['name'];
-        color: string;
-        size: number
-    }) {
-        return <FontAwesome5 style={{ marginBottom: -3, textAlign: 'center' }} {...props} />;
+    const router = useRouter()
+    const handleSubmit = () => {
+        router.push('/(image-picker)/image-picker')
     }
     return (
         <View style={handymanRegisterStyles.container}>
@@ -93,7 +88,7 @@ const HandymanRegister = () => {
 
                     />
 
-                    <Pressable style={handymanRegisterStyles.submitBtn}><Text style={handymanRegisterStyles.submitBtnText}>Submit</Text></Pressable>
+                    <Pressable style={handymanRegisterStyles.submitBtn} onPress={handleSubmit}><Text style={handymanRegisterStyles.submitBtnText}>Submit</Text></Pressable>
 
 
                 </View >
@@ -153,3 +148,4 @@ const handymanRegisterStyles = StyleSheet.create({
     },
 })
 export default HandymanRegister
+

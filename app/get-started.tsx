@@ -4,6 +4,7 @@ import { Text, View } from "@/components/Themed";
 import { Link, useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import Colors from '@/constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function GetStarted() {
     const router = useRouter()
@@ -12,19 +13,25 @@ export default function GetStarted() {
         router.push('/(onboard)/auth-options')
     }
     return (
-        <View style={styles.container}>
-            <View style={styles.textView}>
-                <Text style={styles.title}>Welcome to</Text>
-                <Text style={styles.mafundi}>Mafundi <Text style={styles.hub}>Hub</Text></Text>
-            </View>
-            <Image style={{ width: 200, height: 200 }} source={require('@/assets/images/welcome-image.svg')} />
+        <SafeAreaView style={{
+            flex: 1,
+            padding: 20,
+            backgroundColor: Colors.primary,
+        }}>
+            <View style={styles.container}>
+                <View style={styles.textView}>
+                    <Text style={styles.title}>Welcome to</Text>
+                    <Text style={styles.mafundi}>Mafundi <Text style={styles.hub}>Hub</Text></Text>
+                </View>
+                <Image style={{ width: 300, height: 300 }} source={require('@/assets/images/welcome-image.svg')} />
 
-            <Link href={"/(onboard)/auth-options"} >
-                <Pressable style={styles.startButton}>
-                    <Text style={styles.buttonText} onPress={handlePress} >Get Started</Text>
-                </Pressable>
-            </Link>
-        </View>
+                <Link href={"/(onboard)/auth-options"} >
+                    <Pressable style={styles.startButton}>
+                        <Text style={styles.buttonText} onPress={handlePress} >Get Started</Text>
+                    </Pressable>
+                </Link>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -32,15 +39,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        fontFamily: 'poppins',
-        backgroundColor: Colors.primary,
-        padding: 15
+        justifyContent: 'space-between',
+        width: '100%',
+        paddingTop: 20,
+        paddingBottom: 20
+
     },
     mafundi: {
         fontSize: 30,
         fontFamily: 'poppins-bold',
-        letterSpacing: 2.16,
+        letterSpacing: 3.6,
         color: Colors.secondary
 
     },
@@ -54,19 +62,15 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontFamily: 'poppins-bold',
-        letterSpacing: 2.16,
+        letterSpacing: 3.6,
         color: '#FEFEFE'
 
     },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
+
 
     textView: {
         alignSelf: 'flex-start',
-        paddingLeft: 30
+        paddingLeft: 10
     },
 
     startButton: {
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: Colors.lighter,
-        fontSize: 16,
+        fontSize: 18,
         letterSpacing: 1.6,
         textAlign: 'center',
         fontFamily: 'poppins-semibold',
