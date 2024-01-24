@@ -4,10 +4,11 @@ import Colors from "./Colors";
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary,
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 50,
+    paddingTop: 20,
+    paddingBottom: 12,
+    position: "relative",
   },
 
   loginSubHeader: {
@@ -49,8 +50,8 @@ export const defaultStyles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 5,
     backgroundColor: Colors.secondary,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   authButtonText: {
     fontSize: 18,
