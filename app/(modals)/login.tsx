@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext'
 import { Formik } from 'formik'
 import { loginSchema } from '@/constants/loginSchema'
 import Loader from '@/components/loader'
+import CustomAlert from '@/components/customAlert'
 
 const Login = () => {
     const router = useRouter()
@@ -16,17 +17,22 @@ const Login = () => {
         email: '',
         password: ''
     })
+    const [alertVisible, setAlertVisible] = useState(false);
 
     const handleLogin = async (user: { email: string | null; password: string | null }) => {
         const result = await onLogin!(user)
-        console.log(result)
         if (result.ok) {
-            Alert.alert('You have successfully logged in')
-            router.push('/(onboard)/register-option')
+            setAlertVisible(true)
 
         }
         else {
-            Alert.alert('Invalid Credentials')
+            <CustomAlert
+                visible={alertVisible}
+                message="This is a custom alert!"
+                onClose={() => {
+                    setAlertVisible(false)
+                }}
+            />
         }
 
     }
@@ -98,6 +104,15 @@ const Login = () => {
                                 </Text>
                             </Link>
                         </Text>
+
+                        <CustomAlert
+                            visible={alertVisible}
+                            message="You have successfully logged in"
+                            onClose={() => {
+                                setAlertVisible(false)
+                                router.push('/(onboard)/register-option')
+                            }}
+                        />
                         <Loader />
                     </View>
                 </SafeAreaView>
