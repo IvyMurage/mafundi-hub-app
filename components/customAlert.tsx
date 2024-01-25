@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
     },
     alertMessage: {
         fontSize: 16,
+        fontFamily: 'poppins',
+        letterSpacing: 1.2,
         marginBottom: 20,
     },
     closeButton: {
@@ -54,8 +56,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     closeButtonText: {
-        color: '#fff',
+        color: Colors.lighter,
         fontWeight: 'bold',
+        fontFamily: 'poppins',
+        letterSpacing: 1.2,
     },
 });
 
