@@ -24,7 +24,7 @@ const SignUp = () => {
             password: string | null;
             confirmation_password: string | null
         }) => {
-        Alert.alert(`${user}`)
+        console.log(user)
     }
 
 
