@@ -1,3 +1,4 @@
+import Colors from '@/constants/Colors';
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         alignSelf: 'flex-end',
-        backgroundColor: 'blue',
+        backgroundColor: Colors.primary,
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
