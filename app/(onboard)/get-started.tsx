@@ -1,6 +1,5 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Text, View } from "@/components/Themed";
 import { Link, useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import Colors from '@/constants/Colors';

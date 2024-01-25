@@ -1,44 +1,108 @@
-import { View, Text, TextInput, Pressable, SafeAreaView } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Pressable, SafeAreaView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import { Link, useRouter } from 'expo-router'
+import { useAuth } from '@/context/AuthContext'
+import { Formik } from 'formik'
+import { loginSchema } from '@/constants/loginSchema'
+import Loader from '@/components/loader'
 
 const Login = () => {
     const router = useRouter()
+    const { onLogin } = useAuth()
+    const [user] = useState<{ email: string | null, password: string | null }>({
+        email: '',
+        password: ''
+    })
 
-    const handleImpress = () => {
-        router.push('/(onboard)/register-option')
+    const handleLogin = async (user: { email: string | null; password: string | null }) => {
+        const result = await onLogin!(user)
+        console.log(result)
+        if (result.ok) {
+            Alert.alert('You have successfully logged in')
+            router.push('/(onboard)/register-option')
+
+        }
+        else {
+            Alert.alert('Invalid Credentials')
+        }
+
     }
     return (
-        <SafeAreaView style={{ padding: 20, flex: 1, backgroundColor: Colors.primary }}>
-            <View style={[defaultStyles.container]}>
-                <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
+        <Formik
+            initialValues={user}
+            onSubmit={(values) => handleLogin(values)}
+            validationSchema={loginSchema}
+        >
+            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                <SafeAreaView style={{ padding: 20, flex: 1, backgroundColor: Colors.primary }}>
+                    <View style={[defaultStyles.container]}>
+                        <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
 
-                <Image style={{ width: 300, height: 200 }} source={require('@/assets/images/auth-image.svg')} />
+                        <Image
+                            style={{ width: 300, height: 200 }}
+                            source={require('@/assets/images/auth-image.svg')}
+                        />
 
-                <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
+                        <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
 
-                <TextInput
-                    autoCapitalize='none'
-                    placeholder='Email'
-                    style={[defaultStyles.inputTextField]}
-                />
+                        <TextInput
+                            autoCapitalize='none'
+                            placeholder='Email'
+                            value={values.email!}
+                            onChangeText={handleChange('email')}
+                            onBlur={() => setFieldTouched('email')}
+                            style={[defaultStyles.inputTextField]}
+                        />
+                        {
+                            touched.email && errors.email && (
+                                <Text style={[defaultStyles.errorText]}>
+                                    {errors.email}
+                                </Text>
+                            )
+                        }
+                        <TextInput
+                            autoCapitalize='none'
+                            secureTextEntry
+                            placeholder='Password'
+                            value={values.password!}
+                            onChangeText={handleChange('password')}
+                            onBlur={() => setFieldTouched('password')}
+                            style={[defaultStyles.inputTextField]}
+                        />
+                        {
+                            touched.password && errors.password && (
+                                <Text style={[defaultStyles.errorText]}>
+                                    {errors.password}
+                                </Text>
+                            )
+                        }
+                        <Pressable
+                            disabled={!isValid}
+                            onPress={() => handleSubmit()}
+                            style={
+                                [defaultStyles.authButton,
+                                { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
+                                ]
+                            }>
+                            <Text style={[defaultStyles.authButtonText]}>Login</Text>
+                        </Pressable>
 
-                <TextInput
-                    autoCapitalize='none'
-                    placeholder='Password'
-                    style={[defaultStyles.inputTextField]}
-                />
-
-                <Pressable style={[defaultStyles.authButton]}>
-                    <Text onPress={handleImpress} style={[defaultStyles.authButtonText]}>Login</Text>
-                </Pressable>
-
-                <Text style={[defaultStyles.authOption]}>Don't Have an account? <Link href={'/(modals)/sign-up'}><Text style={{ color: Colors.secondary, fontWeight: '700' }}> Sign Up </Text> </Link></Text>
-            </View>
-        </SafeAreaView>
+                        <Text style={[defaultStyles.authOption]}>
+                            Don't Have an account?
+                            <Link href={'/(modals)/sign-up'}>
+                                <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
+                                    Sign Up
+                                </Text>
+                            </Link>
+                        </Text>
+                        <Loader />
+                    </View>
+                </SafeAreaView>
+            )}
+        </Formik>
     )
 }
 

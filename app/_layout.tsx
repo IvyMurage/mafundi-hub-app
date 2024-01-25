@@ -1,11 +1,11 @@
 import Colors from '@/constants/Colors';
 import { Octicons } from '@expo/vector-icons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
 
 export {
@@ -15,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: 'get-started',
+  initialRouteName: '(onboard)/get-started',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -45,26 +45,38 @@ export default function RootLayout() {
   }
 
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>);
 }
 
 function RootLayoutNav() {
+
+  const { authState } = useAuth()
   const router = useRouter()
 
   const handleBack = () => {
     router.back()
   }
-
+  
   const handleRight = () => {
     router.push('/(tabs)/')
   }
   return (
-    <Stack initialRouteName='get-started'>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name='get-started' options={{ headerShown: false, }} />
+    <Stack initialRouteName='(onboard)/get-started' screenOptions={{
+      headerStyle: { ...headerStyles.headerStyle }, headerShown: false
+    }}>
+      {
+        authState?.authenicated ? (
+          <Stack.Screen name='(onboard)/register-option' options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name='(modals)/login' options={{ headerShown: false, }} />
+
+        )
+      }
+      <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
       <Stack.Screen name="(onboard)/auth-options" options={{ headerShown: false, }} />
-      <Stack.Screen name="(onboard)/register-option" options={{ headerShown: false, animation: 'simple_push' }} />
-      <Stack.Screen name="(modals)/login" options={{ headerShown: false, }} />
       <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, animation: 'simple_push', }} />
 
       <Stack.Screen name="(modals)/handyman-register" options={{

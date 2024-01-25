@@ -49,7 +49,6 @@ export const defaultStyles = StyleSheet.create({
     height: 55,
     flexShrink: 0,
     borderRadius: 5,
-    backgroundColor: Colors.secondary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -60,5 +59,14 @@ export const defaultStyles = StyleSheet.create({
     padding: 10,
     letterSpacing: 1.8,
     fontFamily: "poppins-semibold",
+  },
+  errorText: {
+    color: "red",
+    fontFamily: "poppins",
+    fontSize: 14,
+    letterSpacing: 1.2,
+    textAlign: "left",
+    alignSelf: "flex-start",
+    paddingLeft: 10,
   },
 });
