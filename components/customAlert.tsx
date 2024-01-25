@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     alertMessage: {
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: 'poppins',
         letterSpacing: 1.2,
         marginBottom: 20,
