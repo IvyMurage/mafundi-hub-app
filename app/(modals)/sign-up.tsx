@@ -88,6 +88,7 @@ const SignUp = () => {
                         }
                         <TextInput
                             autoCapitalize='none'
+                            secureTextEntry
                             placeholder='Confirm Password'
                             value={values.confirmation_password!}
                             onChangeText={handleChange('confirmation_password')}
