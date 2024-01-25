@@ -5,9 +5,12 @@ import Colors from '@/constants/Colors'
 import { Link, useRouter } from 'expo-router'
 import { Formik } from 'formik'
 import { signUpSchema } from '@/constants/loginSchema'
+import { useAuth } from '@/context/AuthContext'
+import Loader from '@/components/loader'
 
 const SignUp = () => {
     const router = useRouter()
+    const { onRegister } = useAuth()
     const [user] = useState<{
         email: string | null;
         password: string | null;
@@ -18,13 +21,17 @@ const SignUp = () => {
         confirmation_password: ''
 
     })
-    const handleSignUp = (
+    const handleSignUp = async (
         user: {
             email: string | null;
             password: string | null;
             confirmation_password: string | null
         }) => {
-        console.log(user)
+        const response = await onRegister!(user)
+        if (response.ok) {
+            Alert.alert('You have successfully signed up')
+            router.push('/(onboard)/register-option')
+        }
     }
 
 
@@ -117,14 +124,15 @@ const SignUp = () => {
                             </Text>
                         </Pressable>
 
-                        <Text
-                            style={[defaultStyles.authOption]}>Already Have an account?
+                        <Text style={[defaultStyles.authOption]}>
+                            Already Have an account?
                             <Link href={'/(modals)/login'}>
                                 <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
                                     Login
                                 </Text>
                             </Link>
                         </Text>
+                        <Loader />
                     </View>
                 </SafeAreaView>
             )}

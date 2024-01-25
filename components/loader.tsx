@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/context/AuthContext'
 
@@ -7,6 +7,7 @@ const Loader = () => {
     return (
         isLoading &&
         (<View style={[StyleSheet.absoluteFill, {
+            flex: 1,
             backgroundColor: 'rgba(0,0,0,0.5)',
             alignItems: 'center',
             justifyContent: 'center'

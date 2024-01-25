@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }: any) => {
             confirmation_password: string | null
         }
     ) => {
+        setLoading(true)
         try {
 
             const response = await fetch(`${API_URL}/signup`, {
@@ -82,6 +83,10 @@ export const AuthProvider = ({ children }: any) => {
         }
         catch (error) {
             console.log(error)
+        }
+        finally {
+            setLoading(false)
+
         }
 
     }
