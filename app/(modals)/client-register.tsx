@@ -13,10 +13,10 @@ const ClientRegister = () => {
     const handleSubmit = () => {
     }
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 30, backgroundColor: Colors.primary }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.primary }}>
             <View style={ClientRegisterStyles.container}>
                 <View style={{ alignItems: 'center' }}>
-                    <Image style={{ top: 30, width: 200, height: 150, resizeMode: 'contain' }} source={require('@/assets/images/client.svg')} />
+                    <Image style={{ width: 200, height: 150, resizeMode: 'contain' }} source={require('@/assets/images/client.svg')} />
                     <View style={ClientRegisterStyles.titleContainer}>
                         <Text style={ClientRegisterStyles.titleText}>
                             Join Mafundi Hub: Your Handyman Solution! Register Now!
@@ -75,17 +75,18 @@ const ClientRegisterStyles = StyleSheet.create({
     titleContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 24
+        marginTop: 20
     },
     scroll: {
         width: '100%',
         height: '100%',
     },
     subContainer: {
-        flex: 1,
+        flexGrow:1,
         backgroundColor: Colors.light,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        marginBottom:20
     },
     textInput: {
         borderColor: Colors.secondary,
@@ -94,12 +95,12 @@ const ClientRegisterStyles = StyleSheet.create({
 
     submitBtn: {
         backgroundColor: Colors.primary,
-        padding: 12,
         borderRadius: 8,
         width: 357,
         height: 55,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop:10
     },
     submitBtnText: {
         color: Colors.lighter,
@@ -111,7 +112,6 @@ const ClientRegisterStyles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-        justifyContent: 'space-evenly',
         alignItems: 'center',
         marginTop: 12,
         backgroundColor: Colors.light,

@@ -59,7 +59,7 @@ function RootLayoutNav() {
     router.push('/(tabs)/')
   }
   return (
-    <Stack initialRouteName='(modals)/handyman-register'>
+    <Stack initialRouteName='get-started'>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name='get-started' options={{ headerShown: false, }} />
       <Stack.Screen name="(onboard)/auth-options" options={{ headerShown: false, }} />
