@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, StyleSheet, SafeAreaView, ScrollView, Pressable, Text, FlatList, ActivityIndicator } from 'react-native';
+import { Button, Image, View, StyleSheet, SafeAreaView, ScrollView, Pressable, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Colors from '@/constants/Colors';
 import * as FileSystem from 'expo-file-system'
@@ -84,11 +84,11 @@ export default function ImagePickerExample() {
             })
             const data = await response.json()
             if (response.ok) {
-                alert('Image uploaded successfully')
+                Alert.alert('Image uploaded successfully')
             }
         }
         catch (error) {
-            alert('Image upload failed')
+            Alert.alert('Image upload failed')
         }
 
         finally {

@@ -1,9 +1,10 @@
-import { View, Text, Image, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
 import React from 'react'
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useRouter } from 'expo-router'
+import { Image } from 'expo-image'
 
 
 
@@ -13,10 +14,10 @@ const HandymanRegister = () => {
         router.push('/(image-picker)/image-picker')
     }
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
+        <SafeAreaView style={{ flex: 1, paddingTop: 0, backgroundColor: Colors.primary }}>
             <View style={handymanRegisterStyles.container}>
                 <View style={{ alignItems: 'center' }}>
-                    <Image style={{ top: 28, zIndex: 10, width: 260, height: 200 }} source={require('@/assets/images/handyman.png')} />
+                    <Image style={{ width: 250, height: 200, }} source={require('@/assets/images/handyman.svg')} />
                 </View>
                 <ScrollView contentContainerStyle={handymanRegisterStyles.contentContainer} style={handymanRegisterStyles.scroll}>
                     <View style={handymanRegisterStyles.subContainer}>

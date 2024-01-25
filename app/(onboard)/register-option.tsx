@@ -6,8 +6,11 @@ import { useRouter } from 'expo-router';
 
 const RegisterOptions = () => {
     const router = useRouter()
-    const handlePress = () => {
+    const handlePressHandyman = () => {
         router.push('/(modals)/handyman-register')
+    }
+    const handlePressClient = () => {
+        router.push('/(modals)/client-register')
     }
     function RegisterIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
@@ -21,14 +24,14 @@ const RegisterOptions = () => {
             <Text style={registerStyles.title}>Register as:</Text>
 
             <View style={registerStyles.registerBtn}>
-                <Pressable onPress={handlePress}>
+                <Pressable onPress={handlePressHandyman}>
                     <RegisterIcon name='tools' color={Colors.lighter} size={50} />
                     <Text style={registerStyles.registerBtnText}>Handyman</Text>
                 </Pressable>
             </View>
 
             <View style={registerStyles.registerBtn}>
-                <Pressable onPress={handlePress}>
+                <Pressable onPress={handlePressClient}>
                     <RegisterIcon name='user-tie' color={Colors.lighter} size={50} />
                     <Text style={registerStyles.registerBtnText}>Client</Text>
                 </Pressable>

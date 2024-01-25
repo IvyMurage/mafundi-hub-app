@@ -1,8 +1,11 @@
+import Colors from '@/constants/Colors';
+import { Octicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 
 export {
@@ -41,11 +44,20 @@ export default function RootLayout() {
     return null;
   }
 
+
   return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
+  const router = useRouter()
 
+  const handleBack = () => {
+    router.back()
+  }
+
+  const handleRight = () => {
+    router.push('/(tabs)/')
+  }
   return (
     <Stack initialRouteName='(modals)/handyman-register'>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -54,8 +66,55 @@ function RootLayoutNav() {
       <Stack.Screen name="(onboard)/register-option" options={{ headerShown: false, animation: 'simple_push' }} />
       <Stack.Screen name="(modals)/login" options={{ headerShown: false, }} />
       <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, animation: 'simple_push', }} />
-      <Stack.Screen name="(modals)/handyman-register" options={{ headerShown: false, animation: 'simple_push', }} />
-      <Stack.Screen name="(image-picker)/image-picker" options={{ headerShown: false, animation: 'simple_push', }} />
+
+      <Stack.Screen name="(modals)/handyman-register" options={{
+        headerShown: true,
+        headerTitle: '',
+        headerStyle: { ...headerStyles.headerStyle },
+        headerLeft: () => (
+          <TouchableOpacity onPress={handleBack} >
+            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
+          </TouchableOpacity>)
+      }} />
+
+      <Stack.Screen name="(modals)/client-register" options={{
+        headerShown: true,
+        headerTitle: '',
+        headerStyle: { ...headerStyles.headerStyle },
+        headerLeft: () => (
+          <TouchableOpacity onPress={handleBack} >
+            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
+          </TouchableOpacity>)
+      }} />
+
+      <Stack.Screen name="(image-picker)/image-picker" options={{
+        headerShown: true,
+        headerTitle: '',
+        headerStyle: { ...headerStyles.headerStyle },
+        headerLeft: () => (
+          <TouchableOpacity onPress={handleBack} >
+            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
+          </TouchableOpacity>),
+        headerRight: () => (
+          <TouchableOpacity onPress={handleRight} >
+            <Text style={headerStyles.headerRight}>Skip</Text>
+          </TouchableOpacity>)
+      }} />
     </Stack>
   );
 }
+
+const headerStyles = StyleSheet.create({
+  headerStyle: {
+    backgroundColor: Colors.primary,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+  },
+  headerRight: {
+    color: Colors.secondary,
+    fontSize: 16,
+    fontFamily: 'poppins-semibold',
+    letterSpacing: 1.8
+  }
+})
