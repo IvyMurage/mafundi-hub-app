@@ -7,6 +7,7 @@ interface AuthProps {
     isLoading?: boolean
     onRegister?: (user: { email: string | null; password: string | null; confirmation_password: string | null }) => Promise<any>;
     onLogin?: (user: { email: string | null; password: string | null }) => Promise<any>
+    onRole?: (userRole: { role: string | null; user_id: number | null }) => Promise<any>;
     onLogout?: () => Promise<any>
 }
 const AuthContext = createContext<AuthProps>({})
@@ -127,6 +128,32 @@ export const AuthProvider = ({ children }: any) => {
         }
     }
 
+    const role = async (
+        userRole: {
+            role: string | null,
+            user_id: number | null,
+        }) => {
+        setLoading(true)
+        try {
+            const response = await fetch(`${API_URL}/role`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userRole)
+            })
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data)
+            }
+            return response
+        }
+        catch (error) {
+            console.log(error)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
     const logout = async () => {
         await SecureStore.deleteItemAsync(TOKEN_KEY)
         setAuthState({ token: null, authenicated: false })
@@ -137,6 +164,7 @@ export const AuthProvider = ({ children }: any) => {
         onLogin: login,
         onLogout: logout,
         userState: user,
+        onRole: role,
         authState,
         isLoading: loading
     }
