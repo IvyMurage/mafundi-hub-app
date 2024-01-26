@@ -6,6 +6,7 @@ import Select from '@/components/select'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
 import { Formik } from 'formik'
+import { handymanSchema } from '@/constants/loginSchema'
 
 
 interface HandymanProps {
@@ -40,14 +41,19 @@ const HandymanRegister = () => {
         <Formik
             initialValues={handyman}
             onSubmit={handleSubmit}
+            validationSchema={handymanSchema}
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
                 <SafeAreaView style={{ flex: 1, paddingTop: 0, backgroundColor: Colors.primary }}>
                     <View style={handymanRegisterStyles.container}>
                         <View style={{ alignItems: 'center' }}>
-                            <Image style={{ width: 250, height: 200, }} source={require('@/assets/images/handyman.svg')} />
+                            <Image
+                                style={{ width: 250, height: 200, }}
+                                source={require('@/assets/images/handyman.svg')} />
                         </View>
-                        <ScrollView contentContainerStyle={handymanRegisterStyles.contentContainer} style={handymanRegisterStyles.scroll}>
+                        <ScrollView
+                            contentContainerStyle={handymanRegisterStyles.contentContainer}
+                            style={handymanRegisterStyles.scroll}>
                             <View style={handymanRegisterStyles.subContainer}>
 
                                 <TextInput
@@ -58,14 +64,29 @@ const HandymanRegister = () => {
                                     onBlur={() => setFieldTouched('first_name')}
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
                                 />
+                                {
+                                    touched.first_name && errors.first_name && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.first_name}
+                                        </Text>
+                                    )
+                                }
                                 <TextInput
                                     autoCapitalize='none'
-                                    placeholder='Second Name'
+                                    placeholder='Last Name'
                                     value={values.last_name!}
                                     onChangeText={handleChange('last_name')}
                                     onBlur={() => setFieldTouched('last_name')}
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
                                 />
+
+                                {
+                                    touched.last_name && errors.last_name && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.last_name}
+                                        </Text>
+                                    )
+                                }
                                 <TextInput
                                     autoCapitalize='none'
                                     placeholder='Title (e.g Carpenter)'
@@ -74,6 +95,14 @@ const HandymanRegister = () => {
                                     onBlur={() => setFieldTouched('title')}
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
                                 />
+
+                                {
+                                    touched.title && errors.title && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.title}
+                                        </Text>
+                                    )
+                                }
                                 <Select
                                     data={['Service', 'Handyman']}
                                     defaultButtonText='Service'
@@ -89,6 +118,14 @@ const HandymanRegister = () => {
                                     onBlur={() => setFieldTouched('phone_number')}
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
                                 />
+
+                                {
+                                    touched.phone_number && errors.phone_number && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.phone_number}
+                                        </Text>
+                                    )
+                                }
                                 <TextInput
                                     autoCapitalize='none'
                                     placeholder='Years of  Experience (e.g 1)'
@@ -113,7 +150,13 @@ const HandymanRegister = () => {
                                     placeholder='Description(e.g I am a plumber .. '
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput, handymanRegisterStyles.textArea]}
                                 />
-
+                                {
+                                    touched.description && errors.description && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.description}
+                                        </Text>
+                                    )
+                                }
                                 <TextInput
                                     autoCapitalize='none'
                                     multiline
@@ -125,16 +168,22 @@ const HandymanRegister = () => {
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput, handymanRegisterStyles.textArea]}
 
                                 />
-
-                                <Pressable style={handymanRegisterStyles.submitBtn} onPress={() => handleSubmit}><Text style={handymanRegisterStyles.submitBtnText}>Submit</Text></Pressable>
-
-
+                                <Pressable
+                                    disabled={!isValid}
+                                    style={[handymanRegisterStyles.submitBtn,
+                                    { backgroundColor: isValid ? Colors.primary : '#a5c9ca' }
+                                    ]}
+                                    onPress={() => handleSubmit}>
+                                    <Text style={handymanRegisterStyles.submitBtnText}>
+                                        Submit
+                                    </Text>
+                                </Pressable>
                             </View >
                         </ScrollView >
                     </View >
                 </SafeAreaView >
             )}
-        </Formik>
+        </Formik >
     )
 }
 
@@ -166,7 +215,6 @@ const handymanRegisterStyles = StyleSheet.create({
         height: 100
     },
     submitBtn: {
-        backgroundColor: Colors.primary,
         padding: 12,
         borderRadius: 8,
         width: 357,

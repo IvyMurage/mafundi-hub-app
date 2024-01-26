@@ -20,3 +20,11 @@ export const signUpSchema = Yup.object({
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Please confirm your password"),
 });
+
+export const handymanSchema = Yup.object({
+  first_name: Yup.string().required("Please enter your first name"),
+  last_name: Yup.string().required("Please enter your last name"),
+  title: Yup.string().required("Please enter your title"),
+  description: Yup.string().required("Please enter your bio description"),
+  phone_number: Yup.string().required("Please enter your phone number"),
+});
