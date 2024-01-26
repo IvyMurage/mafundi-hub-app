@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontFamily: 'poppins-bold',
-        letterSpacing: 3.6,
+        letterSpacing: 2.4,
         color: '#FEFEFE'
 
     },
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         letterSpacing: 1.6,
         textAlign: 'center',
-        fontFamily: 'poppins-semibold',
+        fontFamily: 'poppins-bold',
     }
 })

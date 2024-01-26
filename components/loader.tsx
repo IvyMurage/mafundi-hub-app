@@ -10,7 +10,8 @@ const Loader = () => {
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.5)',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            width: '100%'
         }]}>
             <ActivityIndicator color={"#fff"} animating size='large' />
         </View>)

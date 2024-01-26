@@ -23,7 +23,6 @@ const Login = () => {
         const result = await onLogin!(user)
         if (result.ok) {
             setAlertVisible(true)
-
         }
         else {
             <CustomAlert
@@ -110,7 +109,7 @@ const Login = () => {
                             message="You have successfully logged in"
                             onClose={() => {
                                 setAlertVisible(false)
-                                router.push('/(onboard)/register-option')
+                                router.push('/(tabs)/')
                             }}
                         />
                         <Loader />

@@ -7,6 +7,7 @@ import { Formik } from 'formik'
 import { signUpSchema } from '@/constants/loginSchema'
 import { useAuth } from '@/context/AuthContext'
 import Loader from '@/components/loader'
+import CustomAlert from '@/components/customAlert'
 
 const SignUp = () => {
     const router = useRouter()
@@ -21,6 +22,9 @@ const SignUp = () => {
         confirmation_password: ''
 
     })
+
+    const [alertVisible, setAlertVisible] = useState(false);
+
     const handleSignUp = async (
         user: {
             email: string | null;
@@ -29,8 +33,7 @@ const SignUp = () => {
         }) => {
         const response = await onRegister!(user)
         if (response.ok) {
-            Alert.alert('You have successfully signed up')
-            router.push('/(onboard)/register-option')
+            setAlertVisible(true)
         }
     }
 
@@ -132,6 +135,15 @@ const SignUp = () => {
                                 </Text>
                             </Link>
                         </Text>
+
+                        <CustomAlert
+                            visible={alertVisible}
+                            message="You have successfully logged in"
+                            onClose={() => {
+                                setAlertVisible(false)
+                                router.push('/(onboard)/register-option')
+                            }}
+                        />
                         <Loader />
                     </View>
                 </SafeAreaView>
