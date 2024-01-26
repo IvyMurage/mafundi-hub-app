@@ -59,59 +59,99 @@ function RootLayoutNav() {
   const handleBack = () => {
     router.back()
   }
-  
+
   const handleRight = () => {
     router.push('/(tabs)/')
   }
   return (
-    <Stack initialRouteName='(onboard)/get-started' screenOptions={{
-      headerStyle: { ...headerStyles.headerStyle }, headerShown: false
-    }}>
+    <Stack initialRouteName='(onboard)/get-started'
+      screenOptions={{
+        headerStyle: { ...headerStyles.headerStyle }, headerShown: false
+      }}
+    >
       {
         authState?.authenicated ? (
-          <Stack.Screen name='(onboard)/register-option' options={{ headerShown: false }} />
+          <Stack.Screen name='(onboard)/register-option'
+            options={{ headerShown: false }}
+          />
         ) : (
-          <Stack.Screen name='(modals)/login' options={{ headerShown: false, }} />
+          <Stack.Screen name='(modals)/login'
+            options={{ headerShown: false, }}
+          />
 
         )
       }
-      <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
-      <Stack.Screen name="(onboard)/auth-options" options={{ headerShown: false, }} />
-      <Stack.Screen name="(modals)/sign-up" options={{ headerShown: false, animation: 'simple_push', }} />
+      <Stack.Screen name='(onboard)/get-started'
+        options={{ headerShown: false, }}
+      />
 
-      <Stack.Screen name="(modals)/handyman-register" options={{
-        headerShown: true,
-        headerTitle: '',
-        headerStyle: { ...headerStyles.headerStyle },
-        headerLeft: () => (
-          <TouchableOpacity onPress={handleBack} >
-            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
-          </TouchableOpacity>)
-      }} />
+      <Stack.Screen name="(onboard)/auth-options"
+        options={{ headerShown: false, }}
+      />
 
-      <Stack.Screen name="(modals)/client-register" options={{
-        headerShown: true,
-        headerTitle: '',
-        headerStyle: { ...headerStyles.headerStyle },
-        headerLeft: () => (
-          <TouchableOpacity onPress={handleBack} >
-            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
-          </TouchableOpacity>)
-      }} />
+      <Stack.Screen name="(modals)/sign-up"
+        options={{ headerShown: false, animation: 'simple_push', }}
+      />
 
-      <Stack.Screen name="(image-picker)/image-picker" options={{
-        headerShown: true,
-        headerTitle: '',
-        headerStyle: { ...headerStyles.headerStyle },
-        headerLeft: () => (
-          <TouchableOpacity onPress={handleBack} >
-            <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ left: 10 }} />
-          </TouchableOpacity>),
-        headerRight: () => (
-          <TouchableOpacity onPress={handleRight} >
-            <Text style={headerStyles.headerRight}>Skip</Text>
-          </TouchableOpacity>)
-      }} />
+      <Stack.Screen name='(modals)/task-form'
+        options={{ presentation: 'modal' }}
+      />
+
+      <Stack.Screen name='(modals)/job-proposal-form'
+        options={{ presentation: 'modal' }}
+      />
+
+      <Stack.Screen name='(modals)/appointment-form'
+        options={{ presentation: 'modal' }}
+      />
+
+      <Stack.Screen name="(modals)/handyman-register"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: { ...headerStyles.headerStyle },
+          headerLeft: () => (
+            <TouchableOpacity onPress={handleBack} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </TouchableOpacity>
+          )
+        }}
+      />
+
+      <Stack.Screen name="(modals)/client-register"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: { ...headerStyles.headerStyle },
+          headerLeft: () => (
+            <TouchableOpacity onPress={handleBack} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </TouchableOpacity>)
+        }} />
+
+      <Stack.Screen name="(image-picker)/image-picker"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: { ...headerStyles.headerStyle },
+          headerLeft: () => (
+            <TouchableOpacity onPress={handleBack} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </TouchableOpacity>),
+          headerRight: () => (
+            <TouchableOpacity onPress={handleRight} >
+              <Text style={headerStyles.headerRight}>Skip</Text>
+            </TouchableOpacity>)
+        }} />
     </Stack>
   );
 }
