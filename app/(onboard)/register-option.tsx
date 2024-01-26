@@ -1,17 +1,50 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/context/AuthContext';
+import CustomAlert from '@/components/customAlert';
 
 const RegisterOptions = () => {
     const router = useRouter()
-    const handlePressHandyman = () => {
-        router.push('/(modals)/handyman-register')
+
+    const { onRole, userState } = useAuth()
+    const [visible, setAlertVisible] = useState(false)
+
+    const handlePressHandyman = async () => {
+        const result = await onRole!({ user_id: userState?.id!, role: 'handyman' })
+        if (result?.ok) {
+            router.push('/(modals)/handyman-register')
+        }
+        else {
+            <CustomAlert
+                visible={visible}
+                message="Something went wrong"
+                onClose={() => {
+                    setAlertVisible(false)
+                }}
+            />
+        }
     }
-    const handlePressClient = () => {
-        router.push('/(modals)/client-register')
+
+    const handlePressClient = async () => {
+        const result = await onRole!({ user_id: userState?.id!, role: 'client' })
+        if (result.ok) {
+            router.push('/(modals)/client-register')
+        }
+
+        else {
+            <CustomAlert
+                visible={visible}
+                message="Something went wrong"
+                onClose={() => {
+                    setAlertVisible(false)
+                }}
+            />
+        }
     }
+
     function RegisterIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;

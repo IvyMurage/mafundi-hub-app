@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import { Link, useRouter } from 'expo-router'
-import { Formik } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import { signUpSchema } from '@/constants/loginSchema'
 import { useAuth } from '@/context/AuthContext'
 import Loader from '@/components/loader'
@@ -30,10 +30,11 @@ const SignUp = () => {
             email: string | null;
             password: string | null;
             confirmation_password: string | null
-        }) => {
+        }, resetForm: FormikHelpers<{ email: string | null; password: string | null; confirmation_password: string | null }>) => {
         const response = await onRegister!(user)
         if (response.ok) {
             setAlertVisible(true)
+            resetForm.resetForm()
         }
     }
 
@@ -41,10 +42,10 @@ const SignUp = () => {
     return (
         <Formik
             initialValues={user}
-            onSubmit={(values) => handleSignUp(values)}
+            onSubmit={(values, resetForm) => handleSignUp(values, resetForm)}
             validationSchema={signUpSchema}
         >
-            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
                 <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: Colors.primary }}>
                     <View style={[defaultStyles.container]}>
                         <Text style={[defaultStyles.loginHeader]}>

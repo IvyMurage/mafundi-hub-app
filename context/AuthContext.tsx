@@ -30,9 +30,10 @@ export const AuthProvider = ({ children }: any) => {
             token: null,
             authenicated: null
         })
-    const [user, setUser] = useState<{ id: number | null; email: string | null }>({
+    const [user, setUser] = useState<{ id: number | null; email: string | null; roles: string[] }>({
         email: null,
-        id: null
+        id: null,
+        roles: []
     })
 
     const [loading, setLoading] = useState<boolean>(false)
@@ -41,6 +42,10 @@ export const AuthProvider = ({ children }: any) => {
             setLoading(true)
             try {
                 const token = await SecureStore.getItemAsync(TOKEN_KEY)
+                const user = await SecureStore.getItemAsync('user')
+                if (user) {
+                    setUser(JSON.parse(user))
+                }
                 if (token) {
                     setAuthState({ token, authenicated: true })
                 }
@@ -135,14 +140,16 @@ export const AuthProvider = ({ children }: any) => {
         }) => {
         setLoading(true)
         try {
-            const response = await fetch(`${API_URL}/role`, {
-                method: 'POST',
+            const response = await fetch(`${API_URL}/user_role`, {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userRole)
             })
             if (response.ok) {
                 const data = await response.json()
-                console.log(data)
+                setUser(data?.user)
+                await SecureStore.setItemAsync('user', JSON.stringify(user))
+                setLoading(false)
             }
             return response
         }
