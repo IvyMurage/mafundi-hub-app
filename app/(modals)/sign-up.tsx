@@ -138,7 +138,7 @@ const SignUp = () => {
 
                         <CustomAlert
                             visible={alertVisible}
-                            message="You have successfully logged in"
+                            message="You have successfully Signed up"
                             onClose={() => {
                                 setAlertVisible(false)
                                 router.push('/(onboard)/register-option')
