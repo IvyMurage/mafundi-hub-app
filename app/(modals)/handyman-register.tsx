@@ -9,6 +9,7 @@ import { Formik } from 'formik'
 import { handymanSchema } from '@/constants/loginSchema'
 import { useLocation } from '@/context/useLocation'
 import { stringfy } from '@/utils/stringify'
+import { useService } from '@/context/useService'
 
 
 interface HandymanProps {
@@ -25,6 +26,9 @@ interface HandymanProps {
 const HandymanRegister = () => {
     const router = useRouter()
     const locations = useLocation()
+    const services = useService()
+
+    console.log(services)
     const [handyman] = useState<HandymanProps>({
         first_name: '',
         last_name: '',
@@ -110,7 +114,7 @@ const HandymanRegister = () => {
                                     )
                                 }
                                 <Select
-                                    data={['Service', 'Handyman']}
+                                    data={services?.length > 0 && services !== undefined && services?.map(service => service.service_name) || []}
                                     defaultButtonText='Service'
                                     searchPlaceHolder='Search for a service'
                                 />
@@ -118,7 +122,7 @@ const HandymanRegister = () => {
                                 <TextInput
                                     autoCapitalize='none'
                                     placeholder='Phone number (e.g 07xxxx)'
-                                    keyboardType='phone-pad'
+                                    inputMode='numeric'
                                     value={values.phone_number!}
                                     onChangeText={handleChange('phone_number')}
                                     onBlur={() => setFieldTouched('phone_number')}
