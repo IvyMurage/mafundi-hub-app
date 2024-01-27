@@ -15,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(onboard)/get-started',
+  initialRouteName: '(modals)/handyman-register',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -64,7 +64,7 @@ function RootLayoutNav() {
     router.push('/(tabs)/')
   }
   return (
-    <Stack initialRouteName='(onboard)/get-started'
+    <Stack initialRouteName='(modals)/handyman-register'
       screenOptions={{
         headerStyle: { ...headerStyles.headerStyle }, headerShown: false
       }}
@@ -105,7 +105,7 @@ function RootLayoutNav() {
         options={{ presentation: 'modal' }}
       />
 
-      <Stack.Screen name="(modals)/handyman-register"
+      {/* <Stack.Screen name="(modals)/handyman-register"
         options={{
           headerShown: true,
           headerTitle: '',
@@ -119,7 +119,7 @@ function RootLayoutNav() {
             </TouchableOpacity>
           )
         }}
-      />
+      /> */}
 
       <Stack.Screen name="(modals)/client-register"
         options={{

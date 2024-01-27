@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
@@ -7,6 +7,8 @@ import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
 import { Formik } from 'formik'
 import { handymanSchema } from '@/constants/loginSchema'
+import { useLocation } from '@/context/useLocation'
+import { stringfy } from '@/utils/stringify'
 
 
 interface HandymanProps {
@@ -22,8 +24,8 @@ interface HandymanProps {
 }
 const HandymanRegister = () => {
     const router = useRouter()
-
-    const [handyman, setHandyman] = useState<HandymanProps>({
+    const locations = useLocation()
+    const [handyman] = useState<HandymanProps>({
         first_name: '',
         last_name: '',
         title: '',
@@ -34,6 +36,10 @@ const HandymanRegister = () => {
         description: '',
         task_responsibilities: ''
     })
+
+
+    // console.log(locations)
+
     const handleSubmit = () => {
         router.push('/(image-picker)/image-picker')
     }
@@ -136,7 +142,9 @@ const HandymanRegister = () => {
                                 />
 
                                 <Select
-                                    data={['Years', 'Months']}
+                                    data={locations?.length > 0 &&
+                                        locations !== undefined &&
+                                        locations?.map(location => stringfy(location)) || []}
                                     defaultButtonText='Location'
                                     searchPlaceHolder='Search for a Location'
                                 />
