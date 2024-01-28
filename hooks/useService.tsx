@@ -9,7 +9,6 @@ export const useService = () => {
             try {
                 const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/services`,)
                 const data = await response.json()
-                console.log(data)
                 if (!response.ok) throw new Error(data.message)
 
                 if (response.ok) {

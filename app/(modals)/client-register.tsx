@@ -8,32 +8,72 @@ import { Image } from 'expo-image'
 import { useLocation } from '@/hooks/useLocation'
 import { Formik, FormikHelpers } from 'formik'
 import { stringfy } from '@/utils/stringify'
+import { useAuth } from '@/context/AuthContext'
+import { request } from '@/utils/executePostRequest'
+import { clientSchema } from '@/constants/loginSchema'
+import Loader from '@/components/loader'
+import CustomAlert from '@/components/customAlert'
 
 interface ClientProps {
     first_name: string | null,
     last_name: string | null,
     phone_number: string | null,
-    location: string | null
+    location_attributes: string | null
 }
 
 
 const ClientRegister = () => {
     const router = useRouter()
     const locations = useLocation()
+    const { authState, userState } = useAuth()
     const [client] = useState<ClientProps>({
         first_name: '',
         last_name: '',
         phone_number: '',
-        location: ''
+        location_attributes: ''
     })
-    const handleSubmit = (values: ClientProps, resetForm: FormikHelpers<ClientProps>) => {
-        console.log(values)
+    const [isLoading, setIsLoading] = useState(false)
+    const [alertVisible, setAlertVisible] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const handleSubmit = async (client: ClientProps, resetForm: FormikHelpers<ClientProps>) => {
+        try {
+            setIsLoading(true)
+            const location = client.location_attributes?.split(', ')
+            const payload = {
+                ...client,
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                user_id: userState?.id
+            }
+            const result = await request('POST', JSON.stringify(payload), 'clients/create', authState?.token!)
+            const { response, data } = result
+            if (response.ok) {
+                resetForm.resetForm()
+                router.push('/(modals)/client-profile')
+            }
+            setIsLoading(false)
+        }
+        catch (err: string | any) {
+            console.log(err.message)
+            setAlertVisible(true)
+            setError(true)
+            setErrorMessage(err.message)
+            setIsLoading(false)
+        }
+        finally {
+            setIsLoading(false)
+        }
     }
     return (
         <Formik
             initialValues={client}
             onSubmit={(values, resetForm) => handleSubmit(values, resetForm)}
-
+            validationSchema={clientSchema}
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, setFieldValue }) => (
                 <SafeAreaView style={{ flex: 1, backgroundColor: Colors.primary }}>
@@ -45,7 +85,7 @@ const ClientRegister = () => {
                             />
                             <View style={ClientRegisterStyles.titleContainer}>
                                 <Text style={ClientRegisterStyles.titleText}>
-                                    Join Mafundi Hub: Your Handyman Solution! Register Now!
+                                    Join Mafundi Hub: Your client Solution! Register Now!
                                 </Text>
                             </View>
                         </View>
@@ -106,11 +146,23 @@ const ClientRegister = () => {
                                 <Select
                                     data={locations?.length > 0 &&
                                         locations !== undefined &&
-                                        locations?.map((location) => { return { label: stringfy(location), value: stringfy(location) } }) || []}
+                                        locations?.map((location) => {
+                                            return {
+                                                label: stringfy(location),
+                                                value: stringfy(location)
+                                            }
+                                        }) || []}
                                     defaultButtonText='Location'
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
                                 />
+                                {
+                                    touched.location_attributes && errors.location_attributes && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.location_attributes}
+                                        </Text>
+                                    )
+                                }
 
                                 <Pressable
                                     disabled={!isValid}
@@ -121,6 +173,15 @@ const ClientRegister = () => {
                             </View >
                         </ScrollView >
                     </View >
+
+                    {error && <CustomAlert
+                        visible={alertVisible}
+                        message={errorMessage}
+                        onClose={() => {
+                            setAlertVisible(false)
+                        }}
+                    />}
+                    <Loader isLoading={isLoading} />
                 </SafeAreaView >
             )}
         </Formik>

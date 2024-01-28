@@ -28,3 +28,10 @@ export const handymanSchema = Yup.object({
   description: Yup.string().required("Please enter your bio description"),
   phone_number: Yup.string().required("Please enter your phone number"),
 });
+
+export const clientSchema = Yup.object({
+  first_name: Yup.string().required("Please enter your first name"),
+  last_name: Yup.string().required("Please enter your last name"),
+  phone_number: Yup.string().required("Please enter your phone number"),
+  location_attributes: Yup.string().required("Please enter your location"),
+});

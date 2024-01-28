@@ -8,7 +8,7 @@ const Loader: React.FC<LoaderProps> = (props) => {
     const { isLoading } = props
     return (
         isLoading &&
-        (<View style={[StyleSheet.absoluteFill, {
+        (<View style={[StyleSheet.absoluteFillObject, {
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.5)',
             alignItems: 'center',
