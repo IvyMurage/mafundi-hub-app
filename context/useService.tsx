@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react"
-import { useAuth } from "./AuthContext";
 
 export const useService = () => {
     // /services
-
-    const { authState } = useAuth()
-    const [services, setServices] = useState<{ service_name: string; }[]>([])
+    const [services, setServices] = useState<{ label: string; value: string; key: number }[]>([])
 
     useEffect(() => {
         const getServices = async () => {
@@ -16,9 +13,11 @@ export const useService = () => {
                 if (!response.ok) throw new Error(data.message)
 
                 if (response.ok) {
-                    setServices(data?.map((service: { service_name: string }) => {
+                    setServices(data?.map((service: { service_name: string; id: number }) => {
                         return {
-                            service_name: service.service_name
+                            key: service?.id,
+                            label: service?.service_name,
+                            value: service?.id.toString()
                         }
                     }))
                 }

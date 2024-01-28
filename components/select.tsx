@@ -5,13 +5,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
 type SelectProps = {
-    data: string[];
+    data: { label: string; value: string }[];
     defaultButtonText: string;
     searchPlaceHolder: string;
+    handleChange: (value: string) => void
 
 }
 const Select: React.FC<SelectProps> = (props) => {
-    const { data, defaultButtonText, searchPlaceHolder } = props
+    const { data, defaultButtonText, searchPlaceHolder, handleChange } = props
     function SelectIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;
@@ -22,10 +23,13 @@ const Select: React.FC<SelectProps> = (props) => {
     return (
         <View>
             <SelectDropdown
-                data={data}
-                onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                data={data.map((item) => item.label)}
+                onSelect={(selectedItem) => {
+                    const value = data.find(item => item.label === selectedItem)?.value;
+                    handleChange(value!.toString());
+                    console.log(value)
                 }}
+            
                 defaultButtonText={defaultButtonText}
                 searchPlaceHolder={searchPlaceHolder}
                 dropdownIconPosition='right'

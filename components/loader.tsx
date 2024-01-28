@@ -1,9 +1,11 @@
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import React from 'react'
-import { useAuth } from '@/context/AuthContext'
+type LoaderProps = {
+    isLoading: boolean
+}
 
-const Loader = () => {
-    const { isLoading } = useAuth()
+const Loader: React.FC<LoaderProps> = (props) => {
+    const { isLoading } = props
     return (
         isLoading &&
         (<View style={[StyleSheet.absoluteFill, {
@@ -15,6 +17,7 @@ const Loader = () => {
         }]}>
             <ActivityIndicator color={"#fff"} animating size='large' />
         </View>)
+
     )
 }
 

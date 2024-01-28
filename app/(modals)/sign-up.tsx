@@ -11,7 +11,7 @@ import CustomAlert from '@/components/customAlert'
 
 const SignUp = () => {
     const router = useRouter()
-    const { onRegister } = useAuth()
+    const { onRegister, isLoading } = useAuth()
     const [user] = useState<{
         email: string | null;
         password: string | null;
@@ -145,7 +145,7 @@ const SignUp = () => {
                                 router.push('/(onboard)/register-option')
                             }}
                         />
-                        <Loader />
+                        <Loader isLoading={isLoading!} />
                     </View>
                 </SafeAreaView>
             )}

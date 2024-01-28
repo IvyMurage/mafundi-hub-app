@@ -7,7 +7,7 @@ export const useLocation = () => {
             try {
                 const response = await fetch('http://api.geonames.org/searchJSON?country=KE&featureCode=PPL&username=ivymurage')
                 const data = await response.json()
-                console.log(data)
+                // console.log(data)
                 if (response.ok) {
                     setLocations(data?.geonames?.map((
                         location: {

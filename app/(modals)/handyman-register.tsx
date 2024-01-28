@@ -1,15 +1,18 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
-import { Formik } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import { handymanSchema } from '@/constants/loginSchema'
 import { useLocation } from '@/context/useLocation'
 import { stringfy } from '@/utils/stringify'
 import { useService } from '@/context/useService'
+import { useAuth } from '@/context/AuthContext'
+import { request } from '@/utils/executePostRequest'
+import Loader from '@/components/loader'
 
 
 interface HandymanProps {
@@ -19,16 +22,19 @@ interface HandymanProps {
     service?: string | null;
     phone_number?: string | null;
     years_of_experience?: string | null;
-    location?: string | null;
+    location_attributes?: string | null;
     description?: string | null;
-    task_responsibilities?: string | null
+    handyman_skills?: string | null
 }
 const HandymanRegister = () => {
+    const { userState } = useAuth()
     const router = useRouter()
     const locations = useLocation()
     const services = useService()
+    const { authState } = useAuth();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [alertVisible, setAlertVisible] = useState<boolean>(false)
 
-    console.log(services)
     const [handyman] = useState<HandymanProps>({
         first_name: '',
         last_name: '',
@@ -36,24 +42,56 @@ const HandymanRegister = () => {
         service: '',
         phone_number: '',
         years_of_experience: '',
-        location: '',
+        location_attributes: '',
         description: '',
-        task_responsibilities: ''
+        handyman_skills: ''
     })
 
 
     // console.log(locations)
 
-    const handleSubmit = () => {
-        router.push('/(image-picker)/image-picker')
+    const handleSubmit = async (
+        handyman: HandymanProps,
+        resetForm: FormikHelpers<HandymanProps>) => {
+        try {
+            setIsLoading(true)
+            const location = handyman.location_attributes?.split(', ')
+            const payload = {
+                ...handyman,
+                service_id: parseInt(handyman.service!),
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                handyman_skills: handyman.handyman_skills?.trim().split(', '),
+                user_id: userState?.id
+            }
+
+            const response = await request('POST', JSON.stringify(payload), 'handymen/create', authState?.token!)
+            if (response) {
+                setAlertVisible(true)
+                resetForm.resetForm()
+                router.push('/(modals)/handyman-profile')
+            }
+            console.log(response)
+            setIsLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+            setIsLoading(false)
+        }
+        finally {
+            setIsLoading(false)
+        }
     }
     return (
         <Formik
             initialValues={handyman}
-            onSubmit={handleSubmit}
+            onSubmit={(values, resetForm) => handleSubmit(values, resetForm)}
             validationSchema={handymanSchema}
         >
-            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
+            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, setFieldValue, }) => (
                 <SafeAreaView style={{ flex: 1, paddingTop: 0, backgroundColor: Colors.primary }}>
                     <View style={handymanRegisterStyles.container}>
                         <View style={{ alignItems: 'center' }}>
@@ -114,9 +152,10 @@ const HandymanRegister = () => {
                                     )
                                 }
                                 <Select
-                                    data={services?.length > 0 && services !== undefined && services?.map(service => service.service_name) || []}
-                                    defaultButtonText='Service'
+                                    data={services || []}
                                     searchPlaceHolder='Search for a service'
+                                    handleChange={(value) => setFieldValue('service', value)}
+                                    defaultButtonText='Service'
                                 />
 
                                 <TextInput
@@ -148,8 +187,9 @@ const HandymanRegister = () => {
                                 <Select
                                     data={locations?.length > 0 &&
                                         locations !== undefined &&
-                                        locations?.map(location => stringfy(location)) || []}
+                                        locations?.map(location => { return { label: stringfy(location), value: stringfy(location) } }) || []}
                                     defaultButtonText='Location'
+                                    handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
                                 />
                                 <TextInput
@@ -173,9 +213,9 @@ const HandymanRegister = () => {
                                     autoCapitalize='none'
                                     multiline
                                     numberOfLines={10}
-                                    value={values.task_responsibilities!}
-                                    onChangeText={handleChange('task_responsibilities')}
-                                    onBlur={() => setFieldTouched('task_responsibilities')}
+                                    value={values.handyman_skills!}
+                                    onChangeText={handleChange('handyman_skills')}
+                                    onBlur={() => setFieldTouched('handyman_skills')}
                                     placeholder='Task Responsibilities e.g(cleaning, house arrangement) '
                                     style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput, handymanRegisterStyles.textArea]}
 
@@ -185,7 +225,7 @@ const HandymanRegister = () => {
                                     style={[handymanRegisterStyles.submitBtn,
                                     { backgroundColor: isValid ? Colors.primary : '#a5c9ca' }
                                     ]}
-                                    onPress={() => handleSubmit}>
+                                    onPress={() => handleSubmit()}>
                                     <Text style={handymanRegisterStyles.submitBtnText}>
                                         Submit
                                     </Text>
@@ -193,6 +233,7 @@ const HandymanRegister = () => {
                             </View >
                         </ScrollView >
                     </View >
+                    <Loader isLoading={isLoading} />
                 </SafeAreaView >
             )}
         </Formik >
@@ -254,7 +295,7 @@ const handymanRegisterStyles = StyleSheet.create({
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16
 
-    }
+    },
 })
 export default HandymanRegister;
 

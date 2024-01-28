@@ -15,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(modals)/handyman-register',
+  initialRouteName: '(modals)/login',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -64,14 +64,14 @@ function RootLayoutNav() {
     router.push('/(tabs)/')
   }
   return (
-    <Stack initialRouteName='(modals)/handyman-register'
+    <Stack initialRouteName='(modals)/login'
       screenOptions={{
         headerStyle: { ...headerStyles.headerStyle }, headerShown: false
       }}
     >
       {
         authState?.authenicated ? (
-          <Stack.Screen name='(onboard)/register-option'
+          <Stack.Screen name='(modals)/handyman-register'
             options={{ headerShown: false }}
           />
         ) : (

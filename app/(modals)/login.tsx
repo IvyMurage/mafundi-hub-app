@@ -12,7 +12,7 @@ import CustomAlert from '@/components/customAlert'
 
 const Login = () => {
     const router = useRouter()
-    const { onLogin } = useAuth()
+    const { onLogin, isLoading } = useAuth()
     const [user] = useState<{ email: string | null, password: string | null }>({
         email: '',
         password: ''
@@ -112,7 +112,7 @@ const Login = () => {
                                 router.push('/(tabs)/')
                             }}
                         />
-                        <Loader />
+                        <Loader isLoading={isLoading!} />
                     </View>
                 </SafeAreaView>
             )}
