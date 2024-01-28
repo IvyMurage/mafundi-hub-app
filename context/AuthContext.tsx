@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }: any) => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                const errorMessage = errorData.errors || "An unknown error occurred";
+                const errorMessage = errorData || "An unknown error occurred";
                 console.error("API Error:", errorMessage);
                 // Optionally, you can throw an error here or update the state to show an error message in the UI
                 throw new Error(errorMessage);

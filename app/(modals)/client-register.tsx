@@ -5,7 +5,7 @@ import { defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
-import { useLocation } from '@/context/useLocation'
+import { useLocation } from '@/hooks/useLocation'
 import { Formik, FormikHelpers } from 'formik'
 import { stringfy } from '@/utils/stringify'
 

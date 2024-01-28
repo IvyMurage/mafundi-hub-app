@@ -18,22 +18,20 @@ const Login = () => {
         password: ''
     })
     const [alertVisible, setAlertVisible] = useState(false);
+    const [error, setError] = useState(false)
 
     const handleLogin = async (user: { email: string | null; password: string | null }) => {
-        const result = await onLogin!(user)
-        if (result.ok) {
-            setAlertVisible(true)
-        }
-        else {
-            <CustomAlert
-                visible={alertVisible}
-                message="This is a custom alert!"
-                onClose={() => {
-                    setAlertVisible(false)
-                }}
-            />
-        }
+        try {
+            const response = await onLogin!(user)
+            if (response.ok) {
+                setAlertVisible(true)
+            }
 
+        }
+        catch (error) {
+            setError(true)
+            console.log(error)
+        }
     }
     return (
         <Formik
@@ -110,6 +108,14 @@ const Login = () => {
                             onClose={() => {
                                 setAlertVisible(false)
                                 router.push('/(tabs)/')
+                            }}
+                        />
+
+                        <CustomAlert
+                            visible={error}
+                            message="Invalid email or password. Please try again"
+                            onClose={() => {
+                                setError(false)
                             }}
                         />
                         <Loader isLoading={isLoading!} />
