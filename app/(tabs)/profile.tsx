@@ -5,11 +5,11 @@ import ClientProfile from '../(modals)/client-profile'
 
 const Profile = () => {
     const { userState } = useAuth()
-    console.log(userState?.roles[0].name)
+    console.log(userState?.user_role)
     return (
         <Fragment>
-            {userState?.roles[0].name === 'client' && <ClientProfile />}
-            {userState?.roles[0].name === 'handyman' && <Text>Handyman</Text>}
+            {userState?.user_role === 'client' && <ClientProfile />}
+            {userState?.user_role === 'handyman' && <Text>Handyman</Text>}
         </Fragment>
 
     )

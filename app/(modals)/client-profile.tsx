@@ -10,19 +10,52 @@ import { useAuth } from '@/context/AuthContext'
 
 const ClientProfile = () => {
     const { userState, authState } = useAuth()
+    const [loading, setLoading] = useState<boolean>(false)
+    const [user, setUser] = useState<{
+        first_name: string,
+        last_name: string,
+        phone_number: string,
+        location_attributes: string
+    }>({
+        first_name: '',
+        last_name: '',
+        phone_number: '',
+        location_attributes: ''
+    })
 
 
 
     useEffect(() => {
-        const fetchUser = async (userId: string) => {
-            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/users/${userId}/show}`, {
-                headers: {
-                    'Authorization': `Bearer ${authState?.token}`
-
+        const fetchUser = async (userId: number) => {
+            setLoading(true)
+            try {
+                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/${userId}/show`, {
+                    headers: {
+                        'Authorization': `Bearer ${authState?.token}`
+                    }
+                })
+                const data = await response.json()
+                if (!response.ok) {
+                    throw new Error(data.error)
                 }
-            })
+
+                if (response.ok) {
+                    setUser({
+                        first_name: data.first_name,
+                        last_name: data.last_name,
+                        phone_number: data.phone_number,
+                        location_attributes: `${data.location.city} ${data.location.county} ${data.location.country}`
+                    })
+                    console.log(user)
+                }
+            }
+            catch (error) {
+                console.log(error)
+            }
+
         }
-    })
+        fetchUser(userState?.user_id!)
+    }, [])
 
     const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
     const locations = useLocation()
