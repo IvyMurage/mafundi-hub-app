@@ -155,6 +155,7 @@ const ClientRegister = () => {
                                     defaultButtonText='Location'
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
+                                    profile={false}
                                 />
                                 {
                                     touched.location_attributes && errors.location_attributes && (

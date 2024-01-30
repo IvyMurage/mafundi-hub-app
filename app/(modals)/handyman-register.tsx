@@ -156,6 +156,7 @@ const HandymanRegister = () => {
                                     searchPlaceHolder='Search for a service'
                                     handleChange={(value) => setFieldValue('service', value)}
                                     defaultButtonText='Service'
+                                    profile={false}
                                 />
 
                                 <TextInput
@@ -191,6 +192,7 @@ const HandymanRegister = () => {
                                     defaultButtonText='Location'
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
+                                    profile={false}
                                 />
                                 <TextInput
                                     autoCapitalize='none'

@@ -9,10 +9,11 @@ type SelectProps = {
     defaultButtonText: string;
     searchPlaceHolder: string;
     handleChange: (value: string) => void
+    profile: boolean
 
 }
 const Select: React.FC<SelectProps> = (props) => {
-    const { data, defaultButtonText, searchPlaceHolder, handleChange } = props
+    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile } = props
     function SelectIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;
@@ -29,14 +30,14 @@ const Select: React.FC<SelectProps> = (props) => {
                     handleChange(value!.toString());
                     console.log(value)
                 }}
-            
+
                 defaultButtonText={defaultButtonText}
                 searchPlaceHolder={searchPlaceHolder}
                 dropdownIconPosition='right'
                 renderDropdownIcon={() => <SelectIcon name='angle-down' color='rgba(69, 90, 100, 0.52)' size={20} />}
                 renderSearchInputLeftIcon={() => <SelectIcon color='rgba(69, 90, 100, 0.52)' name='search' size={20} />}
                 search
-                buttonStyle={selectStyles.selectButtonStyle}
+                buttonStyle={[selectStyles.selectButtonStyle, { borderBottomWidth: profile ? 1 : 0, borderWidth: profile ? 0 : 1 }]}
                 buttonTextStyle={selectStyles.dropdownButtonText}
                 rowTextStyle={selectStyles.dropDownText}
                 dropdownStyle={selectStyles.dropDown}

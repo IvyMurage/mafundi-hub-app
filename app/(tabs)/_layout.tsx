@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Tabs } from 'expo-router';
+
 
 import Colors from '@/constants/Colors';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Octicons } from '@expo/vector-icons';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -15,6 +18,16 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const [visible, setVisible] = useState<boolean>(false);
+  const router = useRouter()
+
+  const handleBack = () => {
+    router.back()
+  }
+
+  const handleRight = () => {
+    setVisible(true)
+  }
 
   return (
     <Tabs
@@ -72,12 +85,50 @@ export default function TabLayout() {
 
       <Tabs.Screen name='profile'
         options={{
+          headerShown: true,
+          headerTitle: 'Edit Profile',
+          headerTitleStyle: {
+            fontFamily: 'poppins-medium',
+            fontSize: 16,
+            letterSpacing: 1.8,
+            color: Colors.lighter,
+            textAlign: 'center',
+          },
+          headerTitleAlign: 'center',
+          headerStyle: { ...headerStyles.headerStyle },
+
+          headerRight: () => (
+            <Pressable onPress={handleRight} style={{ paddingRight: 10 }} >
+              <Text style={headerStyles.headerRight}>Save</Text>
+            </Pressable>
+          ),
+          headerLeft: () => (
+            <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </Pressable>
+          ),
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => <TabBarIcon name="user-circle-o" color={color} size={size} />,
         }}
-
       />
 
     </Tabs>
   );
 }
+const headerStyles = StyleSheet.create({
+  headerRight: {
+    color: Colors.secondary,
+    fontSize: 16,
+    fontFamily: 'poppins-medium',
+    letterSpacing: 1.8
+  },
+  headerStyle: {
+    backgroundColor: Colors.primary,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+  },
+})

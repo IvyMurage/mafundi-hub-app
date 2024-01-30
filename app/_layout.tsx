@@ -81,6 +81,12 @@ function RootLayoutNav() {
 
         )
       }
+      <Stack.Screen name="(tabs)"
+        options={{
+          headerShown: false,
+          headerStyle: { ...headerStyles.headerStyle }
+        }} />
+
       <Stack.Screen name='(onboard)/get-started'
         options={{ headerShown: false, }}
       />
@@ -104,6 +110,7 @@ function RootLayoutNav() {
       <Stack.Screen name='(modals)/appointment-form'
         options={{ presentation: 'modal' }}
       />
+
 
       {/* <Stack.Screen name="(modals)/handyman-register"
         options={{
@@ -162,6 +169,7 @@ const headerStyles = StyleSheet.create({
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0,
+    
   },
   headerRight: {
     color: Colors.secondary,

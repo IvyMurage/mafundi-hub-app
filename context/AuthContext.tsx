@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
-    userState?: { id: number | null; email: string | null }
+    userState?: { id: number | null; email: string | null; roles: { name: string }[] }
     isLoading?: boolean
     onRegister?: (user: { email: string | null; password: string | null; confirmation_password: string | null }) => Promise<any>;
     onLogin?: (user: { email: string | null; password: string | null }) => Promise<any>
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: any) => {
             token: null,
             authenicated: null
         })
-    const [user, setUser] = useState<{ id: number | null; email: string | null; roles: string[] }>({
+    const [user, setUser] = useState<{ id: number | null; email: string | null; roles: { name: 'string' }[] }>({
         email: null,
         id: null,
         roles: []
@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }: any) => {
                 if (token) {
                     setAuthState({ token, authenicated: true })
                 }
+                console.log(user)
             }
             catch {
                 console.log('error')
@@ -119,6 +120,7 @@ export const AuthProvider = ({ children }: any) => {
                 const token = response.headers.get('authorization')?.split(' ')[1]
                 setUser(data?.user)
                 await SecureStore.setItemAsync(TOKEN_KEY, token!)
+                await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
                 setAuthState({ token: token!, authenicated: true })
                 setLoading(false)
             }
