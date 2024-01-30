@@ -54,7 +54,7 @@ const ClientRegister = () => {
             const { response, data } = result
             if (response.ok) {
                 resetForm.resetForm()
-                router.push('/(modals)/client-profile')
+                router.push('/(tabs)/profile')
             }
             setIsLoading(false)
         }

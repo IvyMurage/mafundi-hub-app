@@ -1,14 +1,29 @@
-import { View, Text, SafeAreaView, TextInput, StyleSheet, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
-import { FontAwesome5 } from '@expo/vector-icons'
 import { defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import Colors from '@/constants/Colors'
+import { useAuth } from '@/context/AuthContext'
 
 const ClientProfile = () => {
+    const { userState, authState } = useAuth()
+
+
+
+    useEffect(() => {
+        const fetchUser = async (userId: string) => {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/users/${userId}/show}`, {
+                headers: {
+                    'Authorization': `Bearer ${authState?.token}`
+
+                }
+            })
+        }
+    })
+
     const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
     const locations = useLocation()
 
@@ -80,7 +95,7 @@ const clientProfileStyles = StyleSheet.create({
     subContainer: {
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        paddingBottom: 30
+        paddingBottom: 50,
     },
     scroll: {
         width: '100%',
@@ -94,14 +109,14 @@ const clientProfileStyles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginTop: 12,
-        overflow: 'scroll',
+        // marginTop: 12,
 
     },
     textInput: {
         borderBottomWidth: 1,
         borderColor: Colors.secondary,
-        paddingLeft: 20
+        paddingLeft: 20,
+        marginBottom: 30,
     },
 
 })
