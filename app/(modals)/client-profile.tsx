@@ -106,6 +106,7 @@ const ClientProfile = () => {
             initialValues={user}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={clientSchema}
+            enableReinitialize={true}
         >
             {({ handleChange, handleSubmit, setFieldTouched, errors, touched, setFieldValue, values }) => (
                 <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
