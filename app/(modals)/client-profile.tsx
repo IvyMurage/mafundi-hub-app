@@ -1,4 +1,4 @@
-import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, } from 'react-native'
+import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, Text, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
@@ -7,16 +7,24 @@ import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import Colors from '@/constants/Colors'
 import { useAuth } from '@/context/AuthContext'
+import { Formik } from 'formik'
+import { clientSchema } from '@/constants/loginSchema'
 
+type ClientProfileProps = {
+
+    first_name: string,
+    last_name: string,
+    phone_number: string,
+    location_attributes: string
+
+}
 const ClientProfile = () => {
     const { userState, authState } = useAuth()
+    const locations = useLocation()
+
     const [loading, setLoading] = useState<boolean>(false)
-    const [user, setUser] = useState<{
-        first_name: string,
-        last_name: string,
-        phone_number: string,
-        location_attributes: string
-    }>({
+    const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
+    const [user, setUser] = useState<ClientProfileProps>({
         first_name: '',
         last_name: '',
         phone_number: '',
@@ -44,7 +52,7 @@ const ClientProfile = () => {
                         first_name: data.first_name,
                         last_name: data.last_name,
                         phone_number: data.phone_number,
-                        location_attributes: `${data.location.city} ${data.location.county} ${data.location.country}`
+                        location_attributes: `${data.location.city}, ${data.location.county}, ${data.location.country}`
                     })
                     console.log(user)
                 }
@@ -57,64 +65,141 @@ const ClientProfile = () => {
         fetchUser(userState?.user_id!)
     }, [])
 
-    const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
-    const locations = useLocation()
+
+    const handleSubmit = (values: ClientProfileProps) => {
+        console.log(values)
+        try {
+            const updateUser = async (userId: number) => {
+                setLoading(true)
+                try {
+                    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/${userId}/update`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${authState?.token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(values)
+                    })
+                    const data = await response.json()
+                    if (!response.ok) {
+                        throw new Error(data.error)
+                    }
+                    if (response.ok) {
+                        console.log(data)
+                    }
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+            updateUser(userState?.user_id!)
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+    }
+
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
-            <View style={clientProfileStyles.container}>
-                <Image
-                    style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 100,
-                        marginBottom: 20,
-                        marginTop: 1
-                    }}
-                    source={image}
-                />
-                <ScrollView
-                    style={clientProfileStyles.scroll}
-                    contentContainerStyle={clientProfileStyles.contentContainer}
-                >
-                    <View style={clientProfileStyles.subContainer}>
-                        <TextInput
-                            autoCapitalize='none'
-                            placeholder='First Name'
-                            style={[
-                                defaultStyles.inputTextField, clientProfileStyles.textInput]}
+        <Formik
+            initialValues={user}
+            onSubmit={(values) => handleSubmit(values)}
+            validationSchema={clientSchema}
+        >
+            {({ handleChange, handleSubmit, setFieldTouched, errors, touched, setFieldValue, values }) => (
+                <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
+                    <View style={clientProfileStyles.container}>
+                        <Image
+                            style={{
+                                width: 100,
+                                height: 100,
+                                borderRadius: 100,
+                                marginBottom: 20,
+                                marginTop: 1
+                            }}
+                            source={image}
                         />
+                        <ScrollView
+                            style={clientProfileStyles.scroll}
+                            contentContainerStyle={clientProfileStyles.contentContainer}
+                        >
+                            <View style={clientProfileStyles.subContainer}>
+                                <TextInput
+                                    autoCapitalize='none'
+                                    placeholder='First Name'
+                                    value={values.first_name}
+                                    onChangeText={handleChange('first_name')}
+                                    onBlur={() => setFieldTouched('first_name')}
+                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                />
+                                {
+                                    touched.first_name && errors.first_name && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.first_name}
+                                        </Text>
+                                    )
+                                }
+                                <TextInput
+                                    autoCapitalize='none'
+                                    placeholder='Last Name'
+                                    value={values.last_name}
+                                    onChangeText={handleChange('last_name')}
+                                    onBlur={() => setFieldTouched('last_name')}
+                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                />
 
-                        <TextInput
-                            autoCapitalize='none'
-                            placeholder='Last Name'
-                            style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
-                        />
+                                {
+                                    touched.last_name && errors.last_name && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.last_name}
+                                        </Text>
+                                    )
+                                }
+                                <TextInput
+                                    autoCapitalize='none'
+                                    placeholder='Phone Number(07xxxx)'
+                                    inputMode='numeric'
+                                    value={values.phone_number}
+                                    onChangeText={handleChange('phone_number')}
+                                    onBlur={() => setFieldTouched('phone_number')}
+                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                />
+                                {
+                                    touched.phone_number && errors.phone_number && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.phone_number}
+                                        </Text>
+                                    )
+                                }
+                                <Select
+                                    data={locations?.length > 0 &&
+                                        locations !== undefined &&
+                                        locations?.map((location) => {
+                                            return {
+                                                label: stringfy(location),
+                                                value: stringfy(location)
+                                            }
+                                        }) || []}
+                                    defaultButtonText={values.location_attributes}
+                                    profile={true}
+                                    handleChange={(value) => setFieldValue('location_attributes', value)}
+                                    searchPlaceHolder='Search for a Location'
+                                />
 
-                        <TextInput
-                            autoCapitalize='none'
-                            placeholder='Phone Number(07xxxx)'
-                            style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
-                        />
-
-                        <Select
-                            data={locations?.length > 0 &&
-                                locations !== undefined &&
-                                locations?.map((location) => {
-                                    return {
-                                        label: stringfy(location),
-                                        value: stringfy(location)
-                                    }
-                                }) || []}
-                            defaultButtonText='Location'
-                            profile={true}
-                            handleChange={(value) => console.log(value)}
-                            searchPlaceHolder='Search for a Location'
-                        />
+                                {
+                                    touched.location_attributes && errors.location_attributes && (
+                                        <Text style={[defaultStyles.errorText]}>
+                                            {errors.location_attributes}
+                                        </Text>
+                                    )
+                                }
+                            </View>
+                        </ScrollView>
                     </View>
-                </ScrollView>
-            </View>
-        </SafeAreaView>
+                </SafeAreaView>
+            )}
+        </Formik>
     )
 }
 const clientProfileStyles = StyleSheet.create({
