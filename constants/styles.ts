@@ -220,3 +220,58 @@ export const HandymanProfileStyles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
 });
+
+export const handymanRegisterStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+  },
+  scroll: {
+    width: "100%",
+    height: "100%",
+  },
+  subContainer: {
+    backgroundColor: Colors.light,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+    paddingBottom: 30,
+  },
+  textInput: {
+    borderColor: Colors.secondary,
+    borderWidth: 1,
+  },
+  textArea: {
+    paddingTop: 0,
+    height: 100,
+  },
+  submitBtn: {
+    padding: 12,
+    borderRadius: 8,
+    width: 357,
+    height: 55,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  submitBtnText: {
+    color: Colors.lighter,
+    fontFamily: "poppins-semibold",
+    fontSize: 18,
+    letterSpacing: 1.8,
+    textAlign: "center",
+  },
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+    marginTop: 20,
+    paddingBottom: 20,
+    paddingTop: 25,
+    backgroundColor: Colors.light,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+});

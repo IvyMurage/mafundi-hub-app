@@ -1,90 +1,25 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '@/constants/Colors'
-import { defaultStyles } from '@/constants/styles'
+import { defaultStyles, handymanRegisterStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
-import { Formik, FormikHelpers } from 'formik'
+import { Formik } from 'formik'
 import { handymanSchema } from '@/constants/loginSchema'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import { useService } from '@/hooks/useService'
-import { useAuth } from '@/context/AuthContext'
-import { request } from '@/utils/executePostRequest'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
+import { useHandyman, useHandymanPost } from '@/hooks/useHandyman'
 
-
-interface HandymanProps {
-    first_name?: string | null;
-    last_name?: string | null
-    title?: string | null;
-    service?: string | null;
-    phone_number?: string | null;
-    year_of_experience?: string | null;
-    location_attributes?: string | null;
-    description?: string | null;
-    handyman_skills?: string | null
-}
 const HandymanRegister = () => {
-    const { userState } = useAuth()
     const router = useRouter()
     const locations = useLocation()
     const services = useService()
-    const { authState } = useAuth();
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [alertVisible, setAlertVisible] = useState<boolean>(false)
+    const { handyman } = useHandyman()
+    const { handleSubmit, isLoading, alertVisible, setAlertVisible } = useHandymanPost()
 
-    const [handyman] = useState<HandymanProps>({
-        first_name: '',
-        last_name: '',
-        title: '',
-        service: '',
-        phone_number: '',
-        year_of_experience: '',
-        location_attributes: '',
-        description: '',
-        handyman_skills: ''
-    })
-
-
-    // console.log(locations)
-
-    const handleSubmit = async (
-        handyman: HandymanProps,
-        resetForm: FormikHelpers<HandymanProps>) => {
-        try {
-            setIsLoading(true)
-            const location = handyman.location_attributes?.split(', ')
-            const payload = {
-                ...handyman,
-                service_id: parseInt(handyman.service!),
-                location_attributes: {
-                    city: location![0],
-                    county: location![1],
-                    country: location![2],
-                },
-                year_of_experience: parseInt(handyman.year_of_experience!),
-                handyman_skills: handyman.handyman_skills?.trim().split(', '),
-                user_id: userState?.id
-            }
-
-            const response = await request('POST', JSON.stringify(payload), 'handymen/create', authState?.token!)
-            if (response) {
-                setAlertVisible(true)
-                resetForm.resetForm()
-            }
-            setIsLoading(false)
-        }
-        catch (err) {
-            console.log(err)
-            setIsLoading(false)
-        }
-        finally {
-            setIsLoading(false)
-        }
-    }
     return (
         <Formik
             initialValues={handyman}
@@ -235,7 +170,7 @@ const HandymanRegister = () => {
                                     </Pressable>
                                 </View >
                             </ScrollView >
-                            
+
                             <CustomAlert
                                 visible={alertVisible}
                                 message="You have successfully registered as a handyman"
@@ -254,61 +189,6 @@ const HandymanRegister = () => {
 }
 
 
-const handymanRegisterStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        overflow: 'scroll',
-    },
-    scroll: {
-        width: '100%',
-        height: '100%',
-    },
-    subContainer: {
-        backgroundColor: Colors.light,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        overflow: 'scroll',
-        paddingBottom: 30,
-    },
-    textInput: {
-        borderColor: Colors.secondary,
-        borderWidth: 1
-    },
-    textArea: {
-        paddingTop: 0,
-        height: 100
-    },
-    submitBtn: {
-        padding: 12,
-        borderRadius: 8,
-        width: 357,
-        height: 55,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    submitBtnText: {
-        color: Colors.lighter,
-        fontFamily: 'poppins-semibold',
-        fontSize: 18,
-        letterSpacing: 1.8,
-        textAlign: 'center'
 
-    },
-    contentContainer: {
-        flexGrow: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        overflow: 'scroll',
-        marginTop: 20,
-        paddingBottom: 20,
-        paddingTop: 25,
-        backgroundColor: Colors.light,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16
-
-    },
-})
 export default HandymanRegister;
 

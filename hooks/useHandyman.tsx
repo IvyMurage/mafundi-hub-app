@@ -1,6 +1,8 @@
 import { useAuth } from "@/context/AuthContext"
 import { useEffect, useState } from "react"
 import { HandymanProps } from "@/types/handyman"
+import { FormikHelpers } from "formik"
+import { request } from "@/utils/executePostRequest"
 export const useHandymanUpdate = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [alertVisible, setAlertVisible] = useState<boolean>(false)
@@ -126,4 +128,48 @@ export const useHandymanFetcher = () => {
     }
 }
 
-export const useHandymanPost = () => { }
+export const useHandymanPost = () => {
+    const { authState, userState } = useAuth();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [alertVisible, setAlertVisible] = useState<boolean>(false)
+    const handleSubmit = async (
+        handyman: HandymanProps,
+        resetForm: FormikHelpers<HandymanProps>) => {
+        try {
+            setIsLoading(true)
+            const location = handyman.location_attributes?.split(', ')
+            const payload = {
+                ...handyman,
+                service_id: parseInt(handyman.service!),
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                year_of_experience: parseInt(handyman.year_of_experience!),
+                handyman_skills: handyman.handyman_skills?.trim().split(', '),
+                user_id: userState?.id
+            }
+
+            const response = await request('POST', JSON.stringify(payload), 'handymen/create', authState?.token!)
+            if (response) {
+                setAlertVisible(true)
+                resetForm.resetForm()
+            }
+            setIsLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+            setIsLoading(false)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
+    return {
+        handleSubmit,
+        isLoading,
+        alertVisible,
+        setAlertVisible
+    }
+}
