@@ -1,5 +1,8 @@
 import { useAuth } from "@/context/AuthContext"
 import { ClientProfileProps } from "@/types/client"
+import { request } from "@/utils/executePostRequest"
+import { useRouter } from "expo-router"
+import { FormikHelpers } from "formik"
 import { useEffect, useState } from "react"
 
 
@@ -85,6 +88,56 @@ export const useClientUpdate = () => {
         handleImage,
         setVisible,
         setUser
+    }
+}
+
+export const useClientPost = () => {
+    const { authState, userState } = useAuth()
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
+    const [alertVisible, setAlertVisible] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const handleSubmit = async (client: ClientProfileProps, resetForm: FormikHelpers<ClientProfileProps>) => {
+        try {
+            setIsLoading(true)
+            const location = client.location_attributes?.split(', ')
+            const payload = {
+                ...client,
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                user_id: userState?.id
+            }
+            const result = await request('POST', JSON.stringify(payload), 'clients/create', authState?.token!)
+            const { response, data } = result
+            if (response.ok) {
+                resetForm.resetForm()
+                router.push('/(tabs)/profile')
+            }
+            setIsLoading(false)
+        }
+        catch (err: string | any) {
+            console.log(err.message)
+            setAlertVisible(true)
+            setError(true)
+            setErrorMessage(err.message)
+            setIsLoading(false)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
+    return {
+        handleSubmit,
+        isLoading,
+        alertVisible,
+        error,
+        errorMessage,
+        setAlertVisible
     }
 }
 
