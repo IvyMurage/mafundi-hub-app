@@ -50,8 +50,6 @@ const HandymanProfile = () => {
     })
 
 
-    // console.log(locations)
-
     const handleSubmit = async (handyman: HandymanProps) => {
         try {
             setIsLoading(true)
@@ -217,6 +215,13 @@ const HandymanProfile = () => {
                                         defaultButtonText={services.find(service => service.key === parseInt(values.service!))?.label || 'Service'}
                                         profile={true}
                                     />
+                                    {
+                                        touched.service && errors.service && (
+                                            <Text style={[defaultStyles.errorText]}>
+                                                {errors.service}
+                                            </Text>
+                                        )
+                                    }
 
                                     <TextInput
                                         autoCapitalize='none'
