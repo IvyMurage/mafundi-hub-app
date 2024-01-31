@@ -1,5 +1,4 @@
 import { View, ScrollView, SafeAreaView, TextInput, Text, Pressable, ActivityIndicator, } from 'react-native'
-import React from 'react'
 import { Image } from 'expo-image'
 import { clientProfileStyles, defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'

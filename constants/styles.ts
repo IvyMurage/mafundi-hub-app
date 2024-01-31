@@ -134,37 +134,89 @@ export const ClientRegisterStyles = StyleSheet.create({
 
 export const clientProfileStyles = StyleSheet.create({
   container: {
-      flex: 1,
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      overflow: 'scroll',
-
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
   },
   subContainer: {
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      paddingBottom: 50,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    paddingBottom: 50,
   },
   scroll: {
-      width: '100%',
-      height: '100%',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      backgroundColor: Colors.light,
-      overflow: 'scroll',
+    width: "100%",
+    height: "100%",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: Colors.light,
+    overflow: "scroll",
   },
   contentContainer: {
-      flexGrow: 1,
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-      marginTop: 12,
-
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginTop: 12,
   },
   textInput: {
-      borderBottomWidth: 1,
-      borderColor: Colors.secondary,
-      paddingLeft: 20,
-      marginBottom: 30,
+    borderBottomWidth: 1,
+    borderColor: Colors.secondary,
+    paddingLeft: 20,
+    marginBottom: 30,
   },
+});
 
-})
+export const HandymanProfileStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+  },
+  scroll: {
+    width: "100%",
+    height: "100%",
+  },
+  subContainer: {
+    backgroundColor: Colors.light,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+    paddingBottom: 100,
+  },
+  textInput: {
+    borderColor: Colors.secondary,
+    borderBottomWidth: 2,
+  },
+  textArea: {
+    paddingTop: 0,
+    height: 100,
+  },
+  submitBtn: {
+    padding: 12,
+    borderRadius: 8,
+    width: 357,
+    height: 55,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  submitBtnText: {
+    color: Colors.lighter,
+    fontFamily: "poppins-semibold",
+    fontSize: 18,
+    letterSpacing: 1.8,
+    textAlign: "center",
+  },
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    overflow: "scroll",
+    marginTop: 20,
+    paddingBottom: 20,
+    paddingTop: 25,
+    backgroundColor: Colors.light,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+});
