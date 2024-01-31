@@ -13,6 +13,7 @@ import { useService } from '@/hooks/useService'
 import { useAuth } from '@/context/AuthContext'
 import { request } from '@/utils/executePostRequest'
 import Loader from '@/components/loader'
+import CustomAlert from '@/components/customAlert'
 
 
 interface HandymanProps {
@@ -64,6 +65,7 @@ const HandymanRegister = () => {
                     county: location![1],
                     country: location![2],
                 },
+                years_of_experience: parseInt(handyman.years_of_experience!),
                 handyman_skills: handyman.handyman_skills?.trim().split(', '),
                 user_id: userState?.id
             }
@@ -72,9 +74,7 @@ const HandymanRegister = () => {
             if (response) {
                 setAlertVisible(true)
                 resetForm.resetForm()
-                router.push('/(modals)/login')
             }
-            console.log(response)
             setIsLoading(false)
         }
         catch (err) {
@@ -235,6 +235,14 @@ const HandymanRegister = () => {
                                     </Pressable>
                                 </View >
                             </ScrollView >
+                            <CustomAlert
+                                visible={alertVisible}
+                                message="You have successfully registered as a handyman"
+                                onClose={() => {
+                                    setAlertVisible(false)
+                                    router.push('/(modals)/login')
+                                }}
+                            />
                         </View >
                     </SafeAreaView >
                     <Loader isLoading={isLoading} />
