@@ -1,4 +1,4 @@
-import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, Text, } from 'react-native'
+import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, Text, Pressable, ActivityIndicator, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
@@ -9,6 +9,7 @@ import Colors from '@/constants/Colors'
 import { useAuth } from '@/context/AuthContext'
 import { Formik } from 'formik'
 import { clientSchema } from '@/constants/loginSchema'
+import CustomAlert from '@/components/customAlert'
 
 type ClientProfileProps = {
 
@@ -24,6 +25,7 @@ const ClientProfile = () => {
 
     const [loading, setLoading] = useState<boolean>(false)
     const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
+    const [visible, setVisible] = useState<boolean>(false)
     const [user, setUser] = useState<ClientProfileProps>({
         first_name: '',
         last_name: '',
@@ -54,11 +56,14 @@ const ClientProfile = () => {
                         phone_number: data.phone_number,
                         location_attributes: `${data.location.city}, ${data.location.county}, ${data.location.country}`
                     })
-                    console.log(user)
+                    setLoading(false)
                 }
             }
             catch (error) {
                 console.log(error)
+            }
+            finally {
+                setLoading(false)
             }
 
         }
@@ -67,29 +72,43 @@ const ClientProfile = () => {
 
 
     const handleSubmit = (values: ClientProfileProps) => {
-        console.log(values)
         try {
+            setLoading(true)
+            const location = values.location_attributes?.split(', ')
+            const payload = {
+                ...values,
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                user_id: userState?.id
+            }
             const updateUser = async (userId: number) => {
                 setLoading(true)
                 try {
                     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/${userId}/update`, {
-                        method: 'PUT',
+                        method: 'PATCH',
                         headers: {
                             'Authorization': `Bearer ${authState?.token}`,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(values)
+                        body: JSON.stringify(payload)
                     })
                     const data = await response.json()
                     if (!response.ok) {
                         throw new Error(data.error)
                     }
                     if (response.ok) {
-                        console.log(data)
+                        setVisible(true)
+                        setLoading(false)
                     }
                 }
                 catch (error) {
                     console.log(error)
+                }
+                finally {
+                    setLoading(false)
                 }
             }
             updateUser(userState?.user_id!)
@@ -108,7 +127,7 @@ const ClientProfile = () => {
             validationSchema={clientSchema}
             enableReinitialize={true}
         >
-            {({ handleChange, handleSubmit, setFieldTouched, errors, touched, setFieldValue, values }) => (
+            {({ handleChange, handleSubmit, setFieldTouched, errors, touched, setFieldValue, values, isValid }) => (
                 <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
                     <View style={clientProfileStyles.container}>
                         <Image
@@ -195,12 +214,36 @@ const ClientProfile = () => {
                                         </Text>
                                     )
                                 }
+
+                                <Pressable
+                                    disabled={!isValid}
+                                    onPress={() => handleSubmit()}
+                                    style={[defaultStyles.authButton,
+                                    {
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        marginBottom: 50,
+                                        marginTop: 30,
+                                        backgroundColor: isValid ? Colors.primary : '#a5c9ca'
+                                    }]} >
+                                    {loading && <ActivityIndicator size="large" color="white" />}
+
+                                    <Text style={defaultStyles.authButtonText}>Save</Text>
+                                </Pressable>
+
+                                <CustomAlert
+                                    visible={visible}
+                                    onClose={() => setVisible(false)} 
+                                    message='Profile Updated Successfully'
+                                />
                             </View>
                         </ScrollView>
                     </View>
-                </SafeAreaView>
+                </SafeAreaView >
             )}
-        </Formik>
+        </Formik >
     )
 }
 const clientProfileStyles = StyleSheet.create({
@@ -228,7 +271,7 @@ const clientProfileStyles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        // marginTop: 12,
+        marginTop: 12,
 
     },
     textInput: {

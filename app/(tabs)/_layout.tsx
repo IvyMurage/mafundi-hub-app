@@ -97,11 +97,6 @@ export default function TabLayout() {
           headerTitleAlign: 'center',
           headerStyle: { ...headerStyles.headerStyle },
 
-          headerRight: () => (
-            <Pressable onPress={handleRight} style={{ paddingRight: 10 }} >
-              <Text style={headerStyles.headerRight}>Save</Text>
-            </Pressable>
-          ),
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
               <Octicons name='arrow-left'
