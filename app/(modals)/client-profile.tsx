@@ -1,7 +1,7 @@
 import { View, ScrollView, SafeAreaView, TextInput, StyleSheet, Text, Pressable, ActivityIndicator, } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { defaultStyles } from '@/constants/styles'
+import { clientProfileStyles, defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
@@ -145,40 +145,5 @@ const ClientProfile = () => {
         </Formik >
     )
 }
-const clientProfileStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        overflow: 'scroll',
 
-    },
-    subContainer: {
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        paddingBottom: 50,
-    },
-    scroll: {
-        width: '100%',
-        height: '100%',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        backgroundColor: Colors.light,
-        overflow: 'scroll',
-    },
-    contentContainer: {
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        marginTop: 12,
-
-    },
-    textInput: {
-        borderBottomWidth: 1,
-        borderColor: Colors.secondary,
-        paddingLeft: 20,
-        marginBottom: 30,
-    },
-
-})
 export default ClientProfile

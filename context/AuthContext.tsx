@@ -75,34 +75,28 @@ export const AuthProvider = ({ children }: any) => {
             confirmation_password: string | null
         }
     ) => {
-        setLoading(true)
-        try {
+        const response = await fetch(`${API_URL}/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        })
 
-            const response = await fetch(`${API_URL}/signup`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(user)
-            })
-            if (response.ok) {
-                const data = await response.json()
-                const token = response.headers.get('authorization')?.split(' ')[1]
-                setUser(data?.user)
-                await SecureStore.setItemAsync(TOKEN_KEY, token!)
-                await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
-                setAuthState({ token: token!, authenicated: true })
-                setLoading(false)
-            }
-            return response
-
+        if (!response.ok) {
+            const errorData = await response.json();
+            const errorMessage = errorData?.status?.errors || "An unknown error occurred";
+            throw new Error(errorMessage);
         }
-        catch (error) {
-            console.log(error)
-        }
-        finally {
+        if (response.ok) {
+            const data = await response.json()
+            console.log(data)
+            const token = response.headers.get('authorization')?.split(' ')[1]
+            setUser(data?.user)
+            await SecureStore.setItemAsync(TOKEN_KEY, token!)
+            await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
+            setAuthState({ token: token!, authenicated: true })
             setLoading(false)
-
         }
-
+        return response
     }
 
     const login = async (user: { email: string | null; password: string | null }) => {

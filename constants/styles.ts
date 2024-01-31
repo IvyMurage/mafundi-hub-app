@@ -131,3 +131,40 @@ export const ClientRegisterStyles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
 });
+
+export const clientProfileStyles = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      overflow: 'scroll',
+
+  },
+  subContainer: {
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      paddingBottom: 50,
+  },
+  scroll: {
+      width: '100%',
+      height: '100%',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      backgroundColor: Colors.light,
+      overflow: 'scroll',
+  },
+  contentContainer: {
+      flexGrow: 1,
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+      marginTop: 12,
+
+  },
+  textInput: {
+      borderBottomWidth: 1,
+      borderColor: Colors.secondary,
+      paddingLeft: 20,
+      marginBottom: 30,
+  },
+
+})

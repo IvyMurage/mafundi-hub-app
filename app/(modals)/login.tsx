@@ -40,87 +40,89 @@ const Login = () => {
             validationSchema={loginSchema}
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
-                <SafeAreaView style={{ padding: 20, flex: 1, backgroundColor: Colors.primary }}>
-                    <View style={[defaultStyles.container]}>
-                        <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
+                <>
+                    <SafeAreaView style={{ padding: 20, flex: 1, backgroundColor: Colors.primary }}>
+                        <View style={[defaultStyles.container]}>
+                            <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
 
-                        <Image
-                            style={{ width: 300, height: 200 }}
-                            source={require('@/assets/images/auth-image.svg')}
-                        />
+                            <Image
+                                style={{ width: 300, height: 200 }}
+                                source={require('@/assets/images/auth-image.svg')}
+                            />
 
-                        <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
+                            <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
 
-                        <TextInput
-                            autoCapitalize='none'
-                            placeholder='Email'
-                            value={values.email!}
-                            onChangeText={handleChange('email')}
-                            onBlur={() => setFieldTouched('email')}
-                            style={[defaultStyles.inputTextField]}
-                        />
-                        {
-                            touched.email && errors.email && (
-                                <Text style={[defaultStyles.errorText]}>
-                                    {errors.email}
-                                </Text>
-                            )
-                        }
-                        <TextInput
-                            autoCapitalize='none'
-                            secureTextEntry
-                            placeholder='Password'
-                            value={values.password!}
-                            onChangeText={handleChange('password')}
-                            onBlur={() => setFieldTouched('password')}
-                            style={[defaultStyles.inputTextField]}
-                        />
-                        {
-                            touched.password && errors.password && (
-                                <Text style={[defaultStyles.errorText]}>
-                                    {errors.password}
-                                </Text>
-                            )
-                        }
-                        <Pressable
-                            disabled={!isValid}
-                            onPress={() => handleSubmit()}
-                            style={
-                                [defaultStyles.authButton,
-                                { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
-                                ]
-                            }>
-                            <Text style={[defaultStyles.authButtonText]}>Login</Text>
-                        </Pressable>
+                            <TextInput
+                                autoCapitalize='none'
+                                placeholder='Email'
+                                value={values.email!}
+                                onChangeText={handleChange('email')}
+                                onBlur={() => setFieldTouched('email')}
+                                style={[defaultStyles.inputTextField]}
+                            />
+                            {
+                                touched.email && errors.email && (
+                                    <Text style={[defaultStyles.errorText]}>
+                                        {errors.email}
+                                    </Text>
+                                )
+                            }
+                            <TextInput
+                                autoCapitalize='none'
+                                secureTextEntry
+                                placeholder='Password'
+                                value={values.password!}
+                                onChangeText={handleChange('password')}
+                                onBlur={() => setFieldTouched('password')}
+                                style={[defaultStyles.inputTextField]}
+                            />
+                            {
+                                touched.password && errors.password && (
+                                    <Text style={[defaultStyles.errorText]}>
+                                        {errors.password}
+                                    </Text>
+                                )
+                            }
+                            <Pressable
+                                disabled={!isValid}
+                                onPress={() => handleSubmit()}
+                                style={
+                                    [defaultStyles.authButton,
+                                    { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
+                                    ]
+                                }>
+                                <Text style={[defaultStyles.authButtonText]}>Login</Text>
+                            </Pressable>
 
-                        <Text style={[defaultStyles.authOption]}>
-                            Don't Have an account?
-                            <Link href={'/(modals)/sign-up'}>
-                                <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
-                                    Sign Up
-                                </Text>
-                            </Link>
-                        </Text>
+                            <Text style={[defaultStyles.authOption]}>
+                                Don't Have an account?
+                                <Link href={'/(modals)/sign-up'}>
+                                    <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
+                                        Sign Up
+                                    </Text>
+                                </Link>
+                            </Text>
 
-                        <CustomAlert
-                            visible={alertVisible}
-                            message="You have successfully logged in"
-                            onClose={() => {
-                                setAlertVisible(false)
-                                router.push('/(tabs)/')
-                            }}
-                        />
+                            <CustomAlert
+                                visible={alertVisible}
+                                message="You have successfully logged in"
+                                onClose={() => {
+                                    setAlertVisible(false)
+                                    router.push('/(tabs)/')
+                                }}
+                            />
 
-                        <CustomAlert
-                            visible={error}
-                            message="Invalid email or password. Please try again"
-                            onClose={() => {
-                                setError(false)
-                            }}
-                        />
-                        <Loader isLoading={isLoading!} />
-                    </View>
-                </SafeAreaView>
+                            <CustomAlert
+                                visible={error}
+                                message="Invalid email or password. Please try again"
+                                onClose={() => {
+                                    setError(false)
+                                }}
+                            />
+                        </View>
+                    </SafeAreaView>
+                    <Loader isLoading={isLoading!} />
+                </>
             )}
         </Formik>
     )
