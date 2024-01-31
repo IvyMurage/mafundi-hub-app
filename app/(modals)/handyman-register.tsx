@@ -22,7 +22,7 @@ interface HandymanProps {
     title?: string | null;
     service?: string | null;
     phone_number?: string | null;
-    years_of_experience?: string | null;
+    year_of_experience?: string | null;
     location_attributes?: string | null;
     description?: string | null;
     handyman_skills?: string | null
@@ -42,7 +42,7 @@ const HandymanRegister = () => {
         title: '',
         service: '',
         phone_number: '',
-        years_of_experience: '',
+        year_of_experience: '',
         location_attributes: '',
         description: '',
         handyman_skills: ''
@@ -65,7 +65,7 @@ const HandymanRegister = () => {
                     county: location![1],
                     country: location![2],
                 },
-                years_of_experience: parseInt(handyman.years_of_experience!),
+                year_of_experience: parseInt(handyman.year_of_experience!),
                 handyman_skills: handyman.handyman_skills?.trim().split(', '),
                 user_id: userState?.id
             }
@@ -180,7 +180,7 @@ const HandymanRegister = () => {
                                     <TextInput
                                         autoCapitalize='none'
                                         placeholder='Years of  Experience (e.g 1)'
-                                        value={values.years_of_experience!}
+                                        value={values.year_of_experience!}
                                         onChangeText={handleChange('years_of_experience')}
                                         onBlur={() => setFieldTouched('years_of_experience')}
                                         style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
@@ -235,6 +235,7 @@ const HandymanRegister = () => {
                                     </Pressable>
                                 </View >
                             </ScrollView >
+                            
                             <CustomAlert
                                 visible={alertVisible}
                                 message="You have successfully registered as a handyman"

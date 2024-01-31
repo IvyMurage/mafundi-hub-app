@@ -21,7 +21,7 @@ interface HandymanProps {
     title?: string | null;
     service?: string | null;
     phone_number?: string | null;
-    years_of_experience?: string | null;
+    year_of_experience?: string | null;
     location_attributes?: string | null;
     description?: string | null;
     handyman_skills?: string | null
@@ -43,7 +43,7 @@ const HandymanProfile = () => {
         title: '',
         service: '',
         phone_number: '',
-        years_of_experience: '',
+        year_of_experience: '',
         location_attributes: '',
         description: '',
         handyman_skills: ''
@@ -64,7 +64,7 @@ const HandymanProfile = () => {
                     county: location![1],
                     country: location![2],
                 },
-                years_of_experience: parseInt(handyman.years_of_experience!),
+                year_of_experience: parseInt(handyman.year_of_experience!),
                 handyman_skills: handyman.handyman_skills?.trim().split(', '),
                 user_id: userState?.id
             }
@@ -84,6 +84,7 @@ const HandymanProfile = () => {
             }
             if (response.ok) {
                 setIsLoading(false)
+                setAlertVisible(true)
                 console.log(data)
             }
         }
@@ -116,7 +117,7 @@ const HandymanProfile = () => {
                         title: data.title,
                         service: data.service_name,
                         phone_number: data.phone_number,
-                        years_of_experience: data.years_of_experience,
+                        year_of_experience: data.year_of_experience,
                         location_attributes: `${data.location?.city}, ${data.location?.county}, ${data.location?.country}`,
                         description: data.description,
                         handyman_skills: data.handyman_skills?.join(', ')
@@ -236,10 +237,10 @@ const HandymanProfile = () => {
                                     }
                                     <TextInput
                                         autoCapitalize='none'
-                                        placeholder='Years of  Experience (e.g 1)'
-                                        value={values.years_of_experience!}
-                                        onChangeText={handleChange('years_of_experience')}
-                                        onBlur={() => setFieldTouched('years_of_experience')}
+                                        placeholder='year of  Experience (e.g 1)'
+                                        value={values.year_of_experience!}
+                                        onChangeText={handleChange('year_of_experience')}
+                                        onBlur={() => setFieldTouched('year_of_experience')}
                                         style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
                                     />
 
