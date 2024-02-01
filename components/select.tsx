@@ -53,6 +53,7 @@ const Select: React.FC<SelectProps> = (props) => {
 const selectStyles = StyleSheet.create({
     taskStyles: {
         width: 180,
+        height: 60,
         backgroundColor: 'transparent',
     },
     selectButtonStyle: {

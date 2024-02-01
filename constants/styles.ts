@@ -275,3 +275,82 @@ export const handymanRegisterStyles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
 });
+
+export const taskFormStyles = StyleSheet.create({
+  safeareaStyle: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    paddingTop: 20,
+    alignItems: "center",
+  },
+  scroll: {
+    width: "100%",
+    height: "100%",
+  },
+  contentStyle: {
+    flexGrow: 1,
+    alignItems: "center",
+    marginTop: 12,
+  },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: 50,
+    marginTop: 25,
+    paddingTop: 20,
+    paddingHorizontal: 15,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  headerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: 50,
+  },
+  headerTextStyle: {
+    fontFamily: "poppins",
+    fontSize: 16,
+    fontWeight: "bold",
+    letterSpacing: 1.8,
+    color: Colors.secondary,
+  },
+
+  textInput: {
+    borderColor: Colors.secondary,
+    borderWidth: 1,
+  },
+  viewTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: 50,
+  },
+  inputField: {
+    width: 180,
+    fontFamily: "poppins",
+    fontSize: 14,
+    height: 60,
+    borderRadius: 10,
+    padding: 15,
+    borderColor: Colors.secondary,
+    marginBottom: 10,
+    letterSpacing: 1.2,
+  },
+  textarea: {
+    width: 384,
+    height: 120,
+    borderRadius: 10,
+    padding: 15,
+    borderColor: Colors.secondary,
+    fontFamily: "poppins",
+    marginBottom: 10,
+    letterSpacing: 1.2,
+  },
+});

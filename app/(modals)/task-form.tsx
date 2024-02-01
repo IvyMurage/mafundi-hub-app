@@ -7,8 +7,9 @@ import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import { Formik } from 'formik'
 import { taskSchema } from '@/constants/validation-schema'
-import { defaultStyles } from '@/constants/styles'
+import { defaultStyles, taskFormStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
+import { Octicons } from '@expo/vector-icons/'
 
 type TaskFormProps = {
     job_title: string,
@@ -45,42 +46,64 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
             onSubmit={handleSubmit}
             validationSchema={taskSchema}
         >
-            {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, }) => (
+            {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, touched }) => (
                 <Modal animationType='slide' visible={isVisible} transparent>
-                    <SafeAreaView style={{ paddingTop: 20, flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }}>
+                    <SafeAreaView style={taskFormStyles.safeareaStyle}>
                         <ScrollView style={taskFormStyles.scroll} contentContainerStyle={taskFormStyles.contentStyle}>
                             <View style={taskFormStyles.container}>
-                                <Pressable onPress={() => setIsVisible(!isVisible)} style={{ alignSelf: 'flex-end' }}>
-                                    <Text style={{ color: Colors.secondary }}>Close</Text>
-                                </Pressable>
-                                <Text>Create Task on Mafundi</Text>
-                                <View style={taskFormStyles.viewTextContainer}>
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        autoCorrect={false}
-                                        autoFocus={true}
-                                        keyboardType='default'
-                                        placeholder='Title (e.g. "Cleaning")'
-                                        returnKeyLabel='next'
-                                        value={values.job_title}
-                                        onChangeText={handleChange('job_title')}
-                                        onBlur={() => setFieldTouched('job_title')}
-                                        style={[taskFormStyles.inputField, taskFormStyles.textInput]}
-                                    />
+                                <View style={taskFormStyles.headerStyle}>
+                                    <Text style={taskFormStyles.headerTextStyle}>Create Task</Text>
+                                    <Pressable onPress={() => setIsVisible(!isVisible)} style={{ alignSelf: 'flex-end' }}>
+                                        <Octicons name='x-circle' size={24} />
+                                    </Pressable>
+                                </View>
 
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        autoCorrect={false}
-                                        autoFocus={true}
-                                        returnKeyLabel='next'
-                                        keyboardType='default'
-                                        inputMode='decimal'
-                                        placeholder="Job price"
-                                        value={values.job_price}
-                                        onChangeText={handleChange('job_price')}
-                                        onBlur={() => setFieldTouched('job_price')}
-                                        style={[taskFormStyles.inputField, taskFormStyles.textInput]}
-                                    />
+                                <View style={taskFormStyles.viewTextContainer}>
+                                    <View>
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
+                                            autoFocus={true}
+                                            keyboardType='default'
+                                            placeholder='Title (e.g. "Cleaning")'
+                                            returnKeyLabel='next'
+                                            value={values.job_title}
+                                            onChangeText={handleChange('job_title')}
+                                            onBlur={() => setFieldTouched('job_title')}
+                                            style={[taskFormStyles.inputField, taskFormStyles.textInput]}
+                                        />
+
+                                        {
+                                            touched.job_title && errors.job_title && (
+                                                <Text style={[defaultStyles.errorText]}>
+                                                    {errors.job_title}
+                                                </Text>
+                                            )
+                                        }
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
+                                            autoFocus={true}
+                                            returnKeyLabel='next'
+                                            keyboardType='default'
+                                            inputMode='decimal'
+                                            placeholder="Job price"
+                                            value={values.job_price}
+                                            onChangeText={handleChange('job_price')}
+                                            onBlur={() => setFieldTouched('job_price')}
+                                            style={[taskFormStyles.inputField, taskFormStyles.textInput]}
+                                        />
+
+                                        {
+                                            touched.job_price && errors.job_price && (
+                                                <Text style={[defaultStyles.errorText]}>
+                                                    {errors.job_price}
+                                                </Text>
+                                            )
+                                        }
+                                    </View>
                                 </View>
 
                                 <View style={taskFormStyles.viewTextContainer}>
@@ -97,17 +120,17 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         style={[taskFormStyles.textInput, taskFormStyles.inputField]}
                                     />
                                     <Select
-                                        data={[{ label: 'true', value: 'true' }, { label: 'true', value: 'false' }] || []}
-                                        searchPlaceHolder='Search for a service'
+                                        data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
+                                        searchPlaceHolder='Instant booking'
                                         handleChange={(value) => setFieldValue('instant_booking', value)}
                                         defaultButtonText='Instant Booking'
                                         profile={false}
                                         task={true}
                                     />
+
                                 </View>
 
                                 <View style={taskFormStyles.viewTextContainer}>
-
                                     <Select
                                         data={services || []}
                                         searchPlaceHolder='Search for a service'
@@ -116,6 +139,14 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         profile={false}
                                         task={true}
                                     />
+
+                                    {
+                                        touched.service_id && errors.service_id && (
+                                            <Text style={[defaultStyles.errorText]}>
+                                                {errors.service_id}
+                                            </Text>
+                                        )
+                                    }
 
                                     <Select
                                         data={locations?.length > 0 &&
@@ -129,40 +160,56 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         profile={false}
                                         task={true}
                                     />
+
+                                    {
+                                        touched.location_attributes && errors.location_attributes && (
+                                            <Text style={[defaultStyles.errorText]}>
+                                                {errors.location_attributes}
+                                            </Text>
+                                        )
+                                    }
                                 </View>
 
-                                <TextInput
-                                    multiline={true}
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                    autoFocus={true}
-                                    keyboardType='default'
-                                    placeholder='Description (e.g. "Cleaning")'
-                                    numberOfLines={10}
-                                    returnKeyLabel='next'
-                                    value={values.task_description}
-                                    onChangeText={handleChange('task_description')}
-                                    onBlur={() => setFieldTouched('task_description')}
-                                    style={[taskFormStyles.textarea, taskFormStyles.textInput]}
-                                />
+                                <View>
+                                    <TextInput
+                                        multiline={true}
+                                        autoCapitalize='none'
+                                        autoCorrect={false}
+                                        autoFocus={true}
+                                        keyboardType='default'
+                                        placeholder='Description (e.g. "Cleaning")'
+                                        numberOfLines={10}
+                                        returnKeyLabel='next'
+                                        value={values.task_description}
+                                        onChangeText={handleChange('task_description')}
+                                        onBlur={() => setFieldTouched('task_description')}
+                                        style={[taskFormStyles.textarea, taskFormStyles.textInput]}
+                                    />
 
-
-
-                                <TextInput
-                                    multiline={true}
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                    autoFocus={true}
-                                    keyboardType='default'
-                                    placeholder='Task responsibilities separated by comma (e.g. "Cleaning")'
-                                    numberOfLines={10}
-                                    returnKeyLabel='Done'
-                                    value={values.task_responsibilities}
-                                    onChangeText={handleChange('task_responsibilities')}
-                                    onBlur={() => setFieldTouched('task_responsibilities')}
-                                    style={[taskFormStyles.textarea, taskFormStyles.textInput]}
-                                />
-
+                                    {
+                                        touched.task_description && errors.task_description && (
+                                            <Text style={[defaultStyles.errorText]}>
+                                                {errors.task_description}
+                                            </Text>
+                                        )
+                                    }
+                                </View>
+                                <View>
+                                    <TextInput
+                                        multiline={true}
+                                        autoCapitalize='none'
+                                        autoCorrect={false}
+                                        autoFocus={true}
+                                        keyboardType='default'
+                                        placeholder='Task responsibilities separated by comma (e.g. "Cleaning")'
+                                        numberOfLines={10}
+                                        returnKeyLabel='Done'
+                                        value={values.task_responsibilities}
+                                        onChangeText={handleChange('task_responsibilities')}
+                                        onBlur={() => setFieldTouched('task_responsibilities')}
+                                        style={[taskFormStyles.textarea, taskFormStyles.textInput]}
+                                    />
+                                </View>
                                 <Pressable style={[defaultStyles.authButton, { backgroundColor: Colors.primary }]} onPress={() => handleSubmit}>
                                     <Text style={[defaultStyles.authButtonText]}>Create Task</Text>
                                 </Pressable>
@@ -176,62 +223,6 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     )
 }
 
-const taskFormStyles = StyleSheet.create({
-    scroll: {
-        width: '100%',
-        height: '100%',
-    },
-    contentStyle: {
-        flexGrow: 1,
-        alignItems: "center",
-        marginTop: 12,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        width: '100%',
-        paddingBottom: 50,
-        marginTop: 20,
-        paddingTop: 20,
-        paddingHorizontal:15,
-        backgroundColor: 'white',
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
 
-    },
-
-    textInput: {
-        borderColor: Colors.secondary,
-        borderWidth: 1,
-    },
-    viewTextContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        paddingBottom: 50
-    },
-    inputField: {
-        width: 180,
-        fontFamily: 'poppins',
-        fontSize: 14,
-        height: 55,
-        borderRadius: 10,
-        padding: 15,
-        borderColor: Colors.secondary
-    },
-    textarea: {
-        width: 385,
-        height: 120,
-        borderRadius: 10,
-        padding: 15,
-        borderColor: Colors.secondary,
-        fontFamily: 'poppins',
-        marginBottom: 50
-    }
-})
 
 export default TaskForm
