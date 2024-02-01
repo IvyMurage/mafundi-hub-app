@@ -157,7 +157,8 @@ export const useClientFetcher = () => {
                 })
                 const data = await response.json()
                 if (!response.ok) {
-                    throw new Error(data.error)
+                    console.log(data)
+                    throw new Error(data.message || response.statusText)
                 }
 
                 if (response.ok) {
@@ -170,8 +171,8 @@ export const useClientFetcher = () => {
                     setLoading(false)
                 }
             }
-            catch (error) {
-                console.log(error)
+            catch (error: any) {
+                console.log(error.message)
             }
             finally {
                 setLoading(false)

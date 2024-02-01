@@ -1,10 +1,3 @@
-interface Response {
-  ok: boolean;
-  status: number;
-  statusText: string;
-  url: string;
-  json: () => Promise<any>;
-}
 export const request = async (
   method: string,
   body: string,
@@ -23,7 +16,18 @@ export const request = async (
     }
   );
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error);
+  if (!response.ok) {
+    let error;
+    if (data.message) {
+      error = data.message;
+    } else if (data.error) {
+      error = data.error;
+    } else {
+      error = response.statusText;
+    }
+    console.log(data);
+    throw new Error(error);
+  }
 
   return { response, data };
 };

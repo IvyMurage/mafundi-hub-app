@@ -11,6 +11,7 @@ import { defaultStyles, taskFormStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons/'
 import { useAuth } from '@/context/AuthContext'
+import { request } from '@/utils/executePostRequest'
 
 type TaskFormProps = {
     job_title: string,
@@ -40,7 +41,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
         task_description: '',
         task_responsibilities: '',
     })
-    const handleSubmit = (taskForm: TaskFormProps) => {
+    const handleSubmit = async (taskForm: TaskFormProps) => {
         try {
             setLoading(true)
             const location = taskForm.location_attributes?.split(', ')
@@ -57,9 +58,14 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                 task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
                 client_id: userState?.user_id
             }
-            console.log(payload)
+            const { response, data } = await request('POST', JSON.stringify(payload), 'tasks/create', authState?.token!)
+            if (response.ok) {
+                console.log(data)
+
+            }
         }
         catch (error: any) {
+            console.log(error.message)
             setError(error.message)
             setVisible(true)
             setLoading(false)

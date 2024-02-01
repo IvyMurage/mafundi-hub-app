@@ -101,6 +101,7 @@ const ClientProfile = () => {
                                     profile={true}
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
+                                    task={false}
                                 />
 
                                 {
