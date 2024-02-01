@@ -35,3 +35,11 @@ export const clientSchema = Yup.object({
   phone_number: Yup.string().required("Please enter your phone number"),
   location_attributes: Yup.string().required("Please enter your location"),
 });
+
+export const taskSchema = Yup.object({
+  job_title: Yup.string().required("Please enter a title"),
+  task_description: Yup.string().required("Please enter a description"),
+  job_price: Yup.number().required("Please enter a price"),
+  service_id: Yup.string().required("Please select a category"),
+  location_attributes: Yup.string().required("Please enter your location"),
+});

@@ -6,7 +6,7 @@ import Colors from '@/constants/Colors'
 import { Link, useRouter } from 'expo-router'
 import { useAuth } from '@/context/AuthContext'
 import { Formik } from 'formik'
-import { loginSchema } from '@/constants/loginSchema'
+import { loginSchema } from '@/constants/validation-schema'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 

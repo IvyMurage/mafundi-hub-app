@@ -6,6 +6,7 @@ import { useService } from '@/hooks/useService'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import { Formik } from 'formik'
+import { taskSchema } from '@/constants/validation-schema'
 
 type TaskFormProps = {
     job_title: string,
@@ -39,6 +40,7 @@ const TaskForm = () => {
         <Formik
             initialValues={taskForm}
             onSubmit={handleSubmit}
+            validationSchema={taskSchema}
         >
             {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched }) => (
                 <SafeAreaView>
