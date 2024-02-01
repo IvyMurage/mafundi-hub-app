@@ -40,7 +40,7 @@ const TaskForm = () => {
             initialValues={taskForm}
             onSubmit={handleSubmit}
         >
-            {({ handleChange, handleBlur, handleSubmit, values, errors, setFieldValue }) => (
+            {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched }) => (
                 <SafeAreaView>
                     <View>
                         <Text>Create Task</Text>
@@ -53,6 +53,8 @@ const TaskForm = () => {
                                 placeholder='Title (e.g. "Cleaning")'
                                 returnKeyLabel='next'
                                 value={values.job_title}
+                                onChangeText={handleChange('job_title')}
+                                onBlur={() => setFieldTouched('job_title')}
                             />
                         </View>
                         <View>
@@ -65,6 +67,8 @@ const TaskForm = () => {
                                 inputMode='decimal'
                                 placeholder="Job price"
                                 value={values.job_price}
+                                onChangeText={handleChange('job_price')}
+                                onBlur={() => setFieldTouched('job_price')}
                             />
                             <Select
                                 data={services || []}
@@ -85,6 +89,8 @@ const TaskForm = () => {
                                 placeholder='Duratuion (e.g. "2 hours")'
                                 returnKeyLabel='next'
                                 value={values.duration_label}
+                                onChangeText={handleChange('duration_label')}
+                                onBlur={() => setFieldTouched('duration_label')}
                             />
                             <Select
                                 data={[{ label: 'true', value: 'true' }, { label: 'true', value: 'false' }] || []}
@@ -118,6 +124,8 @@ const TaskForm = () => {
                                 numberOfLines={10}
                                 returnKeyLabel='next'
                                 value={values.task_description}
+                                onChangeText={handleChange('task_description')}
+                                onBlur={() => setFieldTouched('task_description')}
                             />
                         </View>
 
@@ -132,10 +140,12 @@ const TaskForm = () => {
                                 numberOfLines={10}
                                 returnKeyLabel='Done'
                                 value={values.task_responsibilities}
+                                onChangeText={handleChange('task_responsibilities')}
+                                onBlur={() => setFieldTouched('task_responsibilities')}
                             />
                         </View>
 
-                        <Pressable>
+                        <Pressable onResponderRelease={() => handleSubmit}>
                             <Text>Create Task</Text>
                         </Pressable>
                     </View>
