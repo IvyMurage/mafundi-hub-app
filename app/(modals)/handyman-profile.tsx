@@ -14,8 +14,8 @@ import { useHandymanFetcher, useHandymanUpdate } from '@/hooks/useHandyman'
 
 
 const HandymanProfile = () => {
-    const { loading, handyman } = useHandymanFetcher()
-    const { handleSubmit, setAlertVisible, isLoading, alertVisible, image } = useHandymanUpdate()
+    const { loading, error, handyman, visible, setVisible } = useHandymanFetcher()
+    const { handleSubmit, setAlertVisible, isLoading, alertVisible, image, } = useHandymanUpdate()
     const locations = useLocation()
     const services = useService()
 
@@ -194,6 +194,12 @@ const HandymanProfile = () => {
                                 <CustomAlert
                                     visible={alertVisible}
                                     message='Profile Updated Successfully'
+                                    onClose={() => setAlertVisible(false)}
+                                />
+
+                                <CustomAlert
+                                    visible={visible}
+                                    message={error}
                                     onClose={() => setAlertVisible(false)}
                                 />
                             </ScrollView >

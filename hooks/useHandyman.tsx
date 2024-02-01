@@ -83,6 +83,8 @@ export const useHandymanFetcher = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const { authState, userState } = useAuth();
     const { handyman, setHandyman } = useHandyman()
+    const [error, setError] = useState<string>('')
+    const [visible, setVisible] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchUser = async (userId: number) => {
@@ -113,8 +115,10 @@ export const useHandymanFetcher = () => {
                     setLoading(false)
                 }
             }
-            catch (error) {
-                console.log(error)
+            catch (error: any) {
+                setError(error.message)
+                setVisible(true)
+                setLoading(false)
             }
             finally {
                 setLoading(false)
@@ -124,7 +128,10 @@ export const useHandymanFetcher = () => {
     }, [])
     return {
         loading,
-        handyman
+        error,
+        handyman,
+        visible,
+        setVisible
     }
 }
 
