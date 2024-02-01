@@ -99,6 +99,7 @@ const HandymanProfile = () => {
                                         handleChange={(value) => setFieldValue('service', value)}
                                         defaultButtonText={services.find(service => service.key === parseInt(values.service!))?.label || 'Service'}
                                         profile={true}
+                                        task={false}
                                     />
                                     {
                                         touched.service && errors.service && (
@@ -142,6 +143,7 @@ const HandymanProfile = () => {
                                         handleChange={(value) => setFieldValue('location_attributes', value)}
                                         searchPlaceHolder='Search for a Location'
                                         profile={true}
+                                        task={false}
                                     />
                                     <TextInput
                                         autoCapitalize='none'

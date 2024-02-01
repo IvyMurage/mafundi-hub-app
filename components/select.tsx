@@ -9,11 +9,12 @@ type SelectProps = {
     defaultButtonText: string;
     searchPlaceHolder: string;
     handleChange: (value: string) => void
-    profile: boolean
+    profile: boolean,
+    task: boolean
 
 }
 const Select: React.FC<SelectProps> = (props) => {
-    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile } = props
+    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile, task } = props
     function SelectIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;
@@ -37,7 +38,10 @@ const Select: React.FC<SelectProps> = (props) => {
                 renderDropdownIcon={() => <SelectIcon name='angle-down' color='rgba(69, 90, 100, 0.52)' size={20} />}
                 renderSearchInputLeftIcon={() => <SelectIcon color='rgba(69, 90, 100, 0.52)' name='search' size={20} />}
                 search
-                buttonStyle={[selectStyles.selectButtonStyle, { borderBottomWidth: profile ? 1 : 0, borderWidth: profile ? 0 : 1 }]}
+                buttonStyle={[
+                    selectStyles.selectButtonStyle,
+                    { borderBottomWidth: profile ? 1 : 0, borderWidth: profile ? 0 : 1 },
+                    task ? selectStyles.taskStyles : null]}
                 buttonTextStyle={selectStyles.dropdownButtonText}
                 rowTextStyle={selectStyles.dropDownText}
                 dropdownStyle={selectStyles.dropDown}
@@ -47,6 +51,10 @@ const Select: React.FC<SelectProps> = (props) => {
 }
 
 const selectStyles = StyleSheet.create({
+    taskStyles: {
+        width: 180,
+        backgroundColor: 'transparent',
+    },
     selectButtonStyle: {
         backgroundColor: Colors.light,
         borderColor: Colors.secondary,
