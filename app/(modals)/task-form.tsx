@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Select from '@/components/select'
 import { View, Text, TextInput, Pressable, Modal, StyleSheet, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -20,8 +20,8 @@ type TaskFormProps = {
     task_description: string,
     task_responsibilities: string,
 }
-const TaskForm = (props: { isVisible: boolean }) => {
-    const { isVisible } = props
+const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
+    const { isVisible, setIsVisible } = props
     const services = useService()
     const locations = useLocation()
     const [taskForm, setTaskForm] = useState<TaskFormProps>({
@@ -46,10 +46,13 @@ const TaskForm = (props: { isVisible: boolean }) => {
             validationSchema={taskSchema}
         >
             {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, }) => (
-                <Modal animationType='slide' visible={isVisible}>
-                    <SafeAreaView style={{ paddingVertical: 20, paddingHorizontal: 10, flex: 1 }}>
+                <Modal animationType='slide' visible={isVisible} transparent>
+                    <SafeAreaView style={{ paddingTop: 20, flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }}>
                         <ScrollView style={taskFormStyles.scroll} contentContainerStyle={taskFormStyles.contentStyle}>
                             <View style={taskFormStyles.container}>
+                                <Pressable onPress={() => setIsVisible(!isVisible)} style={{ alignSelf: 'flex-end' }}>
+                                    <Text style={{ color: Colors.secondary }}>Close</Text>
+                                </Pressable>
                                 <Text>Create Task on Mafundi</Text>
                                 <View style={taskFormStyles.viewTextContainer}>
                                     <TextInput
@@ -190,8 +193,14 @@ const taskFormStyles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         width: '100%',
-        paddingBottom: 50
-    
+        paddingBottom: 50,
+        marginTop: 20,
+        paddingTop: 20,
+        paddingHorizontal:15,
+        backgroundColor: 'white',
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+
     },
 
     textInput: {

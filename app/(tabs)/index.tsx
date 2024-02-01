@@ -9,7 +9,7 @@ const Page = () => {
       <View>
         <Text onPress={() => setIsVisible(!isVisible)}>Create task</Text>
       </View>
-      <TaskForm isVisible={isVisible} />
+      <TaskForm isVisible={isVisible} setIsVisible={setIsVisible} />
     </>
   )
 }
