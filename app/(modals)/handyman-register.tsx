@@ -93,6 +93,7 @@ const HandymanRegister = () => {
                                         handleChange={(value) => setFieldValue('service', value)}
                                         defaultButtonText='Service'
                                         profile={false}
+                                        task={false}
                                     />
 
                                     <TextInput
@@ -129,6 +130,7 @@ const HandymanRegister = () => {
                                         handleChange={(value) => setFieldValue('location_attributes', value)}
                                         searchPlaceHolder='Search for a Location'
                                         profile={false}
+                                        task={false}
                                     />
                                     <TextInput
                                         autoCapitalize='none'
@@ -187,8 +189,4 @@ const HandymanRegister = () => {
         </Formik >
     )
 }
-
-
-
 export default HandymanRegister;
-

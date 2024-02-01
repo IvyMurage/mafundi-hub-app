@@ -10,6 +10,7 @@ import { taskSchema } from '@/constants/validation-schema'
 import { defaultStyles, taskFormStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons/'
+import { useAuth } from '@/context/AuthContext'
 
 type TaskFormProps = {
     job_title: string,
@@ -23,6 +24,10 @@ type TaskFormProps = {
 }
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
     const { isVisible, setIsVisible } = props
+    const [isLoading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
+    const [visible, setVisible] = useState<boolean>(false)
+    const { authState, userState } = useAuth();
     const services = useService()
     const locations = useLocation()
     const [taskForm, setTaskForm] = useState<TaskFormProps>({
@@ -36,7 +41,32 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
         task_responsibilities: '',
     })
     const handleSubmit = (taskForm: TaskFormProps) => {
-        console.log(taskForm)
+        try {
+            setLoading(true)
+            const location = taskForm.location_attributes?.split(', ')
+            const payload = {
+                ...taskForm,
+                service_id: parseInt(taskForm.service_id!),
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                job_price: parseInt(taskForm.job_price!),
+                instant_booking: taskForm.instant_booking === 'true' ? true : false,
+                task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
+                client_id: userState?.user_id
+            }
+            console.log(payload)
+        }
+        catch (error: any) {
+            setError(error.message)
+            setVisible(true)
+            setLoading(false)
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
 
@@ -46,7 +76,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
             onSubmit={handleSubmit}
             validationSchema={taskSchema}
         >
-            {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, touched }) => (
+            {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, touched, isValid }) => (
                 <Modal animationType='slide' visible={isVisible} transparent>
                     <SafeAreaView style={taskFormStyles.safeareaStyle}>
                         <ScrollView style={taskFormStyles.scroll} contentContainerStyle={taskFormStyles.contentStyle}>
@@ -210,7 +240,11 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         style={[taskFormStyles.textarea, taskFormStyles.textInput]}
                                     />
                                 </View>
-                                <Pressable style={[defaultStyles.authButton, { backgroundColor: Colors.primary }]} onPress={() => handleSubmit}>
+                                <Pressable
+                                    disabled={!isValid}
+                                    style={[defaultStyles.authButton,
+                                    { backgroundColor: isValid ? Colors.primary : '#a5c9ca' }]}
+                                    onPress={() => handleSubmit()}>
                                     <Text style={[defaultStyles.authButtonText]}>Create Task</Text>
                                 </Pressable>
                             </View>

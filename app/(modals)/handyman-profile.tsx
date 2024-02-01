@@ -213,8 +213,4 @@ const HandymanProfile = () => {
         </Formik >
     )
 }
-
-
-
 export default HandymanProfile;
-
