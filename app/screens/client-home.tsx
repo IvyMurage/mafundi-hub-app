@@ -4,6 +4,7 @@ import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import Search from '@/components/search'
+import CategoryList from '@/components/categoryList'
 
 
 type IconViewType = {
@@ -68,6 +69,8 @@ const ClientHome = () => {
                         {iconListView}
                     </ScrollView>
                 </View>
+
+                <CategoryList />
             </View>
         </SafeAreaView>
     )
@@ -80,9 +83,7 @@ const clientHomeStyles = StyleSheet.create({
         backgroundColor: Colors.primary
     },
     container: {
-        // flexGrow: 1,
-        // justifyContent: 'space-between',
-        // alignItems: 'center'
+        flex: 1
 
     },
     headerContainer: {

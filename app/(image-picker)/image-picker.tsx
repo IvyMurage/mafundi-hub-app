@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, StyleSheet, SafeAreaView, ScrollView, Pressable, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
+import { Image, View, StyleSheet, SafeAreaView, Pressable, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Colors from '@/constants/Colors';
 import * as FileSystem from 'expo-file-system'
