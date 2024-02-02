@@ -83,6 +83,31 @@ export default function TabLayout() {
         }}
 
       />
+      <Tabs.Screen name='jobs'
+        options={{
+          headerShown: true,
+          headerTitle: 'Jobs',
+          headerTitleStyle: {
+            fontFamily: 'poppins-medium',
+            fontSize: 16,
+            letterSpacing: 1.8,
+            color: Colors.lighter,
+            textAlign: 'center',
+          },
+          headerTitleAlign: 'center',
+          headerStyle: { ...headerStyles.headerStyle },
+          headerRight: () => (
+            <Pressable onPress={handleRight} style={{ paddingRight: 10 }} >
+              <FontAwesome name='plus'
+                size={24}
+                color={Colors.lighter}
+                style={{ right: 10 }} />
+            </Pressable>
+          ),
+          tabBarLabel: "Jobs",
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="briefcase" color={color} size={size} />,
+        }}
+      />
 
       <Tabs.Screen name='profile'
         options={{

@@ -7,9 +7,7 @@ import TaskForm from '@/app/(modals)/task-form'
 
 const CategoryList = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false)
-
     const categories = useServiceCategory()
-    console.log(categories)
     const renderCategory = ({ item }:
         {
             item: {
