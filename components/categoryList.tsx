@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native'
+import React, { useState } from 'react'
 import { useServiceCategory } from '@/hooks/useServiceCategory'
 import { Image } from 'expo-image'
 import Colors from '@/constants/Colors'
+import TaskForm from '@/app/(modals)/task-form'
 
 const CategoryList = () => {
+    const [isVisible, setIsVisible] = useState<boolean>(false)
+
     const categories = useServiceCategory()
     console.log(categories)
     const renderCategory = ({ item }:
@@ -16,10 +19,14 @@ const CategoryList = () => {
             }
         }) => {
         return (
-            <View key={item.id} style={categoryListStyles.categoryContainer}>
-                <Image source={item.image_url} style={categoryListStyles.image} />
-                <Text style={categoryListStyles.categoryText}>{item.category_name}</Text>
-            </View>
+            <Pressable
+                onPress={() => setIsVisible(true)}
+                style={categoryListStyles.categoryContainer}>
+                <View key={item.id}>
+                    <Image source={item.image_url} style={categoryListStyles.image} />
+                    <Text style={categoryListStyles.categoryText}>{item.category_name}</Text>
+                </View>
+            </Pressable>
         )
     }
 
@@ -33,6 +40,9 @@ const CategoryList = () => {
                 style={{ width: '100%', height: '100%', }}
                 contentContainerStyle={categoryListStyles.flatListStyle}
             />
+
+            <TaskForm isVisible={isVisible} setIsVisible={setIsVisible} />
+
         </View>
     )
 }
