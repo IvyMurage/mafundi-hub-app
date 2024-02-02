@@ -199,6 +199,8 @@ export const HandymanProfileStyles = StyleSheet.create({
     height: 55,
     alignItems: "center",
     justifyContent: "center",
+    display: "flex",
+    flexDirection: "row",
   },
   submitBtnText: {
     color: Colors.lighter,

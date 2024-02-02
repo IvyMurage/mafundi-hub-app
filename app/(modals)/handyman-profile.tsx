@@ -14,7 +14,7 @@ import { useHandymanFetcher, useHandymanUpdate } from '@/hooks/useHandyman'
 
 
 const HandymanProfile = () => {
-    const { loading, error, handyman, visible, setVisible } = useHandymanFetcher()
+    const { loading, error, handyman, visible } = useHandymanFetcher()
     const { handleSubmit, setAlertVisible, isLoading, alertVisible, image, } = useHandymanUpdate()
     const locations = useLocation()
     const services = useService()
@@ -177,13 +177,7 @@ const HandymanProfile = () => {
                                         disabled={!isValid}
                                         style={[
                                             HandymanProfileStyles.submitBtn,
-                                            {
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                backgroundColor: isValid ? Colors.primary : '#a5c9ca'
-                                            }
+                                            { backgroundColor: isValid ? Colors.primary : '#a5c9ca' }
                                         ]}
                                         onPress={() => handleSubmit()}>
                                         {isLoading && <ActivityIndicator size="large" color="white" />}

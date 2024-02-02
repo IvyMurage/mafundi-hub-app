@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, } from 'react'
 import Select from '@/components/select'
-import { View, Text, TextInput, Pressable, Modal, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, TextInput, Pressable, Modal, ScrollView, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useService } from '@/hooks/useService'
 import { useLocation } from '@/hooks/useLocation'
@@ -10,71 +10,16 @@ import { taskSchema } from '@/constants/validation-schema'
 import { defaultStyles, taskFormStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons/'
-import { useAuth } from '@/context/AuthContext'
-import { request } from '@/utils/executePostRequest'
+import CustomAlert from '@/components/customAlert'
+import { useTaskPost, useTaskProps } from '@/hooks/useTask'
 
-type TaskFormProps = {
-    job_title: string,
-    service_id: string,
-    job_price: string,
-    duration_label: string,
-    instant_booking: string,
-    location_attributes: string,
-    task_description: string,
-    task_responsibilities: string,
-}
+
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
     const { isVisible, setIsVisible } = props
-    const [isLoading, setLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string>('')
-    const [visible, setVisible] = useState<boolean>(false)
-    const { authState, userState } = useAuth();
     const services = useService()
     const locations = useLocation()
-    const [taskForm, setTaskForm] = useState<TaskFormProps>({
-        job_title: '',
-        service_id: '',
-        job_price: '',
-        duration_label: '',
-        instant_booking: '',
-        location_attributes: '',
-        task_description: '',
-        task_responsibilities: '',
-    })
-    const handleSubmit = async (taskForm: TaskFormProps) => {
-        try {
-            setLoading(true)
-            const location = taskForm.location_attributes?.split(', ')
-            const payload = {
-                ...taskForm,
-                service_id: parseInt(taskForm.service_id!),
-                location_attributes: {
-                    city: location![0],
-                    county: location![1],
-                    country: location![2],
-                },
-                job_price: parseInt(taskForm.job_price!),
-                instant_booking: taskForm.instant_booking === 'true' ? true : false,
-                task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
-                client_id: userState?.user_id
-            }
-            const { response, data } = await request('POST', JSON.stringify(payload), 'tasks/create', authState?.token!)
-            if (response.ok) {
-                console.log(data)
-
-            }
-        }
-        catch (error: any) {
-            console.log(error.message)
-            setError(error.message)
-            setVisible(true)
-            setLoading(false)
-        }
-        finally {
-            setLoading(false)
-        }
-    }
-
+    const { taskForm } = useTaskProps()
+    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTaskPost()
 
     return (
         <Formik
@@ -249,11 +194,32 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                 <Pressable
                                     disabled={!isValid}
                                     style={[defaultStyles.authButton,
-                                    { backgroundColor: isValid ? Colors.primary : '#a5c9ca' }]}
+                                    {
+                                        backgroundColor: isValid ? Colors.primary : '#a5c9ca',
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }]}
                                     onPress={() => handleSubmit()}>
+                                    {isLoading && <ActivityIndicator size="large" color="white" />}
                                     <Text style={[defaultStyles.authButtonText]}>Create Task</Text>
                                 </Pressable>
                             </View>
+                            <CustomAlert
+                                visible={visible}
+                                message='Task created successfully'
+                                onClose={() => setVisible(false)}
+                            />
+                            {
+                                isError && error && (
+                                    <CustomAlert
+                                        visible={visible}
+                                        message={error}
+                                        onClose={() => setVisible(false)}
+                                    />
+                                )
+                            }
                         </ScrollView>
                     </SafeAreaView>
                 </Modal>

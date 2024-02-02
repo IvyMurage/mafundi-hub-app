@@ -97,11 +97,19 @@ export default function TabLayout() {
           headerTitleAlign: 'center',
           headerStyle: { ...headerStyles.headerStyle },
           headerRight: () => (
-            <Pressable onPress={handleRight} style={{ paddingRight: 10 }} >
+            <Pressable onPress={() => router.push('/(tabs)/')} style={{ paddingRight: 10 }} >
               <FontAwesome name='plus'
                 size={24}
                 color={Colors.lighter}
                 style={{ right: 10 }} />
+            </Pressable>
+          ),
+          headerLeft: () => (
+            <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
             </Pressable>
           ),
           tabBarLabel: "Jobs",
