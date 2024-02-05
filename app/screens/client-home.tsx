@@ -15,7 +15,6 @@ import { iconView } from '@/constants/icons'
 const ClientHome = () => {
     const categoriesList = useServiceCategory()
     const [categories, setCategories] = useState<CategoryPropType[]>(categoriesList)
-
     useEffect(() => {
         setCategories(categoriesList)
     }, [categoriesList])

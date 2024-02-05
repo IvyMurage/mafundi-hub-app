@@ -363,6 +363,7 @@ export const categoryListStyles = StyleSheet.create({
   },
   flatListStyle: {
     paddingVertical: 10,
+    paddingBottom: 120,
   },
   image: {
     width: 150,
@@ -441,5 +442,62 @@ export const clientHomeStyles = StyleSheet.create({
   },
   catergoryHeader: {
     paddingHorizontal: 20,
+  },
+});
+
+export const defaultJobStyles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.light,
+    flex: 1,
+  },
+  headerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+  },
+});
+
+export const jobListStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  jobContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: 5,
+    paddingHorizontal: 10,
+    backgroundColor: Colors.lighter,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  jobText: {
+    fontSize: 14,
+    fontFamily: "poppins",
+    letterSpacing: 1.2,
+    padding: 5,
+  },
+  proposalContainer: {
+    alignSelf: "flex-end",
+  },
+  jobBody: {
+    borderBottomWidth: 0.5,
+    borderBottomColor: "grey",
+    paddingBottom: 10,
+    marginBottom: 10,
+  },
+  jobFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

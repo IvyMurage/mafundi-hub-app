@@ -1,15 +1,17 @@
-import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Pressable, FlatList, } from 'react-native'
+import React, { useRef, useState } from 'react'
 import { useMyJob } from '@/hooks/useMyJob'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
 import { FontAwesome6 } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
+import { jobListStyle } from '@/constants/styles'
 
 const JobList = () => {
     const { jobs } = useMyJob()
     const [visible, setVisible] = useState<boolean>(false)
     // console.log(jobs)
+    const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
@@ -59,57 +61,19 @@ const JobList = () => {
     }
 
     return (
-        <View>
+        <>
             <FlatList
+                ref={jobRef}
                 data={jobs}
                 renderItem={renderMyJobs}
-                style={{ width: '100%', height: '100%', }}
+                style={{ width: '100%', height: '100%', padding: 10 }}
+                contentContainerStyle={{ paddingBottom: 120 }}
             />
-
             <Proposal visible={visible} setVisible={setVisible} />
-        </View>
+        </>
     )
 }
 
-const jobListStyle = StyleSheet.create({
-    jobContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: 5,
-        paddingHorizontal: 10,
-        backgroundColor: Colors.lighter,
-        marginVertical: 5,
-        marginHorizontal: 10,
-        borderRadius: 16,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    jobText: {
-        fontSize: 14,
-        fontFamily: "poppins",
-        letterSpacing: 1.2,
-        padding: 5
-    },
-    proposalContainer: {
-        alignSelf: 'flex-end'
-    },
-    jobBody: {
-        borderBottomWidth: .5,
-        borderBottomColor: "grey",
-        paddingBottom: 10,
-        marginBottom: 10,
-    },
-    jobFooter: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    }
-})
+
 
 export default JobList
