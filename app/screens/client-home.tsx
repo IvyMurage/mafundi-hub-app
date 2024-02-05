@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
@@ -7,35 +7,14 @@ import Search from '@/components/search'
 import CategoryList from '@/components/categoryList'
 import { useServiceCategory } from '@/hooks/useServiceCategory'
 import { CategoryPropType } from '@/types/category'
+import { clientHomeStyles } from '@/constants/styles'
+import { iconView } from '@/constants/icons'
 
 
-type IconViewType = {
-    title: string,
-    icon: React.ComponentProps<typeof FontAwesome5>['name'] | React.ComponentProps<typeof MaterialIcons>['name']
 
-}[]
 const ClientHome = () => {
     const categoriesList = useServiceCategory()
     const [categories, setCategories] = useState<CategoryPropType[]>(categoriesList)
-
-    const iconView: IconViewType = [{
-        title: 'Electrician',
-        icon: "electrical-services"
-    },
-    {
-        title: 'Plumber',
-        icon: "plumbing"
-    },
-    {
-        title: 'Painter',
-        icon: "format-paint"
-    },
-    {
-        title: 'Cleaning',
-        icon: "cleaning-services"
-
-    }]
-
 
     useEffect(() => {
         setCategories(categoriesList)
@@ -50,7 +29,7 @@ const ClientHome = () => {
         }
     }
 
-    const iconListView = iconView.map((item, index) => {
+    const iconListView = iconView.length > 0 && iconView?.map((item, index) => {
         return (
             <View key={index} style={[clientHomeStyles.iconView]}>
                 <Text style={clientHomeStyles.iconText}>{item.title}</Text>
@@ -95,64 +74,6 @@ const ClientHome = () => {
     )
 }
 
-const clientHomeStyles = StyleSheet.create({
-    safeareaView: {
-        flex: 1,
-        paddingTop: 40,
-        backgroundColor: Colors.primary
-    },
-    container: {
-        flex: 1
 
-    },
-    headerContainer: {
-        marginTop: 20,
-        marginHorizontal: 20
-    },
-
-    notification: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        paddingHorizontal: 20
-    },
-    iconView: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        backgroundColor: Colors.lighter,
-        borderRadius: 16,
-        margin: 15,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    iconText: {
-        fontSize: 14,
-        fontFamily: 'poppins-medium',
-        color: Colors.secondary,
-        marginBottom: 10,
-        letterSpacing: 1
-    },
-    headerText: {
-        fontSize: 14,
-        fontFamily: 'poppins-bold',
-        color: Colors.lighter,
-        marginBottom: 10,
-        letterSpacing: 1,
-        lineHeight: 30
-    },
-    catergoryHeader: {
-        paddingHorizontal: 20,
-    }
-})
 
 export default ClientHome

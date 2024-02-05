@@ -384,3 +384,62 @@ export const categoryListStyles = StyleSheet.create({
     marginTop: 12,
   },
 });
+
+export const clientHomeStyles = StyleSheet.create({
+  safeareaView: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: Colors.primary,
+  },
+  container: {
+    flex: 1,
+  },
+  headerContainer: {
+    marginTop: 20,
+    marginHorizontal: 20,
+  },
+
+  notification: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  iconView: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: Colors.lighter,
+    borderRadius: 16,
+    margin: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  iconText: {
+    fontSize: 14,
+    fontFamily: "poppins-medium",
+    color: Colors.secondary,
+    marginBottom: 10,
+    letterSpacing: 1,
+  },
+  headerText: {
+    fontSize: 14,
+    fontFamily: "poppins-bold",
+    color: Colors.lighter,
+    marginBottom: 10,
+    letterSpacing: 1,
+    lineHeight: 30,
+  },
+  catergoryHeader: {
+    paddingHorizontal: 20,
+  },
+});
