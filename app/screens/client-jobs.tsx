@@ -1,15 +1,14 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import Search from '@/components/search'
-import { useMyJob } from '@/hooks/useMyJob'
+import JobList from '@/components/myJobList'
 
 const ClientJobs = () => {
-    const jobs = useMyJob()
-    console.log(jobs)
+
     return (
-        <View>
+        <View style={defaultJobStyles.container}>
             <View>
                 <Image source={require('@/assets/images/placeholder.jpg')} style={{ width: 50, height: 50 }} />
                 <FontAwesome5
@@ -24,11 +23,16 @@ const ClientJobs = () => {
 
             <View>
                 <Search placeholder='Search' search={''} />
-
-
             </View>
+            <JobList />
         </View>
     )
 }
+
+const defaultJobStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.light,
+    }
+})
 
 export default ClientJobs

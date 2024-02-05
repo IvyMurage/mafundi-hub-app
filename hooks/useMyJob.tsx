@@ -1,17 +1,10 @@
 import { useAuth } from "@/context/AuthContext";
+import { JobPropType } from "@/types/job";
 import { useEffect, useState } from "react"
 
 export const useMyJob = () => {
     const { authState, userState } = useAuth()
-    const [jobs, setJobs] = useState<{
-        id: number | null;
-        job_title: string | null;
-        job_location: string | null;
-        job_date: string | null;
-        job_price: string | null;
-        job_category: string | null;
-        duration_label: string | null;
-    }[]>([])
+    const [jobs, setJobs] = useState<JobPropType[]>([])
 
     useEffect(() => {
         const getMyJobs = async () => {
@@ -20,20 +13,20 @@ export const useMyJob = () => {
                     headers: { Authorization: `Bearer ${authState?.token}` }
                 })
                 const data = await response.json()
+                // console.log(data)
                 if (!response.ok) {
-                    let error
+                    let error;
                     if (data.message) {
-                        error = data.message
+                        error = data.message;
+                    } else if (data.error) {
+                        error = data.error;
+                    } else {
+                        error = response.statusText;
                     }
-                    else if (data.error) {
-                        error = data.error
-                    }
-                    else {
-                        error = 'An error occurred'
-                    }
-                    throw new Error(error)
+                    throw new Error(error);
                 }
-                console.log(data)
+
+
                 if (response.ok) {
                     setJobs(data?.task?.map((item: {
                         id: number | null;
