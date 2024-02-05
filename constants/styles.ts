@@ -356,3 +356,31 @@ export const taskFormStyles = StyleSheet.create({
     letterSpacing: 1.2,
   },
 });
+
+export const categoryListStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  flatListStyle: {
+    paddingVertical: 10,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
+  categoryContainer: {
+    flex: 1,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  categoryText: {
+    fontSize: 14,
+    fontFamily: "poppins-medium",
+    letterSpacing: 1.2,
+    textAlign: "center",
+    color: Colors.lighter,
+    marginTop: 12,
+  },
+});

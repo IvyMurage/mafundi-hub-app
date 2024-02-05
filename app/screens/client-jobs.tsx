@@ -23,7 +23,7 @@ const ClientJobs = () => {
                 </View>
 
                 <View>
-                    <Search placeholder='Search' search={''} />
+                    <Search placeholder='Search' />
                 </View>
                 <JobList />
             </View>

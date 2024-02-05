@@ -1,10 +1,12 @@
 import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import Search from '@/components/search'
 import CategoryList from '@/components/categoryList'
+import { useServiceCategory } from '@/hooks/useServiceCategory'
+import { CategoryPropType } from '@/types/category'
 
 
 type IconViewType = {
@@ -13,6 +15,9 @@ type IconViewType = {
 
 }[]
 const ClientHome = () => {
+    const categoriesList = useServiceCategory()
+    const [categories, setCategories] = useState<CategoryPropType[]>(categoriesList)
+
     const iconView: IconViewType = [{
         title: 'Electrician',
         icon: "electrical-services"
@@ -30,6 +35,20 @@ const ClientHome = () => {
         icon: "cleaning-services"
 
     }]
+
+
+    useEffect(() => {
+        setCategories(categoriesList)
+    }, [categoriesList])
+
+    const handleChange = (value: string) => {
+        if (value === '') {
+            setCategories(categoriesList)
+        }
+        else {
+            setCategories(categoriesList.filter((item) => item.category_name?.toLowerCase().includes(value.toLowerCase())))
+        }
+    }
 
     const iconListView = iconView.map((item, index) => {
         return (
@@ -60,7 +79,7 @@ const ClientHome = () => {
                 </View>
 
                 <View>
-                    <Search placeholder="Search for a service" search={''} />
+                    <Search placeholder="Search for a service" handleChange={handleChange} />
                 </View>
 
                 <View>
@@ -70,7 +89,7 @@ const ClientHome = () => {
                     </ScrollView>
                 </View>
 
-                <CategoryList />
+                <CategoryList categories={categories} />
             </View>
         </SafeAreaView>
     )

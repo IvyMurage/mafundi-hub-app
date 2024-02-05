@@ -1,20 +1,26 @@
 import { View, TextInput, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'
 
 
 type SearchType = {
-    search: string,
-    placeholder: string
+    placeholder: string,
+    handleChange?: (search: string) => void
 
 }
 const Search: React.FC<SearchType> = (props) => {
-    const { placeholder } = props
+    const [search, setSearch] = useState<string>('')
+    const { placeholder, handleChange, } = props
     return (
         <View>
             <TextInput
                 autoCapitalize='none'
                 placeholder={placeholder}
+                value={search}
+                onChangeText={(text) => {
+                    setSearch(text)
+                    handleChange?.(text)
+                }}
                 style={[searchStyles.container]}
             />
             <FontAwesome5 name="search" size={20} color="rgba(0, 0, 0, .28)" style={[searchStyles.searchIcon]} />

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 export const useServiceCategory = () => {
     const { authState } = useAuth()
-    const [categories, setCategories] = useState<{
+    const [categoriesList, setCategories] = useState<{
         id: number | null;
         category_name: string | null;
         image_url: string | null
@@ -38,5 +38,5 @@ export const useServiceCategory = () => {
         }
         getServicesCategory()
     }, [])
-    return categories
+    return categoriesList
 }

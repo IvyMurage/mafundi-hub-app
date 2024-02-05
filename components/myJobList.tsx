@@ -9,7 +9,7 @@ import Proposal from '@/app/screens/proposal'
 const JobList = () => {
     const { jobs } = useMyJob()
     const [visible, setVisible] = useState<boolean>(false)
-    console.log(jobs)
+    // console.log(jobs)
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
