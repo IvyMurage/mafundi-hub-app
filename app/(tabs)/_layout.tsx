@@ -6,7 +6,7 @@ import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Octicons } from '@expo/vector-icons';
+import { MaterialIcons, Octicons } from '@expo/vector-icons';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -33,6 +33,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.secondary,
+
         tabBarStyle: {
           backgroundColor: Colors.lighter,
           borderBottomLeftRadius: 10,
@@ -61,7 +62,7 @@ export default function TabLayout() {
         tabBarItemStyle: {
           width: 50,
           height: 50,
-          margin: 'auto'
+          margin: 'auto',
 
         },
         tabBarInactiveTintColor: Colors.dark,
@@ -98,7 +99,7 @@ export default function TabLayout() {
           headerStyle: { ...headerStyles.headerStyle },
           headerRight: () => (
             <Pressable onPress={() => router.push('/(tabs)/')} style={{ paddingRight: 10 }} >
-              <FontAwesome name='plus'
+              <MaterialIcons name='add-circle'
                 size={24}
                 color={Colors.lighter}
                 style={{ right: 10 }} />

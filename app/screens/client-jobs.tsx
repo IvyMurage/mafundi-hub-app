@@ -9,19 +9,17 @@ import { useMyJob } from '@/hooks/useMyJob'
 
 const ClientJobs = () => {
     const { loading } = useMyJob()
+
     return (
         <>
             <View style={defaultJobStyles.container}>
-                <View>
-                    <Image source={require('@/assets/images/placeholder.jpg')} style={{ width: 50, height: 50 }} />
+                <View style={defaultJobStyles.headerStyle}>
+                    <Image source={require('@/assets/images/placeholder.jpg')} style={{ width: 50, height: 50, borderRadius: 50 }} />
                     <FontAwesome5
                         name="bell"
                         size={20}
                         color={Colors.secondary}
                     />
-                </View>
-                <View>
-                    <Text>My Jobs</Text>
                 </View>
 
                 <View>
@@ -37,6 +35,13 @@ const ClientJobs = () => {
 const defaultJobStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.light,
+    },
+    headerStyle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+
     }
 })
 
