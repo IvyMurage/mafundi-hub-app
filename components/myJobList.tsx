@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import { useMyJob } from '@/hooks/useMyJob'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
-import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons'
+import { FontAwesome6 } from '@expo/vector-icons'
+import Proposal from '@/app/screens/proposal'
 
 const JobList = () => {
-    const jobs = useMyJob()
+    const { jobs } = useMyJob()
+    const [visible, setVisible] = useState<boolean>(false)
     console.log(jobs)
     const renderMyJobs = ({ item }:
         {
@@ -16,6 +18,7 @@ const JobList = () => {
             <Pressable onPress={() => console.log("You can view the proposals")}>
                 <View key={item.id} style={jobListStyle.jobContainer}>
                     <Text
+                        onPress={() => setVisible(!visible)}
                         style={[jobListStyle.jobText,
                         { textAlign: 'right' }]}>
                         View Proposals
@@ -62,6 +65,8 @@ const JobList = () => {
                 renderItem={renderMyJobs}
                 style={{ width: '100%', height: '100%', }}
             />
+
+            <Proposal visible={visible} setVisible={setVisible} />
         </View>
     )
 }

@@ -5,10 +5,12 @@ import { useEffect, useState } from "react"
 export const useMyJob = () => {
     const { authState, userState } = useAuth()
     const [jobs, setJobs] = useState<JobPropType[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         const getMyJobs = async () => {
             try {
+                setLoading(true)
                 const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}`, {
                     headers: { Authorization: `Bearer ${authState?.token}` }
                 })
@@ -47,13 +49,18 @@ export const useMyJob = () => {
                             duration_label: item.duration_label
                         }
                     }))
+                    setLoading(false)
                 }
             }
             catch (err: any) {
                 console.log(err.message)
+                setLoading(false)
+            }
+            finally {
+                setLoading(false)
             }
         }
         getMyJobs()
     }, [])
-    return jobs
+    return {jobs, loading}
 }
