@@ -10,7 +10,6 @@ import { defaultJobStyles } from '@/constants/styles'
 
 const ClientJobs = () => {
     const { loading } = useMyJob()
-
     return (
         <>
             <View style={defaultJobStyles.container}>

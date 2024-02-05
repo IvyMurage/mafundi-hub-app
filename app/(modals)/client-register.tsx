@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '@/constants/Colors'
 import { ClientRegisterStyles, defaultStyles } from '@/constants/styles'
 import Select from '@/components/select'
@@ -105,6 +105,7 @@ const ClientRegister = () => {
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
                                     profile={false}
+                                    task={false}
                                 />
                                 {
                                     touched.location_attributes && errors.location_attributes && (

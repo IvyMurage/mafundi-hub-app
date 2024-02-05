@@ -1,6 +1,8 @@
 import { useAuth } from "@/context/AuthContext"
+import { JobPropType } from "@/types/job"
 import { TaskFormProps } from "@/types/task"
 import { request } from "@/utils/executePostRequest"
+import { FormikHelpers } from "formik"
 import { useState } from "react"
 
 export const useTaskProps = () => {
@@ -22,7 +24,16 @@ export const useTaskPost = () => {
     const [error, setError] = useState<string>('')
     const [visible, setVisible] = useState<boolean>(false)
     const { authState, userState } = useAuth();
-    const handleSubmit = async (taskForm: TaskFormProps) => {
+    const [task, setTask] = useState<JobPropType>({
+        id: null,
+        job_title: '',
+        job_location: '',
+        job_date: '',
+        job_price: '',
+        job_category: '',
+        duration_label: ''
+    })
+    const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
         try {
             setLoading(true)
             const location = taskForm.location_attributes?.split(', ')
@@ -40,8 +51,18 @@ export const useTaskPost = () => {
                 client_id: userState?.user_id
             }
             const { response, data } = await request('POST', JSON.stringify(payload), 'tasks/create', authState?.token!)
+            console.log(data)
             if (response.ok) {
-                console.log(data)
+                setTask({
+                    id: data.id,
+                    job_title: data.job_title,
+                    job_location: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
+                    job_date: data.created_at,
+                    job_price: `ksh.${data.job_price}`,
+                    job_category: data.service_name,
+                    duration_label: data.duration_label
+                })
+                resetForm.resetForm()
                 setVisible(true)
             }
         }
@@ -55,5 +76,5 @@ export const useTaskPost = () => {
             setLoading(false)
         }
     }
-    return { isLoading, error, handleSubmit, visible, setVisible, isError }
+    return { isLoading, error, handleSubmit, visible, setVisible, isError, task }
 }

@@ -12,19 +12,22 @@ import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons/'
 import CustomAlert from '@/components/customAlert'
 import { useTaskPost, useTaskProps } from '@/hooks/useTask'
+import { useRouter } from 'expo-router'
+import { useTask } from '@/context/TaskContext'
 
 
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
+    const router = useRouter()
     const { isVisible, setIsVisible } = props
     const services = useService()
     const locations = useLocation()
     const { taskForm } = useTaskProps()
-    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTaskPost()
+    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTask()
 
     return (
         <Formik
             initialValues={taskForm}
-            onSubmit={handleSubmit}
+            onSubmit={(values, resetForm) => handleSubmit?.(values, resetForm)}
             validationSchema={taskSchema}
         >
             {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, touched, isValid }) => (
@@ -207,16 +210,20 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                 </Pressable>
                             </View>
                             <CustomAlert
-                                visible={visible}
+                                visible={visible!}
                                 message='Task created successfully'
-                                onClose={() => setVisible(false)}
+                                onClose={() => {
+                                    setVisible?.(false)
+                                    setIsVisible(false)
+                                    router.push('/(tabs)/jobs')
+                                }}
                             />
                             {
                                 isError && error && (
                                     <CustomAlert
-                                        visible={visible}
+                                        visible={visible!}
                                         message={error}
-                                        onClose={() => setVisible(false)}
+                                        onClose={() => setVisible?.(false)}
                                     />
                                 )
                             }
@@ -228,7 +235,5 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
         </Formik >
     )
 }
-
-
 
 export default TaskForm

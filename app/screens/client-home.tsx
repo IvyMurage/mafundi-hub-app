@@ -9,6 +9,7 @@ import { useServiceCategory } from '@/hooks/useServiceCategory'
 import { CategoryPropType } from '@/types/category'
 import { clientHomeStyles } from '@/constants/styles'
 import { iconView } from '@/constants/icons'
+import { TaskProvider } from '@/context/TaskContext'
 
 
 
@@ -38,38 +39,40 @@ const ClientHome = () => {
     }
     )
     return (
-        <SafeAreaView style={[clientHomeStyles.safeareaView]}>
-            <View style={[clientHomeStyles.container]}>
-                <View style={[clientHomeStyles.notification]}>
-                    <Image
-                        style={{ width: 40, height: 40, borderRadius: 40 }}
-                        source={require('@/assets/images/placeholder.jpg')}
-                    />
-                    <FontAwesome5
-                        name="bell"
-                        size={20}
-                        color={Colors.secondary}
-                    />
-                </View>
-                <View style={[clientHomeStyles.headerContainer]}>
-                    <Text style={[clientHomeStyles.headerText]}>Find the Best</Text>
-                    <Text style={[clientHomeStyles.headerText]}><Text style={{ color: Colors.secondary }}>Handyman</Text> Service Providers</Text>
-                </View>
+        <TaskProvider>
+            <SafeAreaView style={[clientHomeStyles.safeareaView]}>
+                <View style={[clientHomeStyles.container]}>
+                    <View style={[clientHomeStyles.notification]}>
+                        <Image
+                            style={{ width: 40, height: 40, borderRadius: 40 }}
+                            source={require('@/assets/images/placeholder.jpg')}
+                        />
+                        <FontAwesome5
+                            name="bell"
+                            size={20}
+                            color={Colors.secondary}
+                        />
+                    </View>
+                    <View style={[clientHomeStyles.headerContainer]}>
+                        <Text style={[clientHomeStyles.headerText]}>Find the Best</Text>
+                        <Text style={[clientHomeStyles.headerText]}><Text style={{ color: Colors.secondary }}>Handyman</Text> Service Providers</Text>
+                    </View>
 
-                <View>
-                    <Search placeholder="Search for a service" handleChange={handleChange} />
-                </View>
+                    <View>
+                        <Search placeholder="Search for a service" handleChange={handleChange} />
+                    </View>
 
-                <View>
-                    <Text style={[clientHomeStyles.headerText, clientHomeStyles.catergoryHeader]}>Categories</Text>
-                    <ScrollView horizontal={true} contentContainerStyle={{}}>
-                        {iconListView}
-                    </ScrollView>
-                </View>
+                    <View>
+                        <Text style={[clientHomeStyles.headerText, clientHomeStyles.catergoryHeader]}>Categories</Text>
+                        <ScrollView horizontal={true} contentContainerStyle={{}}>
+                            {iconListView}
+                        </ScrollView>
+                    </View>
 
-                <CategoryList categories={categories} />
-            </View>
-        </SafeAreaView>
+                    <CategoryList categories={categories} />
+                </View>
+            </SafeAreaView>
+        </TaskProvider>
     )
 }
 

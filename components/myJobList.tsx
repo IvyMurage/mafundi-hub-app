@@ -1,14 +1,16 @@
 import { View, Text, Pressable, FlatList, } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { useMyJob } from '@/hooks/useMyJob'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
 import { FontAwesome6 } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
+import { useTask } from '@/context/TaskContext'
 
 const JobList = () => {
-    const { jobs } = useMyJob()
+    // const { jobs } = useMyJob()
+    const { tasksState } = useTask()
+    // console.log(tasksState)
     const [visible, setVisible] = useState<boolean>(false)
     // console.log(jobs)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
@@ -64,7 +66,7 @@ const JobList = () => {
         <>
             <FlatList
                 ref={jobRef}
-                data={jobs}
+                data={tasksState || []}
                 renderItem={renderMyJobs}
                 style={{ width: '100%', height: '100%', padding: 10 }}
                 contentContainerStyle={{ paddingBottom: 120 }}

@@ -39,5 +39,4 @@ const CategoryList = ({ categories }: { categories: CategoryPropType[] }) => {
     )
 }
 
-
 export default CategoryList;

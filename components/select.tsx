@@ -29,7 +29,6 @@ const Select: React.FC<SelectProps> = (props) => {
                 onSelect={(selectedItem) => {
                     const value = data.find(item => item.label === selectedItem)?.value;
                     handleChange(value!.toString());
-                    console.log(value)
                 }}
 
                 defaultButtonText={defaultButtonText}
