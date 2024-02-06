@@ -20,7 +20,7 @@ export const useTaskProps = () => {
     return { taskForm, setTaskForm }
 }
 export const useTaskPost = () => {
-    const { tasksState, setTasksState } = useTask() as { tasksState: JobPropType[], setTasksState: React.Dispatch<React.SetStateAction<JobPropType[]>> }
+    const { tasks, setTasks } = useTask() as { tasks: JobPropType[], setTasks: React.Dispatch<React.SetStateAction<JobPropType[]>> }
     const [isLoading, setLoading] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
@@ -46,8 +46,8 @@ export const useTaskPost = () => {
             job_category: taskForm.service_id,
             duration_label: taskForm.duration_label
         })
-        setTasksState(prevTasks => [...prevTasks, task])
-console.log('bla',tasksState)
+        setTasks(prevTasks => [...prevTasks, task])
+        console.log('bla', tasks)
         try {
             setLoading(true)
             const location = taskForm.location_attributes?.split(', ')
@@ -76,12 +76,12 @@ console.log('bla',tasksState)
                     job_category: data.service_name,
                     duration_label: data.duration_label
                 })
-                setTasksState(prevTasks => prevTasks.map(task => task.id === optimisticTaskId ? data : task))
+                setTasks(prevTasks => prevTasks.map(task => task.id === optimisticTaskId ? data : task))
                 resetForm.resetForm()
                 setVisible(true)
             }
             else {
-                setTasksState(prevTasks => prevTasks.filter(task => task.id !== optimisticTaskId))
+                setTasks(prevTasks => prevTasks.filter(task => task.id !== optimisticTaskId))
                 setIsError(true)
                 throw new Error('Task creation failed')
             }

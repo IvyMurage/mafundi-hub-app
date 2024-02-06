@@ -129,7 +129,7 @@ const HandymanProfile = () => {
                                     <TextInput
                                         autoCapitalize='none'
                                         placeholder='year of  Experience (e.g 1)'
-                                        value={values.year_of_experience!.toString()}
+                                        value={values.year_of_experience?.toString()}
                                         onChangeText={handleChange('year_of_experience')}
                                         onBlur={() => setFieldTouched('year_of_experience')}
                                         style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}

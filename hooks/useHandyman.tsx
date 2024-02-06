@@ -111,7 +111,7 @@ export const useHandymanFetcher = () => {
                         description: data.description,
                         handyman_skills: data.handyman_skills?.join(', ')
                     })
-                    // console.log(data)
+                    console.log(data)
                     setLoading(false)
                 }
             }

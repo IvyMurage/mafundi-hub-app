@@ -1,16 +1,16 @@
-import { View, Image, } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
-import { FontAwesome5 } from '@expo/vector-icons'
-import Colors from '@/constants/Colors'
-import Search from '@/components/search'
-import JobList from '@/components/myJobList'
-import Loader from '@/components/loader'
-import { defaultJobStyles } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/context/TaskContext'
+import { Image } from 'expo-image'
+import Search from '@/components/search'
+import Loader from '@/components/loader'
+import { FontAwesome5 } from '@expo/vector-icons'
+import JobList from '@/components/myJobList'
+import { defaultJobStyles } from '@/constants/styles'
+import Colors from '@/constants/Colors'
 
-const ClientJobs = () => {
+const HandymaJobs = () => {
     const { loading } = useTask()
-    console.log(loading, "loading")
     return (
         <>
             <TaskProvider>
@@ -31,11 +31,8 @@ const ClientJobs = () => {
                     <JobList />
                 </View>
                 <Loader isLoading={loading!} />
-            </TaskProvider>
-        </>
+            </TaskProvider></>
     )
 }
 
-
-
-export default ClientJobs
+export default HandymaJobs

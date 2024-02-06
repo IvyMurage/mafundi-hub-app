@@ -7,6 +7,7 @@ import Colors from '@/constants/Colors';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons, Octicons } from '@expo/vector-icons';
+import { useAuth } from '@/context/AuthContext';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -20,6 +21,7 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const [visible, setVisible] = useState<boolean>(false);
   const router = useRouter()
+  const { userState } = useAuth()
 
   const handleBack = () => {
     router.back()
@@ -78,8 +80,26 @@ export default function TabLayout() {
 
       <Tabs.Screen name='index'
         options={{
-          headerShown: false,
+          headerShown: userState?.user_role === 'client' ? false : true,
           tabBarLabel: "Home",
+          headerTitle: `${userState?.user_role === 'client' ? null : 'Mafundi Jobs'}`,
+          headerTitleStyle: {
+            fontFamily: 'poppins-medium',
+            fontSize: 16,
+            letterSpacing: 1.8,
+            color: Colors.lighter,
+            textAlign: 'center',
+          },
+          headerStyle: userState?.user_role === 'client' ? null : { ...headerStyles.headerStyle },
+          headerLeft: () => (
+            <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </Pressable>
+          ),
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => <TabBarIcon name="home" color={color} size={size} />,
         }}
 
@@ -87,7 +107,7 @@ export default function TabLayout() {
       <Tabs.Screen name='jobs'
         options={{
           headerShown: true,
-          headerTitle: 'Jobs',
+          headerTitle: 'My Jobs',
           headerTitleStyle: {
             fontFamily: 'poppins-medium',
             fontSize: 16,

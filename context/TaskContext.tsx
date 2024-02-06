@@ -1,12 +1,22 @@
 import { JobPropType } from "@/types/job";
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
+import { request } from "@/utils/executePostRequest";
+import { TaskFormProps } from "@/types/task";
+import { FormikHelpers } from "formik";
+// return { isLoading, error, handleSubmit, visible, setVisible, isError, task }
 
 interface TaskProps {
     tasks?: JobPropType[],
     setTasks?: Dispatch<SetStateAction<JobPropType[]>>,
     loading?: boolean,
+    isLoading?: boolean,
+    isError?: boolean,
+    error?: string,
+    visible?: boolean,
+    setVisible?: Dispatch<SetStateAction<boolean>>,
     setPageNumber?: Dispatch<SetStateAction<number>>
+    handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
 }
 
 interface TaskProviderProps {
@@ -22,13 +32,93 @@ export const useTask = () => {
     return context
 }
 
+export const useTaskProps = () => {
+    const [taskForm, setTaskForm] = useState<TaskFormProps>({
+        job_title: '',
+        service_id: '',
+        job_price: '',
+        duration_label: '',
+        instant_booking: '',
+        location_attributes: '',
+        task_description: '',
+        task_responsibilities: '',
+    })
+    return { taskForm, setTaskForm }
+}
 export const TaskProvider = ({ children }: TaskProviderProps) => {
 
     const { authState, userState } = useAuth()
     const [tasks, setTasks] = useState<JobPropType[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [pageNumber, setPageNumber] = useState<number>(1)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isError, setIsError] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
+    const [visible, setVisible] = useState<boolean>(false)
+    const [task, setTask] = useState<JobPropType>({
+        id: null,
+        job_title: '',
+        job_location: '',
+        job_date: '',
+        job_price: '',
+        job_category: '',
+        duration_label: ''
+    })
 
+    const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
+        const optimisticTaskId = Math.floor(Math.random() * 1000000)
+        setTask({
+            id: optimisticTaskId,
+            job_title: taskForm.job_title,
+            job_location: taskForm.location_attributes,
+            job_date: new Date().toISOString(),
+            job_price: `ksh.${taskForm.job_price}`,
+            job_category: taskForm.service_id,
+            duration_label: taskForm.duration_label
+        })
+
+        setTasks(prevTasks => [task, ...prevTasks])
+        try {
+            setIsLoading(true)
+            const location = taskForm.location_attributes?.split(', ')
+            const payload = {
+                ...taskForm,
+                service_id: parseInt(taskForm.service_id!),
+                location_attributes: {
+                    city: location![0],
+                    county: location![1],
+                    country: location![2],
+                },
+                job_price: parseInt(taskForm.job_price!),
+                instant_booking: taskForm.instant_booking === 'true' ? true : false,
+                task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
+                client_id: userState?.user_id
+            }
+            const { response, data } = await request('POST', JSON.stringify(payload), 'tasks/create', authState?.token!)
+            if (response.ok) {
+                setTasks(prevTasks => [{
+                    id: data.id,
+                    job_title: data.job_title,
+                    job_location: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
+                    job_date: data.created_at,
+                    job_price: `ksh.${data.job_price}`,
+                    job_category: data.service_name,
+                    duration_label: data.duration_label
+                }, ...prevTasks,])
+                resetForm.resetForm()
+                setVisible(true)
+            }
+        }
+        catch (error: any) {
+            setIsError(true)
+            setError(error.message)
+            setVisible(true)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
+    console.log('new task', tasks)
     useEffect(() => {
         const getMyJobs = async () => {
             try {
@@ -48,7 +138,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                     }
                     throw new Error(error);
                 }
-                console.log(data)
                 if (response.ok) {
                     setTasks(data?.task?.map((item: {
                         id: number | null;
@@ -81,12 +170,17 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         getMyJobs()
     }, [pageNumber])
 
-    console.log(pageNumber)
     const value = {
         tasks,
         setTasks,
         loading,
-        setPageNumber
+        setPageNumber,
+        isLoading,
+        isError,
+        error,
+        visible,
+        setVisible,
+        handleSubmit
     }
     return (
         <TaskContext.Provider value={value}>
