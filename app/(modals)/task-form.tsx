@@ -21,8 +21,18 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     const services = useService()
     const locations = useLocation()
     const { taskForm } = useTaskProps()
-    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTask()
+    const { handleSubmit, handleRoute, isLoading, error, isError, visible, setVisible } = useTask()
 
+    const getValue = async () => {
+        const value = await handleRoute!()
+        if (value && value === 'true') {
+            router.push('/screens/handymen')
+        }
+        else {
+            router.push('/(tabs)/jobs')
+
+        }
+    }
     return (
         <TaskProvider>
             <Formik
@@ -215,7 +225,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                     onClose={() => {
                                         setVisible?.(false)
                                         setIsVisible(false)
-                                        router.push('/(tabs)/jobs')
+                                        getValue()
                                     }}
                                 />
                                 {

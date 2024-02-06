@@ -4,7 +4,7 @@ import { useAuth } from "./AuthContext";
 import { request } from "@/utils/executePostRequest";
 import { TaskFormProps } from "@/types/task";
 import { FormikHelpers } from "formik";
-// return { isLoading, error, handleSubmit, visible, setVisible, isError, task }
+import * as SecureStore from 'expo-secure-store'
 
 interface TaskProps {
     tasks?: JobPropType[],
@@ -17,6 +17,7 @@ interface TaskProps {
     setVisible?: Dispatch<SetStateAction<boolean>>,
     setPageNumber?: Dispatch<SetStateAction<number>>
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
+    handleRoute?: () => Promise<string | null>
 }
 
 interface TaskProviderProps {
@@ -95,6 +96,10 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
                 client_id: userState?.user_id
             }
+
+            await SecureStore.setItemAsync('service_id', taskForm.service_id!)
+            await SecureStore.setItemAsync('instant_book', taskForm.instant_booking!)
+
             const { response, data } = await request('POST', JSON.stringify(payload), 'tasks/create', authState?.token!)
             if (response.ok) {
                 setTasks(prevTasks => [{
@@ -118,6 +123,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         finally {
             setIsLoading(false)
         }
+    }
+
+    const handleRoute = async () => {
+        const instant_book = await SecureStore.getItemAsync('instant_book')
+        return instant_book
     }
 
     useEffect(() => {
@@ -181,7 +191,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         error,
         visible,
         setVisible,
-        handleSubmit
+        handleSubmit,
+        handleRoute
     }
     return (
         <TaskContext.Provider value={value}>
