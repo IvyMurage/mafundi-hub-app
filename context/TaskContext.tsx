@@ -64,7 +64,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         job_category: '',
         duration_label: ''
     })
-
+    const url = userState?.user_role === 'client' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10` :
+        `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10`
     const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
         const optimisticTaskId = Math.floor(Math.random() * 1000000)
         setTask({
@@ -118,12 +119,12 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             setIsLoading(false)
         }
     }
-    console.log('new task', tasks)
+
     useEffect(() => {
         const getMyJobs = async () => {
             try {
                 setLoading(true)
-                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10`, {
+                const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${authState?.token}` }
                 })
                 const data = await response.json()

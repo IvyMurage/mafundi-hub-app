@@ -6,11 +6,13 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/context/TaskContext'
+import { useAuth } from '@/context/AuthContext'
 
 const JobList = () => {
     const { tasks, setPageNumber } = useTask()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
+    const { userState } = useAuth()
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
@@ -22,7 +24,7 @@ const JobList = () => {
                         onPress={() => setVisible(!visible)}
                         style={[jobListStyle.jobText,
                         { textAlign: 'right' }]}>
-                        View Proposals
+                        {userState?.user_role === 'client' ? "View Proposals" : null}
                     </Text>
                     <View style={jobListStyle.jobBody}>
                         <Text style={
