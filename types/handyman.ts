@@ -9,3 +9,11 @@ export interface HandymanProps {
   description?: string | null;
   handyman_skills?: string | null;
 }
+
+export interface HandymanType {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+  location?: string;
+  user_rating: number;
+}

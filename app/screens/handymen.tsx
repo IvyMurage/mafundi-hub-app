@@ -7,6 +7,7 @@ import { Image } from 'expo-image'
 import Search from '@/components/search'
 import { HandymanProvider, useHandyman } from '@/context/HandymanContext'
 import Loader from '@/components/loader'
+import HandymanList from '@/components/handymanList'
 
 const Handymen = () => {
     const { loading } = useHandyman()
@@ -27,12 +28,17 @@ const Handymen = () => {
                         color={Colors.secondary}
                     />
                 </View>
-
+                <View>
+                    <Text>Best PLumbers in the</Text>
+                    <Text>Community</Text>
+                </View>
                 <View>
                     <Search handleChange={handleChange} placeholder='Search for Handyman' />
                 </View>
                 <View>
                     <Text>Recommended</Text>
+
+                    <HandymanList />
                 </View>
             </View>
             <Loader isLoading={loading!} />

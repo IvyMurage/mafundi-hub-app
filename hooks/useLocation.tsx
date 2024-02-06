@@ -25,8 +25,8 @@ export const useLocation = () => {
                     }))
                 }
             }
-            catch (error) {
-                console.error('Error fetching data:', error)
+            catch (error: any) {
+                console.error('Error fetching data:', error.message)
             }
         }
         getLocation()

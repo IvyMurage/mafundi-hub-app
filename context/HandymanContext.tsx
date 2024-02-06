@@ -1,9 +1,12 @@
 import { getItemAsync } from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
+import { HandymanType } from "@/types/handyman";
+
 
 interface HandymanProps {
     loading?: boolean
+    handymen?: HandymanType[]
 
 }
 interface HandymanProviderProps {
@@ -22,6 +25,7 @@ export const useHandyman = () => {
 export const HandymanProvider = ({ children }: HandymanProviderProps) => {
     const { authState } = useAuth()
     const [loading, setLoading] = useState<boolean>(false)
+    const [handymen, setHandymen] = useState<any[]>([])
 
     useEffect(() => {
         const getHandymen = async () => {
@@ -45,7 +49,21 @@ export const HandymanProvider = ({ children }: HandymanProviderProps) => {
                 }
 
                 if (response.ok) {
-                    console.log(data)
+                    setHandymen(data?.handymen?.map((item: {
+                        id: number | null;
+                        first_name: string | null;
+                        last_name: string | null;
+                        location: { city: string; county: string; country: string } | null;
+                        user_rating: number | null;
+                    }) => {
+                        return {
+                            id: item.id,
+                            first_name: item.first_name,
+                            last_name: item.last_name,
+                            location: `${item.location!.city}, ${item.location!.county}, ${item.location!.country}`,
+                            user_rating: item.user_rating
+                        }
+                    }))
                     setLoading(false)
                 }
             }
@@ -62,7 +80,8 @@ export const HandymanProvider = ({ children }: HandymanProviderProps) => {
     }, [])
 
     const value = {
-        loading
+        loading,
+        handymen
     }
     return (
         <HandymanContext.Provider value={value}>
