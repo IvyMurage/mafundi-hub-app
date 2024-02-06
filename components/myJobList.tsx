@@ -5,14 +5,11 @@ import Colors from '@/constants/Colors'
 import { FontAwesome6 } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
-import { useTask } from '@/context/TaskContext'
+import { TaskProvider, useTask } from '@/context/TaskContext'
 
 const JobList = () => {
-    // const { jobs } = useMyJob()
-    const { tasksState } = useTask()
-    // console.log(tasksState)
+    const { tasks, setPageNumber } = useTask()
     const [visible, setVisible] = useState<boolean>(false)
-    // console.log(jobs)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const renderMyJobs = ({ item }:
         {
@@ -61,17 +58,53 @@ const JobList = () => {
             </Pressable >
         )
     }
-
     return (
         <>
-            <FlatList
-                ref={jobRef}
-                data={tasksState || []}
-                renderItem={renderMyJobs}
-                style={{ width: '100%', height: '100%', padding: 10 }}
-                contentContainerStyle={{ paddingBottom: 120 }}
-            />
-            <Proposal visible={visible} setVisible={setVisible} />
+            <TaskProvider>
+
+
+                <FlatList
+                    ref={jobRef}
+                    data={tasks || []}
+                    renderItem={renderMyJobs}
+                    style={{ width: '100%', height: '100%', padding: 10 }}
+                    contentContainerStyle={{ paddingBottom: 120 }}
+                />
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                    position: 'absolute',
+                    top: '85%',
+                }}>
+                    <Pressable style={{
+                        alignSelf: 'flex-end',
+                        paddingBottom: 100,
+                        paddingHorizontal: 20,
+                    }} onPress={() => {
+                        setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
+                    }}>
+                        <Text style={{ color: Colors.secondary }}>
+                            Previous
+                        </Text>
+                    </Pressable>
+
+                    <Pressable style={{
+                        alignSelf: 'flex-end',
+                        paddingBottom: 100,
+                        paddingHorizontal: 20,
+                    }} onPress={() => {
+                        setPageNumber!((prevPage) => prevPage + 1)
+                    }}>
+                        <Text style={{ color: Colors.secondary }}>
+                            Next
+                        </Text>
+                    </Pressable>
+
+                </View>
+                <Proposal visible={visible} setVisible={setVisible} />
+            </TaskProvider>
         </>
     )
 }

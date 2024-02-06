@@ -1,20 +1,17 @@
-import { useMyJob } from "@/hooks/useMyJob";
-import { useTaskPost } from "@/hooks/useTask";
 import { JobPropType } from "@/types/job";
-import { TaskFormProps } from "@/types/task";
-import { FormikHelpers } from "formik";
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
 
 interface TaskProps {
-    tasksState?: JobPropType[],
-    isLoading?: boolean,
-    error?: string,
-    isError?: boolean,
-    visible?: boolean,
-    setVisible?: Dispatch<SetStateAction<boolean>>,
-    handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<any>
+    tasks?: JobPropType[],
+    setTasks?: Dispatch<SetStateAction<JobPropType[]>>,
+    loading?: boolean,
+    setPageNumber?: Dispatch<SetStateAction<number>>
 }
 
+interface TaskProviderProps {
+    children: React.ReactNode
+}
 const TaskContext = createContext<TaskProps>({})
 
 export const useTask = () => {
@@ -25,33 +22,71 @@ export const useTask = () => {
     return context
 }
 
-export const TaskProvider = ({ children }: any) => {
-    const { handleSubmit, isLoading, error, isError, visible, setVisible, task } = useTaskPost()
-    const { jobs } = useMyJob()
-    const [tasksState, setTasksState] = useState<JobPropType[]>([])
-    useEffect(() => {
-        // Add a new task
-        if (task) {
-            setTasksState(prevTasks => [...prevTasks, task]);
-        }
-    }, [task]); // Dependency on task only for adding new tasks
+export const TaskProvider = ({ children }: TaskProviderProps) => {
+
+    const { authState, userState } = useAuth()
+    const [tasks, setTasks] = useState<JobPropType[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
+    const [pageNumber, setPageNumber] = useState<number>(1)
 
     useEffect(() => {
-        // Set jobs as tasks
-        if (jobs) {
-            setTasksState(jobs);
+        const getMyJobs = async () => {
+            try {
+                setLoading(true)
+                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10`, {
+                    headers: { Authorization: `Bearer ${authState?.token}` }
+                })
+                const data = await response.json()
+                if (!response.ok) {
+                    let error;
+                    if (data.message) {
+                        error = data.message;
+                    } else if (data.error) {
+                        error = data.error;
+                    } else {
+                        error = response.statusText;
+                    }
+                    throw new Error(error);
+                }
+                console.log(data)
+                if (response.ok) {
+                    setTasks(data?.task?.map((item: {
+                        id: number | null;
+                        job_title: string | null;
+                        location: { city: string; county: string; country: string } | null;
+                        created_at: string | null;
+                        job_price: number | null;
+                        service_name: string | null;
+                        duration_label: string | null;
+                    }) => {
+                        return {
+                            id: item.id,
+                            job_title: item.job_title,
+                            job_location: `${item.location!.city}, ${item.location!.county}, ${item.location!.country}`,
+                            job_date: item.created_at,
+                            job_price: `ksh.${item.job_price}`,
+                            job_category: item.service_name,
+                            duration_label: item.duration_label
+                        }
+                    }))
+                }
+            }
+            catch (err: any) {
+                console.log(err.message)
+            }
+            finally {
+                setLoading(false)
+            }
         }
-    }, [jobs]); // Separate effect for jobs to reset tasks based on jobs
+        getMyJobs()
+    }, [pageNumber])
 
-    console.log("haha", tasksState)
+    console.log(pageNumber)
     const value = {
-        tasksState,
-        isLoading,
-        error,
-        isError,
-        visible,
-        setVisible,
-        handleSubmit
+        tasks,
+        setTasks,
+        loading,
+        setPageNumber
     }
     return (
         <TaskContext.Provider value={value}>

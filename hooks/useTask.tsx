@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/AuthContext"
+import { useTask } from "@/context/TaskContext"
 import { JobPropType } from "@/types/job"
 import { TaskFormProps } from "@/types/task"
 import { request } from "@/utils/executePostRequest"
@@ -19,6 +20,7 @@ export const useTaskProps = () => {
     return { taskForm, setTaskForm }
 }
 export const useTaskPost = () => {
+    const { tasksState, setTasksState } = useTask() as { tasksState: JobPropType[], setTasksState: React.Dispatch<React.SetStateAction<JobPropType[]>> }
     const [isLoading, setLoading] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
@@ -34,6 +36,18 @@ export const useTaskPost = () => {
         duration_label: ''
     })
     const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
+        const optimisticTaskId = Math.floor(Math.random() * 1000000)
+        setTask({
+            id: optimisticTaskId,
+            job_title: taskForm.job_title,
+            job_location: taskForm.location_attributes,
+            job_date: new Date().toISOString(),
+            job_price: `ksh.${taskForm.job_price}`,
+            job_category: taskForm.service_id,
+            duration_label: taskForm.duration_label
+        })
+        setTasksState(prevTasks => [...prevTasks, task])
+console.log('bla',tasksState)
         try {
             setLoading(true)
             const location = taskForm.location_attributes?.split(', ')
@@ -62,8 +76,14 @@ export const useTaskPost = () => {
                     job_category: data.service_name,
                     duration_label: data.duration_label
                 })
+                setTasksState(prevTasks => prevTasks.map(task => task.id === optimisticTaskId ? data : task))
                 resetForm.resetForm()
                 setVisible(true)
+            }
+            else {
+                setTasksState(prevTasks => prevTasks.filter(task => task.id !== optimisticTaskId))
+                setIsError(true)
+                throw new Error('Task creation failed')
             }
         }
         catch (error: any) {

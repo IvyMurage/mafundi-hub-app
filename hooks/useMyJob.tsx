@@ -6,16 +6,16 @@ export const useMyJob = () => {
     const { authState, userState } = useAuth()
     const [jobs, setJobs] = useState<JobPropType[]>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [pageNumber, setPageNumber] = useState<number>(1)
 
     useEffect(() => {
         const getMyJobs = async () => {
             try {
                 setLoading(true)
-                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}`, {
+                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10`, {
                     headers: { Authorization: `Bearer ${authState?.token}` }
                 })
                 const data = await response.json()
-                // console.log(data)
                 if (!response.ok) {
                     let error;
                     if (data.message) {
@@ -27,7 +27,6 @@ export const useMyJob = () => {
                     }
                     throw new Error(error);
                 }
-
 
                 if (response.ok) {
                     setJobs(data?.task?.map((item: {
@@ -61,6 +60,6 @@ export const useMyJob = () => {
             }
         }
         getMyJobs()
-    }, [])
-    return {jobs, loading}
+    }, [pageNumber])
+    return { jobs, loading, pageNumber, setPageNumber }
 }

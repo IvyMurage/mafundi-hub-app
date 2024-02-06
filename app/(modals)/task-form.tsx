@@ -13,7 +13,6 @@ import { Octicons } from '@expo/vector-icons/'
 import CustomAlert from '@/components/customAlert'
 import { useTaskPost, useTaskProps } from '@/hooks/useTask'
 import { useRouter } from 'expo-router'
-import { useTask } from '@/context/TaskContext'
 
 
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
@@ -22,7 +21,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     const services = useService()
     const locations = useLocation()
     const { taskForm } = useTaskProps()
-    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTask()
+    const { handleSubmit, isLoading, error, isError, visible, setVisible } = useTaskPost()
 
     return (
         <Formik

@@ -19,7 +19,6 @@ export const useServiceCategory = () => {
                     headers: { Authorization: `Bearer ${authState?.token}` }
                 })
                 const data = await response.json()
-                console.log(data)
                 if (!response.ok) throw new Error(data.message)
                 if (response.ok) {
                     setCategories(data.map((item: {
