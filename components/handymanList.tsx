@@ -25,10 +25,10 @@ const HandymanList = () => {
                         borderBottomWidth: 1,
                         borderBottomColor: Colors.light,
                         width: '100%',
-                        paddingHorizontal:8
+                        paddingHorizontal: 8
                     }}>
                         <Image source={require('@/assets/images/placeholder.jpg')}
-                            style={{ width: 100, height: 100, borderRadius: 100 , alignSelf:'center'}} />
+                            style={{ width: 100, height: 100, borderRadius: 100, alignSelf: 'center' }} />
                         <Text style={{
                             fontSize: 14,
                             letterSpacing: 1.2,
@@ -41,7 +41,7 @@ const HandymanList = () => {
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center'
-                        
+
                         }}>
                             <FontAwesome6 name="location-dot" size={16} color={Colors.secondary} />
 
@@ -62,7 +62,7 @@ const HandymanList = () => {
                         justifyContent: 'flex-end',
                         width: '100%',
                         paddingHorizontal: 8,
-                        paddingTop:5
+                        paddingTop: 5
                     }}>
                         <FontAwesome6 name="star" size={16} color={Colors.secondary} />
 
@@ -85,6 +85,9 @@ const HandymanList = () => {
         <>
             <FlatList
                 data={handymen || []}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                key={2}
                 renderItem={renderHandymen}
                 style={{ width: '100%', height: '100%', padding: 10 }}
                 contentContainerStyle={{ paddingBottom: 120 }}

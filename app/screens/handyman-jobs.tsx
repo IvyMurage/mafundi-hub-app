@@ -31,7 +31,8 @@ const HandymaJobs = () => {
                     <JobList />
                 </View>
                 <Loader isLoading={loading!} />
-            </TaskProvider></>
+            </TaskProvider>
+        </>
     )
 }
 

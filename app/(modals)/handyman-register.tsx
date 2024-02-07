@@ -117,8 +117,8 @@ const HandymanRegister = () => {
                                         autoCapitalize='none'
                                         placeholder='Years of  Experience (e.g 1)'
                                         value={values.year_of_experience!}
-                                        onChangeText={handleChange('years_of_experience')}
-                                        onBlur={() => setFieldTouched('years_of_experience')}
+                                        onChangeText={handleChange('year_of_experience')}
+                                        onBlur={() => setFieldTouched('year_of_experience')}
                                         style={[defaultStyles.inputTextField, handymanRegisterStyles.textInput]}
                                     />
 

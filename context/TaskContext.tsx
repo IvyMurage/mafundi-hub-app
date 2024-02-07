@@ -149,6 +149,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                     }
                     throw new Error(error);
                 }
+                console.log("Data", data)
                 if (response.ok) {
                     setTasks(data?.task?.map((item: {
                         id: number | null;
