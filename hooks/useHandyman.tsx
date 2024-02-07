@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { HandymanProps } from "@/types/handyman"
 import { FormikHelpers } from "formik"
 import { request } from "@/utils/executePostRequest"
+import { setItemAsync } from "expo-secure-store"
 export const useHandymanUpdate = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [alertVisible, setAlertVisible] = useState<boolean>(false)
@@ -158,8 +159,9 @@ export const useHandymanPost = () => {
                 user_id: userState?.id
             }
 
-            const response = await request('POST', JSON.stringify(payload), 'handymen/create', authState?.token!)
+            const { response, data } = await request('POST', JSON.stringify(payload), 'handymen/create', authState?.token!)
             if (response) {
+                await setItemAsync('handyman_id', data?.handyman?.id.toString())
                 setAlertVisible(true)
                 resetForm.resetForm()
             }

@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Colors from '@/constants/Colors';
 import * as FileSystem from 'expo-file-system'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { getItemAsync } from 'expo-secure-store';
 
 
 const imgDir = FileSystem.documentDirectory + 'images/';
@@ -65,29 +66,35 @@ export default function ImagePickerExample() {
         setImages([...images, dest])
 
     }
+    // update_upload
 
     const deleteImage = async (uri: string) => {
         await FileSystem.deleteAsync(uri)
         setImages(images.filter(i => i != uri))
     }
     const uplaodImage = async (uri: string) => {
+        const handyman_id = await getItemAsync('handyman_id')
         setLoading(true)
         try {
             const formData = new FormData();
-            formData.append('file', uri)
-            const response = await fetch('https://api.imgur.com/3/image', {
+            formData.append('work_photos', {
+                uri: uri,
+                name: 'image.jpg', 
+                type: 'image/jpeg',
+            } as any);
+            console.log(formData)
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/work_photos/?handyman_id=${handyman_id}`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': 'Client-ID 4b5d8f1b8a7d0e8'
-                },
                 body: formData
             })
             const data = await response.json()
+            console.log(data)
             if (response.ok) {
                 Alert.alert('Image uploaded successfully')
             }
         }
         catch (error) {
+            console.log(error)
             Alert.alert('Image upload failed')
         }
 
