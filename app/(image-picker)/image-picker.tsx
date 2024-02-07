@@ -88,9 +88,8 @@ export default function ImagePickerExample() {
                 body: formData
             })
             const data = await response.json()
-            console.log(data)
             if (response.ok) {
-                Alert.alert('Image uploaded successfully')
+                Alert.alert(data?.message)
             }
         }
         catch (error) {
