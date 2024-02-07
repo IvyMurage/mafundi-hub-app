@@ -13,7 +13,7 @@ const HandymanList = () => {
             <Pressable>
                 <View style={{
                     flex: 1,
-                    width: 200,
+                    width: 180,
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: Colors.primary,
@@ -28,7 +28,7 @@ const HandymanList = () => {
                         paddingHorizontal: 8
                     }}>
                         <Image source={require('@/assets/images/placeholder.jpg')}
-                            style={{ width: 100, height: 100, borderRadius: 100, alignSelf: 'center' }} />
+                            style={{ width: 80, height: 80, borderRadius: 80, alignSelf: 'center' }} />
                         <Text style={{
                             fontSize: 14,
                             letterSpacing: 1.2,
@@ -43,7 +43,7 @@ const HandymanList = () => {
                             alignItems: 'center'
 
                         }}>
-                            <FontAwesome6 name="location-dot" size={16} color={Colors.secondary} />
+                            <FontAwesome6 name="location-dot" size={14} color={Colors.secondary} />
 
                             <Text style={{
                                 fontSize: 12,
@@ -89,7 +89,7 @@ const HandymanList = () => {
                 numColumns={2}
                 key={2}
                 renderItem={renderHandymen}
-                style={{ width: '100%', height: '100%', padding: 10 }}
+                style={{ width: '100%', height: '100%' }}
                 contentContainerStyle={{ paddingBottom: 120 }}
             />
         </>

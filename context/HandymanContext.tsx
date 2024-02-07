@@ -30,7 +30,7 @@ export const HandymanProvider = ({ children }: HandymanProviderProps) => {
     useEffect(() => {
         const getHandymen = async () => {
             const service_id = await getItemAsync('service_id')
-
+            setLoading(true)
             try {
                 const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/handymen?service_id=${service_id}`, {
                     headers: { Authorization: `Bearer ${authState?.token}` }

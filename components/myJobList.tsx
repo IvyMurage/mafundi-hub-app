@@ -7,7 +7,6 @@ import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/context/TaskContext'
 import { useAuth } from '@/context/AuthContext'
-import { Image } from 'expo-image'
 import NotFound from './not-found'
 
 const JobList = () => {
