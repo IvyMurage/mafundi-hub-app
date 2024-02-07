@@ -1,11 +1,27 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image, TextInput, Pressable } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const ProposalForm = () => {
     return (
-        <View>
-            <Text>ProposalForm</Text>
-        </View>
+        <SafeAreaView>
+            <View>
+                <Image source={require('@/assets/images/job-proposal.svg')} style={{ width: 300, height: 300 }} />
+
+                <Text>Send Your job proposal</Text>
+                <TextInput
+                    placeholder='Description(e.g I am a plumber...)'
+                    numberOfLines={4}
+                    multiline={true}
+                    maxLength={300}
+                />
+
+                <Pressable>
+                    <Text>Send Proposal</Text>
+                </Pressable>
+            </View>
+        </SafeAreaView>
+
     )
 }
 
