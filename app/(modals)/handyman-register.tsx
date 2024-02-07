@@ -178,7 +178,7 @@ const HandymanRegister = () => {
                                 message="You have successfully registered as a handyman"
                                 onClose={() => {
                                     setAlertVisible(false)
-                                    router.push('/(modals)/login')
+                                    router.push('/(image-picker)/image-picker')
                                 }}
                             />
                         </View >

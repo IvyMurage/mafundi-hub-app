@@ -61,7 +61,7 @@ function RootLayoutNav() {
   }
 
   const handleRight = () => {
-    router.push('/(tabs)/')
+    router.push('/(modals)/login')
   }
   return (
     <Stack initialRouteName='(modals)/login'
@@ -169,7 +169,7 @@ const headerStyles = StyleSheet.create({
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0,
-    
+
   },
   headerRight: {
     color: Colors.secondary,
