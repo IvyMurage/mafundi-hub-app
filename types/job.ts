@@ -1,5 +1,5 @@
 export type JobPropType = {
-  id?: number ;
+  id?: number | null;
   job_title: string | null;
   job_location: string | null;
   job_date: string | null;

@@ -490,7 +490,7 @@ export const jobListStyle = StyleSheet.create({
   jobText: {
     fontSize: 14,
     fontFamily: "roboto",
-    letterSpacing: 1.2,
+    letterSpacing: 1,
     padding: 5,
   },
   proposalContainer: {

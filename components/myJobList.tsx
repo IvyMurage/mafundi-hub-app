@@ -2,7 +2,7 @@ import { View, Text, Pressable, FlatList, } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
-import {  FontAwesome5 } from '@expo/vector-icons'
+import {  MaterialIcons } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/context/TaskContext'
@@ -55,7 +55,7 @@ const JobList = () => {
                             justifyContent: 'flex-start',
                             alignItems: 'center'
                         }}>
-                            <FontAwesome5 name="location-dot" size={16} color={Colors.secondary} />
+                            <MaterialIcons name="location-pin" size={16} color={Colors.secondary} />
                             <Text style={[jobListStyle.jobText, { fontSize: 10 }]}>
                                 {item.job_location}
                             </Text>
