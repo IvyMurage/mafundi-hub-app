@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams } from 'expo-router'
 import { StyleSheet } from 'react-native'
@@ -8,6 +8,7 @@ import Loader from '@/components/loader'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
 
 const Job = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -39,6 +40,91 @@ const Job = () => {
                             <Text style={jobStyle.location}>{task.task_location}</Text>
                         </View>
                     </View>
+                    <ScrollView>
+                        <View style={jobStyle.lowHeader}>
+                            <Text style={jobStyle.lowHeaderText}>{task.job_price}</Text>
+                            <Text style={jobStyle.lowHeaderText}>{task.duration_label}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={{
+                                fontSize: 16,
+                                fontFamily: 'roboto-medium',
+                                letterSpacing: 1.8,
+                                color: Colors.dark,
+                                textAlign: 'left',
+                                padding: 10
+                            }}>Job Description</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                fontFamily: 'roboto-light',
+                                letterSpacing: 1.8,
+                                color: Colors.dark,
+                                textAlign: 'justify',
+                                padding: 10
+                            }}>{task.task_description}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={{
+                                fontSize: 16,
+                                fontFamily: 'roboto-medium',
+                                letterSpacing: 1.8,
+                                color: Colors.dark,
+                                textAlign: 'left',
+                                padding: 10
+                            }}>Job Responsibilities</Text>
+                            <View>
+                                {task.task_responsibilities?.length === 0 ?
+                                    <Text style={{
+                                        fontSize: 14,
+                                        fontFamily: 'roboto-light',
+                                        letterSpacing: 1.8,
+                                        color: Colors.dark,
+                                        textAlign: 'justify',
+                                        padding: 10
+                                    }}>No responsibilities</Text>
+                                    :
+                                    <View>
+                                        <Text style={{
+                                            fontSize: 14,
+                                            fontFamily: 'roboto-light',
+                                            letterSpacing: 1.8,
+                                            color: Colors.dark,
+                                            textAlign: 'justify',
+                                            padding: 10
+                                        }}>{`\u2022 ${task?.task_responsibilities?.map(item => {
+                                            return item
+                                        })}`}</Text>
+                                    </View>
+                                }
+                            </View>
+                        </View>
+
+                        <View>
+                            <Pressable style={
+                                {
+                                    backgroundColor: Colors.primary,
+                                    width: '100%',
+                                    borderRadius: 10,
+                                    padding: 10,
+                                    marginVertical: 20
+                                }
+
+                            }>
+                                <Text style={{
+                                    fontSize: 20,
+                                    fontFamily: 'roboto-bold',
+                                    letterSpacing: 1.8,
+                                    color: Colors.lighter,
+                                    textAlign: 'center',
+                                    padding: 10
+                                }}>Apply</Text>
+                            </Pressable>
+                        </View>
+                    </ScrollView>
+
+
                 </Animated.View>
             </SafeAreaView>
             <Loader isLoading={loading} />
@@ -62,9 +148,26 @@ const jobStyle = StyleSheet.create({
         alignItems: 'center',
         top: 0,
         paddingVertical: 10,
-        width: '100%',
-        left: '50%',
+        width: '90%',
         height: 150,
+    },
+    lowHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: 10,
+        marginTop: 10,
+    },
+    lowHeaderText: {
+        fontSize: 12,
+        fontFamily: 'roboto-medium',
+        letterSpacing: 1.8,
+        color: Colors.lighter,
+        textAlign: 'center',
+        backgroundColor: Colors.primary,
+        borderRadius: 10,
+        padding: 10,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -87,14 +190,14 @@ const jobStyle = StyleSheet.create({
         textAlign: 'center'
 
     },
-
     location: {
         fontSize: 12,
         fontFamily: 'roboto-light',
         letterSpacing: 1.8,
         color: Colors.lighter,
         textAlign: 'center',
-        marginLeft: 5
+        marginLeft: 5,
+        marginBottom: 10
     }
 })
 

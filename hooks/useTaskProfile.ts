@@ -41,7 +41,7 @@ export const useTaskFetch = (taskId: string) => {
           setTask({
             job_title: data.job_title,
             task_description: data.task_description,
-            job_price: data.job_price,
+            job_price: `Ksh.${data.job_price}`,
             duration_label: data.duration_label,
             service_name: data.service_name,
             task_responsibilities: data.task_responsibilities,
