@@ -2,25 +2,32 @@ import { View, Text, Pressable, FlatList, } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
-import { FontAwesome6 } from '@expo/vector-icons'
+import {  FontAwesome5 } from '@expo/vector-icons'
 import Proposal from '@/app/screens/proposal'
 import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/context/TaskContext'
 import { useAuth } from '@/context/AuthContext'
 import NotFound from './not-found'
+import { useRouter } from 'expo-router'
 
 const JobList = () => {
     const { tasks, setPageNumber } = useTask()
+    const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const { userState } = useAuth()
-    console.log("Tasks", tasks)
+
+    const handlePress = (jobId: number) => {
+        if (userState?.user_role === 'handyman') {
+            router.push(`/job-listing/${jobId}`)
+        }
+    }
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
         }) => {
         return (
-            <Pressable onPress={() => console.log("You can view the proposals")}>
+            <Pressable onPress={() => handlePress(item.id!)}>
                 <View key={item.id} style={jobListStyle.jobContainer}>
                     <Text
                         onPress={() => setVisible(!visible)}
@@ -48,7 +55,7 @@ const JobList = () => {
                             justifyContent: 'flex-start',
                             alignItems: 'center'
                         }}>
-                            <FontAwesome6 name="location-dot" size={16} color={Colors.secondary} />
+                            <FontAwesome5 name="location-dot" size={16} color={Colors.secondary} />
                             <Text style={[jobListStyle.jobText, { fontSize: 10 }]}>
                                 {item.job_location}
                             </Text>

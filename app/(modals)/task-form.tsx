@@ -14,7 +14,6 @@ import CustomAlert from '@/components/customAlert'
 import { useRouter } from 'expo-router'
 import { TaskProvider, useTask, useTaskProps } from '@/context/TaskContext'
 
-
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
     const router = useRouter()
     const { isVisible, setIsVisible } = props

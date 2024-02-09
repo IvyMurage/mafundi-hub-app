@@ -375,6 +375,9 @@ export const categoryListStyles = StyleSheet.create({
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: Colors.light,
   },
   categoryText: {
     fontSize: 14,
@@ -433,8 +436,8 @@ export const clientHomeStyles = StyleSheet.create({
     letterSpacing: 1,
   },
   headerText: {
-    fontSize: 14,
-    fontFamily: "poppins-bold",
+    fontSize: 20,
+    fontFamily: "poppins-semibold",
     color: Colors.lighter,
     marginBottom: 10,
     letterSpacing: 1,
@@ -442,6 +445,10 @@ export const clientHomeStyles = StyleSheet.create({
   },
   catergoryHeader: {
     paddingHorizontal: 20,
+    fontSize: 16,
+    fontFamily: "poppins-semibold",
+    letterSpacing: 1.2,
+    color: Colors.lighter,
   },
 });
 

@@ -10,6 +10,7 @@ import { CategoryPropType } from '@/types/category'
 import { clientHomeStyles } from '@/constants/styles'
 import { iconView } from '@/constants/icons'
 import { TaskProvider } from '@/context/TaskContext'
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
 
 
 
@@ -40,8 +41,8 @@ const ClientHome = () => {
     )
     return (
         <TaskProvider>
-            <SafeAreaView style={[clientHomeStyles.safeareaView]}>
-                <View style={[clientHomeStyles.container]}>
+            < SafeAreaView style={[clientHomeStyles.safeareaView]}>
+                <Animated.View entering={FadeInRight} exiting={FadeOutLeft} style={[clientHomeStyles.container]}>
                     <View style={[clientHomeStyles.notification]}>
                         <Image
                             style={{ width: 40, height: 40, borderRadius: 40 }}
@@ -63,14 +64,14 @@ const ClientHome = () => {
                     </View>
 
                     <View>
-                        <Text style={[clientHomeStyles.headerText, clientHomeStyles.catergoryHeader]}>Categories</Text>
+                        <Text style={[clientHomeStyles.catergoryHeader]}>Categories</Text>
                         <ScrollView horizontal={true} contentContainerStyle={{}}>
                             {iconListView}
                         </ScrollView>
                     </View>
 
                     <CategoryList categories={categories} />
-                </View>
+                </Animated.View>
             </SafeAreaView>
         </TaskProvider>
     )
