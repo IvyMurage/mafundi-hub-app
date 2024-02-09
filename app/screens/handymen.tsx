@@ -42,7 +42,7 @@ const Handymen = () => {
                         <Image source={require('@/assets/images/placeholder.jpg')}
                             style={{ width: 50, height: 50, borderRadius: 50 }} />
                         <Text style={{
-                            fontFamily: 'poppins-semibold',
+                            fontFamily: 'roboto-medium',
                             letterSpacing: 1.4,
                             fontSize: 16,
                             color: Colors.secondary
@@ -57,14 +57,14 @@ const Handymen = () => {
                         marginVertical: 10,
                     }}>
                         <Text style={{
-                            fontFamily: 'poppins-semibold',
+                            fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
                             fontSize: 16,
                             paddingHorizontal: 16,
                             color: Colors.primary
                         }}>Best Plumbers in the</Text>
                         <Text style={{
-                            fontFamily: 'poppins-semibold',
+                            fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
                             fontSize: 16,
                             paddingHorizontal: 16,
@@ -77,7 +77,7 @@ const Handymen = () => {
                     </View>
                     <View>
                         <Text style={{
-                            fontFamily: 'poppins-semibold',
+                            fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
                             fontSize: 15,
                             paddingHorizontal: 16,

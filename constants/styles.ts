@@ -14,14 +14,14 @@ export const defaultStyles = StyleSheet.create({
   loginSubHeader: {
     color: Colors.lighter,
     fontSize: 24,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
     letterSpacing: 2.4,
   },
 
   loginHeader: {
     color: Colors.secondary,
     fontSize: 28,
-    fontFamily: "poppins-bold",
+    fontFamily: "roboto-bold",
     letterSpacing: 2.88,
   },
 
@@ -34,14 +34,14 @@ export const defaultStyles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     backgroundColor: Colors.light,
-    fontFamily: "poppins",
+    fontFamily: "roboto",
   },
 
   authOption: {
     fontSize: 14,
     letterSpacing: 1.68,
     color: Colors.lighter,
-    fontFamily: "poppins",
+    fontFamily: "roboto",
   },
 
   authButton: {
@@ -58,11 +58,11 @@ export const defaultStyles = StyleSheet.create({
     textAlign: "center",
     padding: 10,
     letterSpacing: 1.8,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
   },
   errorText: {
     color: "red",
-    fontFamily: "poppins",
+    fontFamily: "roboto",
     fontSize: 14,
     letterSpacing: 1.2,
     textAlign: "left",
@@ -79,7 +79,7 @@ export const ClientRegisterStyles = StyleSheet.create({
     overflow: "scroll",
   },
   titleText: {
-    fontFamily: "poppins-medium",
+    fontFamily: "roboto-medium",
     fontSize: 14,
     letterSpacing: 1.6,
     textAlign: "center",
@@ -117,7 +117,7 @@ export const ClientRegisterStyles = StyleSheet.create({
   },
   submitBtnText: {
     color: Colors.lighter,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
     fontSize: 18,
     letterSpacing: 1.8,
     textAlign: "center",
@@ -204,7 +204,7 @@ export const HandymanProfileStyles = StyleSheet.create({
   },
   submitBtnText: {
     color: Colors.lighter,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
     fontSize: 18,
     letterSpacing: 1.8,
     textAlign: "center",
@@ -259,7 +259,7 @@ export const handymanRegisterStyles = StyleSheet.create({
   },
   submitBtnText: {
     color: Colors.lighter,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
     fontSize: 18,
     letterSpacing: 1.8,
     textAlign: "center",
@@ -316,7 +316,7 @@ export const taskFormStyles = StyleSheet.create({
     paddingBottom: 50,
   },
   headerTextStyle: {
-    fontFamily: "poppins",
+    fontFamily: "roboto",
     fontSize: 16,
     fontWeight: "bold",
     letterSpacing: 1.8,
@@ -336,7 +336,7 @@ export const taskFormStyles = StyleSheet.create({
   },
   inputField: {
     width: 180,
-    fontFamily: "poppins",
+    fontFamily: "roboto",
     fontSize: 14,
     height: 60,
     borderRadius: 10,
@@ -351,7 +351,7 @@ export const taskFormStyles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     borderColor: Colors.secondary,
-    fontFamily: "poppins",
+    fontFamily: "roboto",
     marginBottom: 10,
     letterSpacing: 1.2,
   },
@@ -377,15 +377,15 @@ export const categoryListStyles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 10,
+    padding: 10,
     borderColor: Colors.light,
   },
   categoryText: {
     fontSize: 14,
-    fontFamily: "poppins-medium",
+    fontFamily: "roboto-medium",
     letterSpacing: 1.2,
     textAlign: "center",
     color: Colors.lighter,
-    marginTop: 12,
   },
 });
 
@@ -430,14 +430,14 @@ export const clientHomeStyles = StyleSheet.create({
   },
   iconText: {
     fontSize: 14,
-    fontFamily: "poppins-medium",
+    fontFamily: "roboto-medium",
     color: Colors.secondary,
     marginBottom: 10,
     letterSpacing: 1,
   },
   headerText: {
     fontSize: 20,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-bold",
     color: Colors.lighter,
     marginBottom: 10,
     letterSpacing: 1,
@@ -446,7 +446,7 @@ export const clientHomeStyles = StyleSheet.create({
   catergoryHeader: {
     paddingHorizontal: 20,
     fontSize: 16,
-    fontFamily: "poppins-semibold",
+    fontFamily: "roboto-medium",
     letterSpacing: 1.2,
     color: Colors.lighter,
   },
@@ -489,7 +489,7 @@ export const jobListStyle = StyleSheet.create({
   },
   jobText: {
     fontSize: 14,
-    fontFamily: "poppins",
+    fontFamily: "roboto",
     letterSpacing: 1.2,
     padding: 5,
   },

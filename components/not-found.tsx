@@ -9,7 +9,7 @@ const NotFound = () => {
             alignItems: 'center'
         }}>
             <Image source={require('@/assets/images/sorry.svg')} style={{ width: 300, height: 300 }} />
-            <Text style={{ fontFamily: 'poppins-medium', letterSpacing: 1.2, fontSize: 16, textAlign: 'center' }}>
+            <Text style={{ fontFamily: 'roboto-medium', letterSpacing: 1.2, fontSize: 16, textAlign: 'center' }}>
                 No Tasks Found
             </Text>
         </View>

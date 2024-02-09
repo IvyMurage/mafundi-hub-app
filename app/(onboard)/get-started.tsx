@@ -46,21 +46,21 @@ const styles = StyleSheet.create({
     },
     mafundi: {
         fontSize: 30,
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         letterSpacing: 3.6,
         color: Colors.secondary
 
     },
     hub: {
         color: Colors.lighter,
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         fontSize: 30,
         fontStyle: 'normal',
         letterSpacing: 3.6,
     },
     title: {
         fontSize: 18,
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         letterSpacing: 2.4,
         color: '#FEFEFE'
 
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         letterSpacing: 1.6,
         textAlign: 'center',
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
     }
 })

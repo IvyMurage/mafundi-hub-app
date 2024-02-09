@@ -40,14 +40,14 @@ const JobList = () => {
                             [jobListStyle.jobText,
                             {
                                 fontSize: 18,
-                                fontFamily: "poppins-bold",
+                                fontFamily: "roboto-bold",
                                 letterSpacing: 1.8
                             }]}>
                             {item?.job_title}
                         </Text>
                         <Text style={
                             [jobListStyle.jobText,
-                            { fontFamily: 'poppins-medium' }]}>
+                            { fontFamily: 'roboto-medium' }]}>
                             {item?.job_category}
                         </Text>
                         <View style={{

@@ -39,7 +39,7 @@ const authOptionStyles = StyleSheet.create({
 
     },
     title: {
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         fontSize: 30,
         letterSpacing: 3.6
     },
@@ -47,7 +47,7 @@ const authOptionStyles = StyleSheet.create({
     authText: {
         color: Colors.lighter,
         textAlign: 'center',
-        fontFamily: 'poppins-medium',
+        fontFamily: 'roboto-medium',
         fontSize: 20,
         letterSpacing: 2
 
@@ -67,14 +67,14 @@ const authOptionStyles = StyleSheet.create({
     authButtonText: {
         color: Colors.lighter,
         textAlign: 'center',
-        fontFamily: 'poppins-semibold',
+        fontFamily: 'roboto-medium',
         fontSize: 16,
         letterSpacing: 2,
     },
     authSubText: {
         color: Colors.lighter,
         textAlign: 'center',
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         padding: 20,
         fontSize: 14,
         letterSpacing: 1.4

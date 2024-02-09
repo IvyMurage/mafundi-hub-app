@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
     alertMessage: {
         fontSize: 14,
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         letterSpacing: 1.2,
         marginBottom: 20,
     },
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     closeButtonText: {
         color: Colors.lighter,
         fontWeight: 'bold',
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         letterSpacing: 1.2,
     },
 });

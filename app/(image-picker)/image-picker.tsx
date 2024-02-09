@@ -166,14 +166,14 @@ const imagePickerStyles = StyleSheet.create({
         borderRadius: 12
     },
     pickerBtnText: {
-        fontFamily: 'poppins-semibold',
+        fontFamily: 'roboto-medium',
         fontSize: 14,
         letterSpacing: 1.8,
         textAlign: 'left',
         color: Colors.lighter
     },
     title: {
-        fontFamily: 'poppins-semibold',
+        fontFamily: 'roboto-medium',
         fontSize: 16,
         letterSpacing: 1.8,
         textAlign: 'center',
@@ -192,7 +192,7 @@ const imagePickerStyles = StyleSheet.create({
     },
     imageText: {
         color: Colors.lighter,
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.8,
     }

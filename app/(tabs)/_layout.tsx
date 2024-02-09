@@ -69,7 +69,7 @@ export default function TabLayout() {
         },
         tabBarInactiveTintColor: Colors.dark,
         tabBarLabelStyle: {
-          fontFamily: 'poppins-semibold',
+          fontFamily: 'roboto-medium',
           fontSize: 10,
           letterSpacing: 1.2,
           textAlign: 'center',
@@ -84,7 +84,7 @@ export default function TabLayout() {
           tabBarLabel: "Home",
           headerTitle: `${userState?.user_role === 'client' ? null : 'Mafundi Jobs'}`,
           headerTitleStyle: {
-            fontFamily: 'poppins-medium',
+            fontFamily: 'roboto-medium',
             fontSize: 16,
             letterSpacing: 1.8,
             color: Colors.lighter,
@@ -109,7 +109,7 @@ export default function TabLayout() {
           headerShown: true,
           headerTitle: 'My Jobs',
           headerTitleStyle: {
-            fontFamily: 'poppins-medium',
+            fontFamily: 'roboto-medium',
             fontSize: 16,
             letterSpacing: 1.8,
             color: Colors.lighter,
@@ -143,7 +143,7 @@ export default function TabLayout() {
           headerShown: true,
           headerTitle: 'Edit Profile',
           headerTitleStyle: {
-            fontFamily: 'poppins-medium',
+            fontFamily: 'roboto-medium',
             fontSize: 16,
             letterSpacing: 1.8,
             color: Colors.lighter,
@@ -172,7 +172,7 @@ const headerStyles = StyleSheet.create({
   headerRight: {
     color: Colors.secondary,
     fontSize: 16,
-    fontFamily: 'poppins-medium',
+    fontFamily: 'roboto-medium',
     letterSpacing: 1.8
   },
   headerStyle: {

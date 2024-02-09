@@ -34,7 +34,7 @@ const HandymanList = () => {
                             <Text style={{
                                 fontSize: 14,
                                 letterSpacing: 1.2,
-                                fontFamily: 'poppins-medium',
+                                fontFamily: 'roboto-medium',
                                 color: Colors.lighter
                             }}>
                                 {item.first_name} {item.last_name}
@@ -50,7 +50,7 @@ const HandymanList = () => {
                                 <Text style={{
                                     fontSize: 12,
                                     letterSpacing: 1.2,
-                                    fontFamily: 'poppins',
+                                    fontFamily: 'roboto',
                                     color: Colors.lighter,
                                     paddingLeft: 5
 
@@ -71,7 +71,7 @@ const HandymanList = () => {
                             <Text style={{
                                 fontSize: 14,
                                 letterSpacing: 1.2,
-                                fontFamily: 'poppins',
+                                fontFamily: 'roboto',
                                 color: Colors.lighter,
                                 paddingLeft: 5
 

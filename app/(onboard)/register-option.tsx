@@ -81,7 +81,7 @@ const registerStyles = StyleSheet.create({
         backgroundColor: Colors.primary
     },
     title: {
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         fontSize: 18,
         letterSpacing: 2.16,
         textAlign: 'center',
@@ -101,7 +101,7 @@ const registerStyles = StyleSheet.create({
     registerBtnText: {
         color: Colors.lighter,
         textAlign: 'center',
-        fontFamily: 'poppins-bold',
+        fontFamily: 'roboto-bold',
         fontSize: 18,
         letterSpacing: 2,
         paddingTop: 12

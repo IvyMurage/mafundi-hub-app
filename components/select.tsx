@@ -66,13 +66,13 @@ const selectStyles = StyleSheet.create({
         justifyContent: 'center'
     },
     dropdownButtonText: {
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.8,
         textAlign: 'left'
     },
     dropDownText: {
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.8,
         textAlign: 'left'

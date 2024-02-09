@@ -72,7 +72,7 @@ const SignUp = () => {
                                 </Text>
                             </Text>
                             <Text style={{
-                                fontFamily: 'poppins',
+                                fontFamily: 'roboto',
                                 letterSpacing: 1.4,
                                 color: Colors.lighter,
                                 alignSelf: 'flex-start',

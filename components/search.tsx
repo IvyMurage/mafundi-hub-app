@@ -32,7 +32,7 @@ const searchStyles = StyleSheet.create({
 
     container: {
         backgroundColor: 'white',
-        fontFamily: 'poppins',
+        fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.2,
         padding: 10,
