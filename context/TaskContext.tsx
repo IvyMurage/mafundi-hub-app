@@ -5,6 +5,7 @@ import { request } from "@/utils/executePostRequest";
 import { TaskFormProps } from "@/types/task";
 import { FormikHelpers } from "formik";
 import * as SecureStore from 'expo-secure-store'
+import { useRouter } from "expo-router";
 
 interface TaskProps {
     tasks?: JobPropType[],
@@ -47,7 +48,7 @@ export const useTaskProps = () => {
     return { taskForm, setTaskForm }
 }
 export const TaskProvider = ({ children }: TaskProviderProps) => {
-
+    const router = useRouter()
     const { authState, userState } = useAuth()
     const [tasks, setTasks] = useState<JobPropType[]>([])
     const [loading, setLoading] = useState<boolean>(false)
@@ -143,6 +144,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                     if (data.message) {
                         error = data.message;
                     } else if (data.error) {
+                        router.push('/login')
                         error = data.error;
                     } else {
                         error = response.statusText;
@@ -173,7 +175,10 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 }
             }
             catch (err: any) {
-                console.log(err.message)
+                if (err.message === "Invalid token") {
+                    router.push('/login')
+                }
+                console.log("thisss", err.message)
             }
             finally {
                 setLoading(false)

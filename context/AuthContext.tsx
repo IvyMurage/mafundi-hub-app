@@ -12,7 +12,6 @@ interface AuthProps {
 }
 const AuthContext = createContext<AuthProps>({})
 const TOKEN_KEY = '12345'
-const API_URL = 'https://mafundi-hub-api.onrender.com'
 
 
 export const useAuth = () => {
@@ -75,7 +74,7 @@ export const AuthProvider = ({ children }: any) => {
             confirmation_password: string | null
         }
     ) => {
-        const response = await fetch(`${API_URL}/signup`, {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
@@ -102,7 +101,7 @@ export const AuthProvider = ({ children }: any) => {
     const login = async (user: { email: string | null; password: string | null }) => {
         setLoading(true)
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user: user })
@@ -143,7 +142,7 @@ export const AuthProvider = ({ children }: any) => {
         }) => {
         setLoading(true)
         try {
-            const response = await fetch(`${API_URL}/user_role`, {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/user_role`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userRole)

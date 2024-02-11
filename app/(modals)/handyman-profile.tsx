@@ -11,10 +11,11 @@ import { useService } from '@/hooks/useService'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useHandymanFetcher, useHandymanUpdate } from '@/hooks/useHandyman'
+import { FontAwesome5 } from '@expo/vector-icons'
 
 
 const HandymanProfile = () => {
-    const { loading, error, handyman, visible } = useHandymanFetcher()
+    const { loading, error, handyman, visible, setVisible } = useHandymanFetcher()
     const { handleSubmit, setAlertVisible, isLoading, alertVisible, image, } = useHandymanUpdate()
     const locations = useLocation()
     const services = useService()
@@ -40,6 +41,7 @@ const HandymanProfile = () => {
                                         marginTop: 1
                                     }}
                                     source={image} />
+                                <FontAwesome5 name="camera" color={Colors.secondary} size={24} />
                             </View>
                             <ScrollView
                                 contentContainerStyle={HandymanProfileStyles.contentContainer}
@@ -196,7 +198,10 @@ const HandymanProfile = () => {
                                 <CustomAlert
                                     visible={visible}
                                     message={error}
-                                    onClose={() => setAlertVisible(false)}
+                                    onClose={() => {
+                                        setAlertVisible(false)
+                                        setVisible(false)
+                                    }}
                                 />
                             </ScrollView >
                         </View >

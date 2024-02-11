@@ -100,6 +100,7 @@ export const useHandymanFetcher = () => {
                 if (!response.ok) {
                     throw new Error(data.error)
                 }
+                console.log(response)
                 if (response.ok) {
                     setHandyman({
                         first_name: data.first_name,
@@ -117,6 +118,7 @@ export const useHandymanFetcher = () => {
                 }
             }
             catch (error: any) {
+                console.log("this", error)
                 setError(error.message)
                 setVisible(true)
                 setLoading(false)

@@ -52,7 +52,7 @@ export const useMyJob = () => {
                 }
             }
             catch (err: any) {
-                console.log(err.message)
+                console.log("This",err.message)
                 setLoading(false)
             }
             finally {

@@ -25,7 +25,7 @@ export const useHandyman = () => {
 export const HandymanProvider = ({ children }: HandymanProviderProps) => {
     const { authState } = useAuth()
     const [loading, setLoading] = useState<boolean>(false)
-    const [handymen, setHandymen] = useState<any[]>([])
+    const [handymen, setHandymen] = useState<HandymanType[]>([])
 
     useEffect(() => {
         const getHandymen = async () => {
