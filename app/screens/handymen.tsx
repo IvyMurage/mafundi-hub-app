@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
 import { defaultJobStyles } from '@/constants/styles'
@@ -11,11 +11,16 @@ import HandymanList from '@/components/handymanList'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getItemAsync } from 'expo-secure-store'
 import { useService } from '@/hooks/useService'
+import Divider from '@/components/divider'
+import LocationFilter from '@/components/filter'
+import { transform } from '@babel/core'
 
 const Handymen = () => {
     const { loading } = useHandyman()
     const [service, setService] = useState<string>('Handyman Service')
     const services = useService()
+    const [location, setLocation] = useState('')
+    const [visible, setVisible] = useState(false)
     const handleChange = () => {
         console.log('searching...')
     }
@@ -72,8 +77,36 @@ const Handymen = () => {
 
                         }}>Community</Text>
                     </View>
-                    <View>
+                    <View >
+
                         <Search handleChange={handleChange} placeholder='Search for Handyman' />
+                        <Divider />
+                        <Pressable style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignSelf: 'flex-end',
+                            position: 'relative',
+                            bottom: 52,
+                        }} onPress={() => {
+                            setVisible(!visible)
+                        }}>
+                            <FontAwesome5
+                                name='filter'
+                                size={20}
+                                color={Colors.primary}
+                                style={[
+                                    {
+                                        paddingHorizontal: 40,
+                                    }, visible && {
+                                        transform: [{ rotate: '-90deg' }]
+                                    }]} />
+                            {/* 'Filter' */}
+                        </Pressable>
+                        <LocationFilter
+                            setLocation={setLocation}
+                            visible={visible}
+                        />
+
                     </View>
                     <View>
                         <Text style={{
@@ -81,7 +114,8 @@ const Handymen = () => {
                             letterSpacing: 1.2,
                             fontSize: 15,
                             paddingHorizontal: 16,
-                            color: Colors.primary
+                            color: Colors.primary,
+                            paddingTop: 20
                         }}>Recommended</Text>
 
                         <HandymanList />
@@ -93,6 +127,8 @@ const Handymen = () => {
         </HandymanProvider>
     )
 }
+
+
 
 const handymenStyle = StyleSheet.create({
     container: {

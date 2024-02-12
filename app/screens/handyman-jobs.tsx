@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { TaskProvider, useTask } from '@/context/TaskContext'
 import { Image } from 'expo-image'
 import Search from '@/components/search'
@@ -8,9 +8,17 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import JobList from '@/components/myJobList'
 import { defaultJobStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
+import Select from '@/components/select'
+import { useLocation } from '@/hooks/useLocation'
+import { stringfy } from '@/utils/stringify'
+import { useService } from '@/hooks/useService'
 
 const HandymaJobs = () => {
     const { loading } = useTask()
+    const locations = useLocation()
+    const [location, setLocation] = useState('')
+    const [service, setService] = useState('')
+    const services = useService()
     return (
         <>
             <TaskProvider>
@@ -27,6 +35,38 @@ const HandymaJobs = () => {
 
                     <View>
                         <Search placeholder='Search' />
+                    </View>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginHorizontal: 20,
+                        marginTop: 20
+                    }}>
+                        <Select
+                            data={locations?.length > 0 &&
+                                locations !== undefined &&
+                                locations?.map((location) => {
+                                    return {
+                                        label: stringfy(location),
+                                        value: stringfy(location)
+                                    }
+                                }) || []}
+                            defaultButtonText={'Location'}
+                            profile={true}
+                            handleChange={(value) => setLocation(value)}
+                            searchPlaceHolder='Search for a Location'
+                            task={false}
+                        />
+
+                        <Select
+                            data={services || []}
+                            searchPlaceHolder='Search for a service'
+                            handleChange={(value) => setService(value)}
+                            defaultButtonText={'Service'}
+                            profile={true}
+                            task={false}
+                        />
                     </View>
                     <JobList />
                 </View>
