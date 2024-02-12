@@ -3,8 +3,9 @@ import React, { Dispatch, SetStateAction } from 'react'
 import Select from './select'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
+import { useService } from '@/hooks/useService'
 
-const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetStateAction<string>>, visible: boolean }) => {
+export const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetStateAction<string>>, visible: boolean }) => {
     const locations = useLocation()
 
     return (
@@ -15,14 +16,7 @@ const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetSta
                     justifyContent: 'center',
                     marginHorizontal: 20,
                 }}>
-                    <Text style={{
-                        fontFamily: 'roboto-medium',
-                        letterSpacing: 1.2,
-                        paddingBottom: 5,
-                        fontSize: 16,
-                        color: '#000'
-
-                    }}>Filter</Text>
+                   
                     <Select
                         data={locations?.length > 0 &&
                             locations !== undefined &&
@@ -36,7 +30,7 @@ const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetSta
                         profile={false}
                         handleChange={(value) => setLocation(value)}
                         searchPlaceHolder='Search for a Location'
-                        task={false}
+                        task={true}
                     />
                 </View>
             }
@@ -45,4 +39,26 @@ const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetSta
 
 }
 
-export default LocationFilter
+export const ServiceFilter = ({ setService, visible }: { setService: Dispatch<SetStateAction<string>>, visible: boolean }) => {
+    const services = useService()
+    return (
+        <>
+            {
+                visible &&
+                <View style={{
+                    justifyContent: 'center',
+                    marginHorizontal: 20,
+                }}>
+                    <Select
+                        data={services || []}
+                        searchPlaceHolder='Search for a service'
+                        handleChange={(value) => setService(value)}
+                        defaultButtonText={'Service'}
+                        profile={false}
+                        task={true}
+                    />
+                </View>
+            }
+        </>
+    )
+}

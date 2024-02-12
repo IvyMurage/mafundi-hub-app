@@ -12,8 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getItemAsync } from 'expo-secure-store'
 import { useService } from '@/hooks/useService'
 import Divider from '@/components/divider'
-import LocationFilter from '@/components/filter'
-import { transform } from '@babel/core'
+import {LocationFilter} from '@/components/filter'
 import { useAuth } from '@/context/AuthContext'
 
 const Handymen = () => {

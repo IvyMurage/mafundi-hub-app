@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import React, { useState } from 'react'
 import { TaskProvider, useTask } from '@/context/TaskContext'
 import { Image } from 'expo-image'
@@ -10,14 +10,17 @@ import { defaultJobStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
 import Select from '@/components/select'
 import { useLocation } from '@/hooks/useLocation'
-import { stringfy } from '@/utils/stringify'
 import { useService } from '@/hooks/useService'
+import { LocationFilter, ServiceFilter } from '@/components/filter'
+import Divider from '@/components/divider'
+import { Text } from 'react-native'
 
 const HandymaJobs = () => {
     const { loading } = useTask()
     const locations = useLocation()
     const [location, setLocation] = useState('')
     const [service, setService] = useState('')
+    const [visible, setVisible] = useState(false)
     const services = useService()
     return (
         <>
@@ -35,39 +38,64 @@ const HandymaJobs = () => {
 
                     <View>
                         <Search placeholder='Search' />
+                        <Divider />
+                        <Pressable style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignSelf: 'flex-end',
+                            position: 'relative',
+                            bottom: 52,
+                        }} onPress={() => {
+                            setVisible(!visible)
+                        }}>
+                            <FontAwesome5
+                                name='filter'
+                                size={20}
+                                color={Colors.primary}
+                                style={[
+                                    {
+                                        paddingHorizontal: 40,
+                                    }, visible && {
+                                        transform: [{ rotate: '-90deg' }]
+                                    }]} />
+                            {/* 'Filter' */}
+                        </Pressable>
                     </View>
+                    {visible && <Text style={{
+                        fontFamily: 'roboto-medium',
+                        letterSpacing: 1.2,
+                        paddingBottom: 5,
+                        fontSize: 16,
+                        color: '#000',
+                        paddingHorizontal: 16,
 
-                    <View style={{
+                    }}>Filter</Text>}
+                    <View style={[{
                         flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginHorizontal: 20,
-                        marginTop: 20
-                    }}>
-                        <Select
-                            data={locations?.length > 0 &&
-                                locations !== undefined &&
-                                locations?.map((location) => {
-                                    return {
-                                        label: stringfy(location),
-                                        value: stringfy(location)
-                                    }
-                                }) || []}
-                            defaultButtonText={'Location'}
-                            profile={true}
-                            handleChange={(value) => setLocation(value)}
-                            searchPlaceHolder='Search for a Location'
-                            task={false}
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+
+                    }, visible && {
+                        marginTop: 20,
+                        marginBottom: 20
+                    }]}>
+
+
+                        <LocationFilter
+                            setLocation={setLocation}
+                            visible={visible}
                         />
 
-                        <Select
-                            data={services || []}
-                            searchPlaceHolder='Search for a service'
-                            handleChange={(value) => setService(value)}
-                            defaultButtonText={'Service'}
-                            profile={true}
-                            task={false}
+                        <ServiceFilter
+                            setService={setService}
+                            visible={visible}
                         />
                     </View>
+                    {
+                        visible && <Divider />
+                    }
+
+
                     <JobList />
                 </View>
                 <Loader isLoading={loading!} />
