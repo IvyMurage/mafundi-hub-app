@@ -14,6 +14,7 @@ import { useService } from '@/hooks/useService'
 import Divider from '@/components/divider'
 import LocationFilter from '@/components/filter'
 import { transform } from '@babel/core'
+import { useAuth } from '@/context/AuthContext'
 
 const Handymen = () => {
     const { loading } = useHandyman()
@@ -21,6 +22,7 @@ const Handymen = () => {
     const services = useService()
     const [location, setLocation] = useState('')
     const [visible, setVisible] = useState(false)
+    const { userState } = useAuth()
     const handleChange = () => {
         console.log('searching...')
     }
@@ -44,7 +46,7 @@ const Handymen = () => {
                 }}>
 
                     <View style={defaultJobStyles.headerStyle}>
-                        <Image source={require('@/assets/images/placeholder.jpg')}
+                        <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
                             style={{ width: 50, height: 50, borderRadius: 50 }} />
                         <Text style={{
                             fontFamily: 'roboto-medium',

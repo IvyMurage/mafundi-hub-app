@@ -110,14 +110,14 @@ function RootLayoutNav() {
       <Stack.Screen name='(modals)/appointment-form'
         options={{ presentation: 'modal' }}
       />
-      <Stack.Screen name='screens/handymen'
+      <Stack.Screen name='(screens)/handymen'
         options={{
-          headerShown: false,
+          headerTitle: '',
           headerLeft: () => (
             <Pressable onPress={handleBack} >
               <Octicons name='arrow-left'
                 size={24}
-                color={Colors.lighter}
+                color={Colors.dark}
                 style={{ left: 10 }} />
             </Pressable>
           )
