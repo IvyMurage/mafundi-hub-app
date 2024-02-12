@@ -11,12 +11,14 @@ import { clientHomeStyles } from '@/constants/styles'
 import { iconView } from '@/constants/icons'
 import { TaskProvider } from '@/context/TaskContext'
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
+import { useAuth } from '@/context/AuthContext'
 
 
 
 const ClientHome = () => {
     const categoriesList = useServiceCategory()
     const [categories, setCategories] = useState<CategoryPropType[]>(categoriesList)
+    const { userState } = useAuth()
     useEffect(() => {
         setCategories(categoriesList)
     }, [categoriesList])
@@ -46,7 +48,7 @@ const ClientHome = () => {
                     <View style={[clientHomeStyles.notification]}>
                         <Image
                             style={{ width: 40, height: 40, borderRadius: 40 }}
-                            source={require('@/assets/images/placeholder.jpg')}
+                            source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
                         />
                         <FontAwesome5
                             name="bell"

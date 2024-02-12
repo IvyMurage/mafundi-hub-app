@@ -138,6 +138,33 @@ export default function TabLayout() {
         }}
       />
 
+<Tabs.Screen name='proposals'
+        options={{
+          headerShown: true,
+          headerTitle: 'Proposals',
+          headerTitleStyle: {
+            fontFamily: 'roboto-medium',
+            fontSize: 16,
+            letterSpacing: 1.8,
+            color: Colors.lighter,
+            textAlign: 'center',
+          },
+          headerTitleAlign: 'center',
+          headerStyle: { ...headerStyles.headerStyle },
+     
+          headerLeft: () => (
+            <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </Pressable>
+          ),
+          tabBarLabel: "Proposals",
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="envelope" color={color} size={size} />,
+        }}
+      />
+
       <Tabs.Screen name='profile'
         options={{
           headerShown: true,

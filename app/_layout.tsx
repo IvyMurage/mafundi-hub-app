@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Pressable } from 'react-native';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 
 
@@ -110,7 +110,18 @@ function RootLayoutNav() {
       <Stack.Screen name='(modals)/appointment-form'
         options={{ presentation: 'modal' }}
       />
-
+      <Stack.Screen name='screens/handymen'
+        options={{
+          headerShown: false,
+          headerLeft: () => (
+            <Pressable onPress={handleBack} >
+              <Octicons name='arrow-left'
+                size={24}
+                color={Colors.lighter}
+                style={{ left: 10 }} />
+            </Pressable>
+          )
+        }} />
 
       {/* <Stack.Screen name="(modals)/handyman-register"
         options={{
@@ -118,12 +129,12 @@ function RootLayoutNav() {
           headerTitle: '',
           headerStyle: { ...headerStyles.headerStyle },
           headerLeft: () => (
-            <TouchableOpacity onPress={handleBack} >
+            <Pressable onPress={handleBack} >
               <Octicons name='arrow-left'
                 size={24}
                 color={Colors.lighter}
                 style={{ left: 10 }} />
-            </TouchableOpacity>
+            </Pressable>
           )
         }}
       /> */}
@@ -134,12 +145,12 @@ function RootLayoutNav() {
           headerTitle: '',
           headerStyle: { ...headerStyles.headerStyle },
           headerLeft: () => (
-            <TouchableOpacity onPress={handleBack} >
+            <Pressable onPress={handleBack} >
               <Octicons name='arrow-left'
                 size={24}
                 color={Colors.lighter}
                 style={{ left: 10 }} />
-            </TouchableOpacity>)
+            </Pressable>)
         }} />
 
       <Stack.Screen name="(image-picker)/image-picker"
@@ -148,16 +159,16 @@ function RootLayoutNav() {
           headerTitle: '',
           headerStyle: { ...headerStyles.headerStyle },
           headerLeft: () => (
-            <TouchableOpacity onPress={handleBack} >
+            <Pressable onPress={handleBack} >
               <Octicons name='arrow-left'
                 size={24}
                 color={Colors.lighter}
                 style={{ left: 10 }} />
-            </TouchableOpacity>),
+            </Pressable>),
           headerRight: () => (
-            <TouchableOpacity onPress={handleRight} >
+            <Pressable onPress={handleRight} >
               <Text style={headerStyles.headerRight}>Skip</Text>
-            </TouchableOpacity>)
+            </Pressable>)
         }} />
     </Stack>
   );

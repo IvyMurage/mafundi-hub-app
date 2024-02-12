@@ -18,7 +18,7 @@ const ClientProfile = () => {
     const locations = useLocation()
     const { handleSubmit, loading, visible, setVisible } = useClientUpdate()
     const { isLoading, user } = useClientFetcher()
-    const { pickImage, image } = useProfileUpload()
+    const { pickImage } = useProfileUpload()
     const { userState } = useAuth()
 
     return (
@@ -39,7 +39,7 @@ const ClientProfile = () => {
                                 marginBottom: 20,
                                 marginTop: 1
                             }}
-                            source={userState?.avatar_url || require('@/assets/images/placeholder.jpg')}
+                            source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
                         />
                         <Pressable style={clientProfileStyles.cameraContainer} onPress={() => {
                             pickImage()

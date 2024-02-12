@@ -381,6 +381,7 @@ export const categoryListStyles = StyleSheet.create({
   flatListStyle: {
     paddingVertical: 10,
     paddingBottom: 120,
+    paddingHorizontal: 10,
   },
   image: {
     width: 150,
