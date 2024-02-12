@@ -161,7 +161,7 @@ export const clientProfileStyles = StyleSheet.create({
   textInput: {
     borderBottomWidth: 1,
     borderColor: Colors.secondary,
-    paddingLeft: 20,
+    paddingLeft: 50,
     marginBottom: 30,
   },
   cameraContainer: {
@@ -174,6 +174,11 @@ export const clientProfileStyles = StyleSheet.create({
     width: 30,
     height: 30,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
   },
 });

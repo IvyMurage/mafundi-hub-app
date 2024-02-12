@@ -10,7 +10,7 @@ import { clientSchema } from '@/constants/validation-schema'
 import CustomAlert from '@/components/customAlert'
 import { useClientFetcher, useClientUpdate } from '@/hooks/useClient'
 import Loader from '@/components/loader'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
 import { useProfileUpload } from '@/hooks/useProfileUpload'
 import { useAuth } from '@/context/AuthContext'
 
@@ -52,14 +52,22 @@ const ClientProfile = () => {
                             contentContainerStyle={clientProfileStyles.contentContainer}
                         >
                             <View style={clientProfileStyles.subContainer}>
-                                <TextInput
-                                    autoCapitalize='none'
-                                    placeholder='First Name'
-                                    value={values.first_name}
-                                    onChangeText={handleChange('first_name')}
-                                    onBlur={() => setFieldTouched('first_name')}
-                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
-                                />
+                                <View style={[clientProfileStyles.textContainer]} >
+                                    <FontAwesome name="user" size={20} color={Colors.primary} style={{
+                                        left: 50,
+                                        paddingBottom: 15,
+                                        zIndex: 1
+                                    }} />
+                                    <TextInput
+                                        autoCapitalize='none'
+                                        placeholder='First Name'
+                                        value={values.first_name}
+                                        onChangeText={handleChange('first_name')}
+                                        onBlur={() => setFieldTouched('first_name')}
+                                        style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                    />
+                                </View>
+
                                 {
                                     touched.first_name && errors.first_name && (
                                         <Text style={[defaultStyles.errorText]}>
@@ -67,14 +75,22 @@ const ClientProfile = () => {
                                         </Text>
                                     )
                                 }
-                                <TextInput
-                                    autoCapitalize='none'
-                                    placeholder='Last Name'
-                                    value={values.last_name}
-                                    onChangeText={handleChange('last_name')}
-                                    onBlur={() => setFieldTouched('last_name')}
-                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
-                                />
+                                <View style={[clientProfileStyles.textContainer]}>
+                                    <FontAwesome name="user" size={20} color={Colors.primary} style={{
+                                        left: 50,
+                                        paddingBottom: 15,
+                                        zIndex: 1
+                                    }} />
+                                    <TextInput
+                                        autoCapitalize='none'
+                                        placeholder='Last Name'
+                                        value={values.last_name}
+                                        onChangeText={handleChange('last_name')}
+                                        onBlur={() => setFieldTouched('last_name')}
+                                        style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                    />
+                                </View>
+
 
                                 {
                                     touched.last_name && errors.last_name && (
@@ -83,15 +99,24 @@ const ClientProfile = () => {
                                         </Text>
                                     )
                                 }
-                                <TextInput
-                                    autoCapitalize='none'
-                                    placeholder='Phone Number(07xxxx)'
-                                    inputMode='numeric'
-                                    value={values.phone_number}
-                                    onChangeText={handleChange('phone_number')}
-                                    onBlur={() => setFieldTouched('phone_number')}
-                                    style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
-                                />
+                                <View style={[clientProfileStyles.textContainer]}>
+                                    <FontAwesome name="phone" size={20} color={Colors.primary} style={{
+                                        left: 50,
+                                        paddingBottom: 15,
+                                        zIndex: 1
+                                    }} />
+
+                                    <TextInput
+                                        autoCapitalize='none'
+                                        placeholder='Phone Number(07xxxx)'
+                                        inputMode='numeric'
+                                        value={values.phone_number}
+                                        onChangeText={handleChange('phone_number')}
+                                        onBlur={() => setFieldTouched('phone_number')}
+                                        style={[defaultStyles.inputTextField, clientProfileStyles.textInput]}
+                                    />
+                                </View>
+
                                 {
                                     touched.phone_number && errors.phone_number && (
                                         <Text style={[defaultStyles.errorText]}>

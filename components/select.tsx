@@ -1,7 +1,7 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
 type SelectProps = {
@@ -23,7 +23,13 @@ const Select: React.FC<SelectProps> = (props) => {
         return <FontAwesome5 style={{ marginBottom: -3, textAlign: 'center' }} {...props} />;
     }
     return (
-        <View>
+        <View style={profile && [selectStyles.selectContainer]}>
+
+            {profile && <MaterialIcons name="location-pin" size={20} color={Colors.primary} style={{
+                left: 45,
+                zIndex: 1
+            }} />
+            }
             <SelectDropdown
                 data={data.map((item) => item.label)}
                 onSelect={(selectedItem) => {
@@ -41,7 +47,7 @@ const Select: React.FC<SelectProps> = (props) => {
                     selectStyles.selectButtonStyle,
                     { borderBottomWidth: profile ? 1 : 0, borderWidth: profile ? 0 : 1 },
                     task ? selectStyles.taskStyles : null]}
-                buttonTextStyle={selectStyles.dropdownButtonText}
+                buttonTextStyle={[selectStyles.dropdownButtonText, profile && { padding: 15, paddingLeft: 34, }]}
                 rowTextStyle={selectStyles.dropDownText}
                 dropdownStyle={selectStyles.dropDown}
             />
@@ -69,7 +75,8 @@ const selectStyles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.8,
-        textAlign: 'left'
+        textAlign: 'left',
+
     },
     dropDownText: {
         fontFamily: 'roboto',
@@ -85,6 +92,11 @@ const selectStyles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10
 
+    },
+    selectContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
     }
 })
 
