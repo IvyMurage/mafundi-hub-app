@@ -10,11 +10,16 @@ import { clientSchema } from '@/constants/validation-schema'
 import CustomAlert from '@/components/customAlert'
 import { useClientFetcher, useClientUpdate } from '@/hooks/useClient'
 import Loader from '@/components/loader'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { useProfileUpload } from '@/hooks/useProfileUpload'
+import { useAuth } from '@/context/AuthContext'
 
 const ClientProfile = () => {
     const locations = useLocation()
-    const { handleSubmit, loading, image, visible, setVisible } = useClientUpdate()
+    const { handleSubmit, loading, visible, setVisible } = useClientUpdate()
     const { isLoading, user } = useClientFetcher()
+    const { pickImage, image } = useProfileUpload()
+    const { userState } = useAuth()
 
     return (
         <Formik
@@ -34,8 +39,14 @@ const ClientProfile = () => {
                                 marginBottom: 20,
                                 marginTop: 1
                             }}
-                            source={image}
+                            source={userState?.avatar_url || require('@/assets/images/placeholder.jpg')}
                         />
+                        <Pressable style={clientProfileStyles.cameraContainer} onPress={() => {
+                            pickImage()
+                        }}>
+                            <FontAwesome5 name="camera" color={Colors.lighter} size={20} />
+                        </Pressable>
+
                         <ScrollView
                             style={clientProfileStyles.scroll}
                             contentContainerStyle={clientProfileStyles.contentContainer}

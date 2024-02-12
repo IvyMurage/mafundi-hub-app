@@ -116,7 +116,7 @@ export const useClientPost = () => {
             const { response, data } = result
             if (response.ok) {
                 resetForm.resetForm()
-                router.push('/(tabs)/profile')
+                router.push('/(modals)/login')
             }
             setIsLoading(false)
         }

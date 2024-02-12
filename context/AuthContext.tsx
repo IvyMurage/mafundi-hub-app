@@ -3,7 +3,20 @@ import * as SecureStore from 'expo-secure-store'
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
-    userState?: { id: number | null; email: string | null; user_role: string | null; user_id: number | null }
+    userState?: {
+        id: number | null;
+        email: string | null;
+        user_role: string | null;
+        user_id: number | null;
+        avatar_url: string | null
+    }
+    setUserState?: React.Dispatch<React.SetStateAction<{
+        id: number | null;
+        email: string | null;
+        user_role: string | null;
+        user_id: number | null;
+        avatar_url: string | null
+    }>>
     isLoading?: boolean
     onRegister?: (user: { email: string | null; password: string | null; confirmation_password: string | null }) => Promise<any>;
     onLogin?: (user: { email: string | null; password: string | null }) => Promise<any>
@@ -33,12 +46,14 @@ export const AuthProvider = ({ children }: any) => {
         id: number | null;
         email: string | null;
         user_role: string | null;
-        user_id: number | null
+        user_id: number | null,
+        avatar_url: string | null
     }>({
         email: null,
         id: null,
         user_role: '',
-        user_id: null
+        user_id: null,
+        avatar_url: null
     })
 
     const [loading, setLoading] = useState<boolean>(false)
@@ -123,6 +138,7 @@ export const AuthProvider = ({ children }: any) => {
                 await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
                 setAuthState({ token: token!, authenicated: true })
                 setLoading(false)
+                console.log(data)
             }
 
             return response
@@ -170,6 +186,7 @@ export const AuthProvider = ({ children }: any) => {
 
     const value = {
         onRegister: register,
+        setUserState: setUser,
         onLogin: login,
         onLogout: logout,
         userState: user,

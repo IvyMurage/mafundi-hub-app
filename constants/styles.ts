@@ -164,6 +164,18 @@ export const clientProfileStyles = StyleSheet.create({
     paddingLeft: 20,
     marginBottom: 30,
   },
+  cameraContainer: {
+    position: "absolute",
+    top: "10%",
+    right: "36%",
+    bottom: 0,
+    backgroundColor: Colors.primary,
+    borderRadius: 30,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export const HandymanProfileStyles = StyleSheet.create({
