@@ -9,7 +9,14 @@ module.exports = function (api) {
         {
           root: ["./"],
           alias: {
-            "@": "./", // Adjust based on your actual structure
+            "@/*": ["./src/*"],
+            "@components/*": ["./src/components/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@assets/*": ["./assets/*"],
+            "@constants/*": ["./src/constants/*"],
+            "@hooks/*": ["./src/hooks/*"],
+            "@types/*": ["./src/types/*"],
+            "@contexts/*": ["./src/contexts/*"], // Adjust based on your actual structure
           },
         },
       ],

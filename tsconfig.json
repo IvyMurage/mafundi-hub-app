@@ -14,5 +14,15 @@
       "@contexts/*": ["./src/contexts/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": [
+    "src",
+    "**/*.ts",
+    "**/*.tsx",
+    "metro.config.js",
+    "babel.config.cjs",
+    "app.json",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": ["node_modules", "*.config.js"]
 }
