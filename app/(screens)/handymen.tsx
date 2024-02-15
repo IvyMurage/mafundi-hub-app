@@ -12,8 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getItemAsync } from 'expo-secure-store'
 import { useService } from '@/hooks/useService'
 import Divider from '@/components/divider'
-import {LocationFilter} from '@/components/filter'
+import { LocationFilter } from '@/components/filter'
 import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'expo-router'
 
 const Handymen = () => {
     const { loading } = useHandyman()
@@ -22,6 +23,7 @@ const Handymen = () => {
     const [location, setLocation] = useState('')
     const [visible, setVisible] = useState(false)
     const { userState } = useAuth()
+    const router = useRouter()
     const handleChange = () => {
         console.log('searching...')
     }
@@ -43,16 +45,36 @@ const Handymen = () => {
                     ...handymenStyle.container,
 
                 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}>
+                        <FontAwesome5 name='arrow-left' size={20} color={Colors.primary} style={{
+                            paddingHorizontal: 12,
+                            paddingVertical: 10,
+                        }}
+                            onPress={() => {
+                                router.back()
+                            }}
+                        />
 
-                    <View style={defaultJobStyles.headerStyle}>
-                        <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
-                            style={{ width: 50, height: 50, borderRadius: 50 }} />
                         <Text style={{
                             fontFamily: 'roboto-medium',
                             letterSpacing: 1.4,
                             fontSize: 16,
-                            color: Colors.secondary
+                            color: Colors.secondary,
+                            alignSelf: 'center',
+                            width: '90%',
+                            textAlign: 'center',
                         }}>{service}</Text>
+                    </View>
+
+                    <View style={defaultJobStyles.headerStyle}>
+                        <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
+                            style={{ width: 50, height: 50, borderRadius: 50 }} />
+
                         <FontAwesome5
                             name="bell"
                             size={20}
@@ -63,18 +85,18 @@ const Handymen = () => {
                         marginVertical: 10,
                     }}>
                         <Text style={{
-                            fontFamily: 'roboto-medium',
-                            letterSpacing: 1.2,
-                            fontSize: 16,
+                            fontFamily: 'roboto-bold',
+                            letterSpacing: 1.4,
+                            fontSize: 18,
                             paddingHorizontal: 16,
                             color: Colors.primary
-                        }}>Best Plumbers in the</Text>
+                        }}>Best Handymen in the</Text>
                         <Text style={{
-                            fontFamily: 'roboto-medium',
-                            letterSpacing: 1.2,
-                            fontSize: 16,
+                            fontFamily: 'roboto-bold',
+                            letterSpacing: 1.4,
+                            fontSize: 18,
                             paddingHorizontal: 16,
-                            color: Colors.primary
+                            color: Colors.secondary
 
                         }}>Community</Text>
                     </View>
@@ -114,7 +136,7 @@ const Handymen = () => {
                             fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
                             fontSize: 15,
-                            paddingHorizontal: 16,
+                            paddingHorizontal: 20,
                             color: Colors.primary,
                             paddingTop: 20
                         }}>Recommended</Text>

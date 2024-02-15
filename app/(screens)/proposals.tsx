@@ -1,11 +1,54 @@
 import { View, Text, Modal, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Animated, { FadeOutDown, FadeOutUp } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
-import { FontAwesome, Octicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import { useAuth } from '@/context/AuthContext';
+import { HandymanProps } from '@/types/handyman';
 
-const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>> }) => {
-    const { visible, setVisible } = props
+type JobProposalType = {
+    id?: number,
+    handyman: HandymanProps[] | null,
+    proposal_text: string | null,
+}
+const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
+    const { authState } = useAuth()
+    const { visible, setVisible, taskId } = props
+    const [proposals, setProposals] = useState<JobProposalType[]>([])
+    console.log("This is the task id", taskId)
+    useEffect(() => {
+        const fetchProposals = async () => {
+            try {
+                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/job_proposals/?task_id=${taskId}`, {
+                    headers: {
+                        Authorization: `Bearer ${authState?.token}`
+                    }
+                })
+                const data = await response.json()
+
+                if (response.ok) {
+                    setProposals(data?.job_proposals)
+                }
+
+                if (!response.ok) {
+                    let error
+                    if (data && data.errors) {
+                        error = data.errors
+                    }
+                    else {
+                        error = "Error fetching proposals"
+                    }
+                    throw new Error(error)
+                }
+                console.log("This is the data", data)
+            }
+            catch (error: any) {
+                console.log("Error fetching proposals", error.message)
+            }
+        }
+
+        fetchProposals()
+    }, [taskId])
     return (
         <Animated.View entering={FadeOutUp} exiting={FadeOutDown} style={{
         }}>

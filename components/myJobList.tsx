@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router'
 
 const JobList = () => {
     const { tasks, setPageNumber } = useTask()
+    const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
@@ -30,7 +31,10 @@ const JobList = () => {
             <Pressable onPress={() => handlePress(item.id!)}>
                 <View key={item.id} style={jobListStyle.jobContainer}>
                     <Text
-                        onPress={() => setVisible(!visible)}
+                        onPress={() => {
+                            setJobId(item.id!)
+                            setVisible(!visible)
+                        }}
                         style={[jobListStyle.jobText,
                         { textAlign: 'right' }]}>
                         {userState?.user_role === 'client' ? "View Proposals" : null}
@@ -117,7 +121,7 @@ const JobList = () => {
                                 </Pressable>
 
                             </View>
-                            <Proposal visible={visible} setVisible={setVisible} />
+                            <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
                         </>
                 }
             </TaskProvider>
