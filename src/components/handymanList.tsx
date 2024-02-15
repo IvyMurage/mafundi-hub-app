@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Pressable } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { HandymanType } from '@/src/types/handyman'
+import { HandymanType } from '@/types/handyman'
 import { useHandyman } from '@/contexts/HandymanContext'
 import Colors from '@/constants/Colors'
 import { FontAwesome5 } from '@expo/vector-icons'

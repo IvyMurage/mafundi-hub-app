@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { JobPropType } from "@/src/types/job";
+import { JobPropType } from "@/types/job";
 import { useEffect, useState } from "react"
 
 export const useMyJob = () => {

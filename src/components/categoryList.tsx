@@ -1,8 +1,8 @@
 import { View, Text, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import TaskForm from '@/src/app/(modals)/task-form'
+import TaskForm from '@/app/(modals)/task-form'
 import { categoryListStyles } from '@/constants/styles'
-import { CategoryPropType } from '@/src/types/category'
+import { CategoryPropType } from '@/types/category'
 import Animated, { FadeInDown, FadeInUp, } from 'react-native-reanimated'
 
 

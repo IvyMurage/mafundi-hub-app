@@ -1,8 +1,8 @@
-import { JobPropType } from "@/src/types/job";
+import { JobPropType } from "@/types/job";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { request } from "@/utils/executePostRequest";
-import { TaskFormProps } from "@/src/types/task";
+import { TaskFormProps } from "@/types/task";
 import { FormikHelpers } from "formik";
 import * as SecureStore from 'expo-secure-store'
 import { useRouter } from "expo-router";

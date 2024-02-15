@@ -1,6 +1,5 @@
 const { getDefaultConfig } = require('@expo/metro-config');
 
-const path = require('path');
 const projectRoot = __dirname; // This ensures you're getting the directory of the current file
 
 module.exports = (async () => {

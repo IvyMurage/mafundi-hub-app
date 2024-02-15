@@ -8,6 +8,7 @@ module.exports = function (api) {
         "module-resolver",
         {
           root: ["./"],
+          extensions: [".ios.js", ".android.js", ".js", ".json"],
           alias: {
             "@/*": ["./src/*"],
             "@components/*": ["./src/components/*"],

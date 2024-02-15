@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext"
-import { ClientProfileProps } from "@/src/types/client"
+import { ClientProfileProps } from "@/types/client"
 import { request } from "@/utils/executePostRequest"
 import { useRouter } from "expo-router"
 import { FormikHelpers } from "formik"

@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext"
 import { useEffect, useState } from "react"
-import { HandymanProps } from "@/src/types/handyman"
+import { HandymanProps } from "@/types/handyman"
 import { FormikHelpers } from "formik"
 import { request } from "@/utils/executePostRequest"
 import { setItemAsync } from "expo-secure-store"

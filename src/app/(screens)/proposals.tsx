@@ -4,7 +4,7 @@ import Animated, { FadeOutDown, FadeOutUp } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
 import { FontAwesome5, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
-import { HandymanProps } from '@/src/types/handyman';
+import { HandymanProps } from '@/types/handyman';
 import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
 
