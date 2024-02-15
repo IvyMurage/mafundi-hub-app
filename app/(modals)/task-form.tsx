@@ -25,7 +25,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     const getValue = async () => {
         const value = await handleRoute!()
         if (value && value === 'true') {
-            router.push('/screens/handymen')
+            router.push('/(screens)/handymen')
         }
         else {
             router.push('/(tabs)/jobs')

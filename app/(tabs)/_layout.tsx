@@ -138,10 +138,10 @@ export default function TabLayout() {
         }}
       />
 
-<Tabs.Screen name='proposals'
+      <Tabs.Screen name='alert'
         options={{
           headerShown: true,
-          headerTitle: 'Proposals',
+          headerTitle: 'Alerts',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 16,
@@ -151,7 +151,7 @@ export default function TabLayout() {
           },
           headerTitleAlign: 'center',
           headerStyle: { ...headerStyles.headerStyle },
-     
+
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
               <Octicons name='arrow-left'
@@ -160,8 +160,8 @@ export default function TabLayout() {
                 style={{ left: 10 }} />
             </Pressable>
           ),
-          tabBarLabel: "Proposals",
-          tabBarIcon: ({ color, size }) => <TabBarIcon name="envelope" color={color} size={size} />,
+          tabBarLabel: "Alerts",
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="bell" color={color} size={size} />,
         }}
       />
 
