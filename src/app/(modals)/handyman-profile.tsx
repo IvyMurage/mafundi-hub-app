@@ -18,7 +18,7 @@ import { useAuth } from '@/contexts/AuthContext'
 
 const HandymanProfile = () => {
     const { loading, error, handyman, visible, setVisible } = useHandymanFetcher()
-    const { handleSubmit, setAlertVisible, isLoading, alertVisible, image, } = useHandymanUpdate()
+    const { handleSubmit, setAlertVisible, isLoading, alertVisible, } = useHandymanUpdate()
     const locations = useLocation()
     const services = useService()
     const { pickImage } = useProfileUpload()
@@ -45,8 +45,8 @@ const HandymanProfile = () => {
                                         marginTop: 1
                                     }}
                                     placeholder={require('@/assets/images/placeholder.jpg')}
-                                    
-                                source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')} />
+
+                                    source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')} />
                                 <Pressable style={HandymanProfileStyles.cameraContainer} onPress={() => {
                                     pickImage()
                                 }}>
