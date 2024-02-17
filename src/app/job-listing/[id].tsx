@@ -1,6 +1,6 @@
-import { View, Text, SafeAreaView, Pressable } from 'react-native'
+import { View, Text, SafeAreaView, Pressable, ScrollView } from 'react-native'
 import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { StyleSheet } from 'react-native'
 import Animated, { FadeInRight } from 'react-native-reanimated'
 import { useTaskFetch } from '@/hooks/useTaskProfile'
@@ -8,11 +8,11 @@ import Loader from '@/components/loader'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
 
 const Job = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
     const { task, loading } = useTaskFetch(id)
+    const router = useRouter()
     console.log(task)
     return (
         <>
@@ -27,7 +27,9 @@ const Job = () => {
             </View>
             <SafeAreaView style={jobStyle.safeStyle}>
                 <Animated.View entering={FadeInRight}>
-                    <FontAwesome5 name="arrow-left" color={Colors.lighter} size={20} />
+                    <FontAwesome5 name="arrow-left" color={Colors.lighter} size={20} onPress={() => {
+                        router.back()
+                    }} />
                     <View style={jobStyle.header} >
                         <Text style={jobStyle.title}>{task.job_title}</Text>
                         <Text style={jobStyle.service}>{task.service_name}</Text>
@@ -109,9 +111,11 @@ const Job = () => {
                                     borderRadius: 10,
                                     padding: 10,
                                     marginVertical: 20
-                                }
-
-                            }>
+                                }}
+                                onPress={() => {
+                                    router.navigate('job-proposal-form')
+                                }}
+                            >
                                 <Text style={{
                                     fontSize: 20,
                                     fontFamily: 'roboto-bold',
@@ -126,7 +130,7 @@ const Job = () => {
 
 
                 </Animated.View>
-            </SafeAreaView>
+            </SafeAreaView >
             <Loader isLoading={loading} />
         </>
 
