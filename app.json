@@ -1,45 +1,44 @@
 {
-  "expo": {
-    "name": "mafundi-hub-app",
-    "slug": "mafundi-hub-app",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./src/assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0A1045"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+    "expo": {
+        "name": "mafundi-hub-app",
+        "slug": "mafundi-hub-app",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./src/assets/images/icon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "splash": {
+            "image": "./src/assets/images/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#0A1045"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./src/assets/images/icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "softwareKeyboardLayoutMode": "pan"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./src/assets/images/favicon.png"
+        },
+        "plugins": [
+            [
+                "expo-image-picker",
+                {
+                    "photosPermission": "The app accesses your photos to let you share them with your friends."
+                }
+            ],
+            "expo-font"
+        ],
+        "experiments": {
+            "typedRoutes": true
         }
-      ],
-      "expo-font"
-    ],
-    "experiments": {
-      "typedRoutes": true
     }
-  }
 }
