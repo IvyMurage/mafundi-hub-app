@@ -201,13 +201,31 @@ export const HandymanProfileStyles = StyleSheet.create({
     overflow: "scroll",
     paddingBottom: 100,
   },
+  cameraContainer: {
+    position: "absolute",
+    bottom: "15%",
+    right: "0%",
+    backgroundColor: Colors.primary,
+    borderRadius: 30,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   textInput: {
     borderColor: Colors.secondary,
     borderBottomWidth: 2,
+    paddingLeft: 50,
+    marginBottom: 30,
   },
   textArea: {
     paddingTop: 0,
     height: 100,
+  },
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   submitBtn: {
     padding: 12,

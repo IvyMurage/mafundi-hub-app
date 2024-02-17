@@ -11,7 +11,9 @@ import { useService } from '@/hooks/useService'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useHandymanFetcher, useHandymanUpdate } from '@/hooks/useHandyman'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import { useProfileUpload } from '@/hooks/useProfileUpload'
+import { useAuth } from '@/contexts/AuthContext'
 
 
 const HandymanProfile = () => {
@@ -19,6 +21,8 @@ const HandymanProfile = () => {
     const { handleSubmit, setAlertVisible, isLoading, alertVisible, image, } = useHandymanUpdate()
     const locations = useLocation()
     const services = useService()
+    const { pickImage } = useProfileUpload()
+    const { userState } = useAuth()
 
     return (
         <Formik
@@ -40,22 +44,36 @@ const HandymanProfile = () => {
                                         marginBottom: 20,
                                         marginTop: 1
                                     }}
-                                    source={image} />
-                                <FontAwesome5 name="camera" color={Colors.secondary} size={24} />
+                                    placeholder={require('@/assets/images/placeholder.jpg')}
+                                    
+                                source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')} />
+                                <Pressable style={HandymanProfileStyles.cameraContainer} onPress={() => {
+                                    pickImage()
+                                }}>
+                                    <FontAwesome5 name="camera" color={Colors.lighter} size={20} />
+                                </Pressable>
                             </View>
                             <ScrollView
                                 contentContainerStyle={HandymanProfileStyles.contentContainer}
                                 style={HandymanProfileStyles.scroll}>
                                 <View style={HandymanProfileStyles.subContainer}>
+                                    <View style={HandymanProfileStyles.textContainer}>
+                                        <FontAwesome name="user" size={20} color={Colors.primary} style={{
+                                            left: 50,
+                                            paddingBottom: 15,
+                                            zIndex: 1
+                                        }} />
 
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        placeholder='First Name'
-                                        value={values.first_name!}
-                                        onChangeText={handleChange('first_name')}
-                                        onBlur={() => setFieldTouched('first_name')}
-                                        style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
-                                    />
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            placeholder='First Name'
+                                            value={values.first_name!}
+                                            onChangeText={handleChange('first_name')}
+                                            onBlur={() => setFieldTouched('first_name')}
+                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                        />
+                                    </View>
+
                                     {
                                         touched.first_name && errors.first_name && (
                                             <Text style={[defaultStyles.errorText]}>
@@ -63,14 +81,23 @@ const HandymanProfile = () => {
                                             </Text>
                                         )
                                     }
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        placeholder='Last Name'
-                                        value={values.last_name!}
-                                        onChangeText={handleChange('last_name')}
-                                        onBlur={() => setFieldTouched('last_name')}
-                                        style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
-                                    />
+
+                                    <View style={HandymanProfileStyles.textContainer}>
+                                        <FontAwesome name="user" size={20} color={Colors.primary} style={{
+                                            left: 50,
+                                            paddingBottom: 15,
+                                            zIndex: 1
+                                        }} />
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            placeholder='Last Name'
+                                            value={values.last_name!}
+                                            onChangeText={handleChange('last_name')}
+                                            onBlur={() => setFieldTouched('last_name')}
+                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                        />
+                                    </View>
+
 
                                     {
                                         touched.last_name && errors.last_name && (
@@ -79,14 +106,23 @@ const HandymanProfile = () => {
                                             </Text>
                                         )
                                     }
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        placeholder='Title (e.g Carpenter)'
-                                        value={values.title!}
-                                        onChangeText={handleChange('title')}
-                                        onBlur={() => setFieldTouched('title')}
-                                        style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
-                                    />
+                                    <View style={HandymanProfileStyles.textContainer}>
+                                        <FontAwesome name="briefcase" size={20} color={Colors.primary} style={{
+                                            left: 50,
+                                            paddingBottom: 15,
+                                            zIndex: 1
+                                        }} />
+
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            placeholder='Title (e.g Carpenter)'
+                                            value={values.title!}
+                                            onChangeText={handleChange('title')}
+                                            onBlur={() => setFieldTouched('title')}
+                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                        />
+                                    </View>
+
 
                                     {
                                         touched.title && errors.title && (
@@ -102,6 +138,7 @@ const HandymanProfile = () => {
                                         defaultButtonText={services.find(service => service.key === parseInt(values.service!))?.label || 'Service'}
                                         profile={true}
                                         task={false}
+                                        name='service'
                                     />
                                     {
                                         touched.service && errors.service && (
@@ -110,16 +147,23 @@ const HandymanProfile = () => {
                                             </Text>
                                         )
                                     }
+                                    <View style={HandymanProfileStyles.textContainer}>
+                                        <FontAwesome name="phone" size={20} color={Colors.primary} style={{
+                                            left: 50,
+                                            paddingBottom: 15,
+                                            zIndex: 1
+                                        }} />
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            placeholder='Phone number (e.g 07xxxx)'
+                                            inputMode='numeric'
+                                            value={values.phone_number!}
+                                            onChangeText={handleChange('phone_number')}
+                                            onBlur={() => setFieldTouched('phone_number')}
+                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                        />
+                                    </View>
 
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        placeholder='Phone number (e.g 07xxxx)'
-                                        inputMode='numeric'
-                                        value={values.phone_number!}
-                                        onChangeText={handleChange('phone_number')}
-                                        onBlur={() => setFieldTouched('phone_number')}
-                                        style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
-                                    />
 
                                     {
                                         touched.phone_number && errors.phone_number && (
@@ -146,6 +190,7 @@ const HandymanProfile = () => {
                                         searchPlaceHolder='Search for a Location'
                                         profile={true}
                                         task={false}
+                                        name='location'
                                     />
                                     <TextInput
                                         autoCapitalize='none'

@@ -8,25 +8,23 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import JobList from '@/components/myJobList'
 import { defaultJobStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
-import { useLocation } from '@/hooks/useLocation'
-import { useService } from '@/hooks/useService'
 import { LocationFilter, ServiceFilter } from '@/components/filter'
 import Divider from '@/components/divider'
 import { Text } from 'react-native'
+import { useAuth } from '@/contexts/AuthContext'
 
 const HandymaJobs = () => {
     const { loading } = useTask()
-    const locations = useLocation()
     const [location, setLocation] = useState('')
     const [service, setService] = useState('')
     const [visible, setVisible] = useState(false)
-    const services = useService()
+    const { userState } = useAuth()
     return (
         <>
             <TaskProvider>
                 <View style={defaultJobStyles.container}>
                     <View style={defaultJobStyles.headerStyle}>
-                        <Image source={require('@/assets/images/placeholder.jpg')}
+                        <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
                             style={{ width: 50, height: 50, borderRadius: 50 }} />
                         <FontAwesome5
                             name="bell"

@@ -1,7 +1,7 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
 type SelectProps = {
@@ -10,11 +10,12 @@ type SelectProps = {
     searchPlaceHolder: string;
     handleChange: (value: string) => void
     profile: boolean,
-    task: boolean
+    task: boolean,
+    name?: string
 
 }
 const Select: React.FC<SelectProps> = (props) => {
-    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile, task } = props
+    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile, task, name = 'default' } = props
     function SelectIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;
@@ -25,8 +26,14 @@ const Select: React.FC<SelectProps> = (props) => {
     return (
         <View style={profile && [selectStyles.selectContainer]}>
 
-            {profile && <MaterialIcons name="location-pin" size={20} color={Colors.primary} style={{
+            {profile && name === 'location' && <MaterialIcons name="location-pin" size={20} color={Colors.primary} style={{
                 left: 45,
+                zIndex: 1
+            }} />
+            }
+
+            {profile && name === 'service' && <MaterialIcons name="home-repair-service" size={26} color={Colors.primary} style={{
+                left: 40,
                 zIndex: 1
             }} />
             }

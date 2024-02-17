@@ -64,7 +64,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         job_date: '',
         job_price: '',
         job_category: '',
-        duration_label: ''
+        duration_label: '',
+        available: false
     })
     const url = userState?.user_role === 'client' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10` :
         `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10`
@@ -77,7 +78,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             job_date: new Date().toISOString(),
             job_price: `ksh.${taskForm.job_price}`,
             job_category: taskForm.service_id,
-            duration_label: taskForm.duration_label
+            duration_label: taskForm.duration_label,
+            available: true
         })
 
         setTasks(prevTasks => [task, ...prevTasks])
@@ -110,7 +112,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                     job_date: data.created_at,
                     job_price: `ksh.${data.job_price}`,
                     job_category: data.service_name,
-                    duration_label: data.duration_label
+                    duration_label: data.duration_label,
+                    available: data.available
                 }, ...prevTasks,])
                 resetForm.resetForm()
                 setVisible(true)
@@ -161,6 +164,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                         job_price: number | null;
                         service_name: string | null;
                         duration_label: string | null;
+                        available: boolean | null;
                     }) => {
                         return {
                             id: item.id,
@@ -169,7 +173,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                             job_date: item.created_at,
                             job_price: `ksh.${item.job_price}`,
                             job_category: item.service_name,
-                            duration_label: item.duration_label
+                            duration_label: item.duration_label,
+                            available: item.available
                         }
                     }))
                 }

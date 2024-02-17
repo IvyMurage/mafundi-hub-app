@@ -23,6 +23,8 @@ const JobList = () => {
             router.push(`/job-listing/${jobId}`)
         }
     }
+
+    console.log(tasks, 'tasks')
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
@@ -36,8 +38,13 @@ const JobList = () => {
                             setVisible(!visible)
                         }}
                         style={[jobListStyle.jobText,
-                        { textAlign: 'right' }]}>
-                        {userState?.user_role === 'client' ? "View Proposals" : null}
+                        ...[userState?.user_role === 'client' ?
+                            { color: Colors.secondary } : item.available ?
+                                { color: 'green' } : { color: 'red' }],
+                        { textAlign: 'right' },
+                        { fontFamily: 'roboto-bold' }]}>
+                        {userState?.user_role === 'client' ? "View Proposals" :
+                            item.available ? "Available" : "Not Available"}
                     </Text>
                     <View style={jobListStyle.jobBody}>
                         <Text style={

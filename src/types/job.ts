@@ -6,4 +6,5 @@ export type JobPropType = {
   job_price: string | null;
   job_category: string | null;
   duration_label: string | null;
+  available: boolean | null;
 };
