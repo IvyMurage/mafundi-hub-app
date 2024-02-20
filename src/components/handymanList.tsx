@@ -4,15 +4,25 @@ import { Image } from 'expo-image'
 import { HandymanType } from '@/types/handyman'
 import { useHandyman } from '@/contexts/HandymanContext'
 import Colors from '@/constants/Colors'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
+import { useAuth } from '@/contexts/AuthContext'
+import { useRouter } from 'expo-router'
 
 const HandymanList = () => {
     const { handymen } = useHandyman()
+    const { userState } = useAuth()
+    const router = useRouter()
+
+    const handlePress = (handymanId: number) => {
+        if (userState?.user_role === 'client') {
+            router.push(`/handyman-listing/${handymanId}`)
+        }
+    }
     const renderHandymen = ({ item }: { item: HandymanType }) => {
         return (
             <Animated.View entering={FadeInRight} exiting={FadeOutLeft}>
-                <Pressable>
+                <Pressable onPress={() => handlePress(item.id)}>
                     <View style={{
                         flex: 1,
                         width: 180,
@@ -45,7 +55,7 @@ const HandymanList = () => {
                                 alignItems: 'center'
 
                             }}>
-                                <FontAwesome5 name="location-dot" size={14} color={Colors.secondary} />
+                                <MaterialIcons name="location-on" size={14} color={Colors.secondary} />
 
                                 <Text style={{
                                     fontSize: 12,

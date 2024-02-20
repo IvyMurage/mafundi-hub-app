@@ -5,6 +5,7 @@ import { Image } from 'expo-image'
 import CalendarPicker from 'react-native-calendar-picker'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { appointmentStyles } from '@/constants/styles'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const AppointmentForm = () => {
@@ -105,103 +106,5 @@ const AppointmentForm = () => {
 
     );
 }
-const appointmentStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 20,
-        backgroundColor: Colors.primary
-    },
-    icon: {
-        paddingLeft: 20,
-        marginVertical: 10
-    },
-    image: {
-        width: 200,
-        height: 200
-    },
-    title: {
-        fontSize: 16,
-        color: Colors.lighter,
-        fontFamily: 'roboto-medium',
-        fontWeight: 'bold',
-        letterSpacing: 1.2,
-        alignSelf: 'flex-start',
-        paddingHorizontal: 20,
-        marginVertical: 10
-    },
-    scrollView: {
-        width: '100%'
-    },
-    scrollViewContent: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: Colors.light,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        paddingBottom: 20,
-    },
-    calendarContainer: {
-        backgroundColor: Colors.lighter,
-        padding: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        width: '100%',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    textInput: {
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.primary,
-        marginVertical: 10,
-        padding: 10,
-        width: '45%',
-        letterSpacing: 1.2
-    },
-    button: {
-        backgroundColor: Colors.secondary,
-        padding: 20,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10
-    },
-    buttonTitle: {
-        color: Colors.lighter,
-        fontFamily: 'roboto-medium',
-        fontWeight: 'bold',
-        letterSpacing: 1.2
-    },
-    buttonContainer: {
-        paddingHorizontal: 20,
-        marginVertical: 10,
-        width: '100%',
-        justifyContent: 'space-between'
-    },
-    textArea: {
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.primary,
-        marginVertical: 10,
-        paddingHorizontal: 10,
-        marginHorizontal: 20,
-        letterSpacing: 1.2
-    },
-    inputContainter: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        paddingHorizontal: 20
-    },
-    textContainer: {
-        marginBottom: 150,
-        width: '100%',
-        justifyContent: 'space-between'
-    }
 
-})
 export default AppointmentForm
