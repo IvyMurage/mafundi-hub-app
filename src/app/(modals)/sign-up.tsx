@@ -8,6 +8,7 @@ import { signUpSchema } from '@/constants/validation-schema'
 import { useAuth } from '@/contexts/AuthContext'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
+import { FontAwesome, Octicons } from '@expo/vector-icons'
 
 const SignUp = () => {
     const router = useRouter()
@@ -63,34 +64,46 @@ const SignUp = () => {
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
                 <>
-                    <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: Colors.primary }}>
-                        <View style={[defaultStyles.container]}>
-                            <Text style={[defaultStyles.loginHeader]}>
-                                Mafundi
-                                <Text style={{ color: Colors.lighter }}>
-                                    Hub
-                                </Text>
+                    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
+                        <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ marginTop: 18, marginLeft: 12 }} onPress={() => { router.back()}} />
+                        <View style={{
+                            alignSelf: 'flex-start',
+                            paddingTop: 20,
+                            paddingHorizontal: 10
+                        }}>
+                            <Text style={{
+                                fontFamily: 'roboto-bold',
+                                letterSpacing: 1.4,
+                                fontSize: 18,
+                                color: Colors.lighter,
+                                alignSelf: 'flex-start',
+                                paddingVertical: 5
+                            }}>
+                                Create Account
                             </Text>
                             <Text style={{
                                 fontFamily: 'roboto',
-                                letterSpacing: 1.4,
+                                letterSpacing: 1.2,
+                                fontSize: 14,
                                 color: Colors.lighter,
                                 alignSelf: 'flex-start',
-                                paddingLeft: 8,
-                                position: 'absolute',
-                                top: 100
                             }}>
-                                Create Your account
+                                Please fill the input below
                             </Text>
+                        </View>
+                        <View style={[defaultStyles.container]}>
+                            <View style={[defaultStyles.textContainer]}>
+                                <FontAwesome name='envelope-o' size={20} color={Colors.primary} style={defaultStyles.authIcon} />
+                                <TextInput
+                                    autoCapitalize='none'
+                                    placeholder='Email'
+                                    value={values.email!}
+                                    onChangeText={handleChange('email')}
+                                    onBlur={() => setFieldTouched('email')}
+                                    style={[defaultStyles.inputTextField, defaultStyles.authInput]}
+                                />
+                            </View>
 
-                            <TextInput
-                                autoCapitalize='none'
-                                placeholder='Email'
-                                value={values.email!}
-                                onChangeText={handleChange('email')}
-                                onBlur={() => setFieldTouched('email')}
-                                style={[defaultStyles.inputTextField]}
-                            />
                             {
                                 touched.email && errors.email && (
                                     <Text style={[defaultStyles.errorText]}>
@@ -98,15 +111,19 @@ const SignUp = () => {
                                     </Text>
                                 )
                             }
-                            <TextInput
-                                autoCapitalize='none'
-                                secureTextEntry
-                                placeholder='Password'
-                                value={values.password!}
-                                onChangeText={handleChange('password')}
-                                onBlur={() => setFieldTouched('password')}
-                                style={[defaultStyles.inputTextField]}
-                            />
+                            <View style={[defaultStyles.textContainer]}>
+                                <FontAwesome name='lock' size={20} color={Colors.primary} style={defaultStyles.authIcon} />
+                                <TextInput
+                                    autoCapitalize='none'
+                                    secureTextEntry
+                                    placeholder='Password'
+                                    value={values.password!}
+                                    onChangeText={handleChange('password')}
+                                    onBlur={() => setFieldTouched('password')}
+                                    style={[defaultStyles.inputTextField, defaultStyles.authInput]}
+                                />
+                            </View>
+
                             {
                                 touched.password && errors.password && (
                                     <Text style={[defaultStyles.errorText]}>
@@ -114,15 +131,19 @@ const SignUp = () => {
                                     </Text>
                                 )
                             }
-                            <TextInput
-                                autoCapitalize='none'
-                                secureTextEntry
-                                placeholder='Confirm Password'
-                                value={values.confirmation_password!}
-                                onChangeText={handleChange('confirmation_password')}
-                                onBlur={() => setFieldTouched('confirmation_password')}
-                                style={[defaultStyles.inputTextField]}
-                            />
+                            <View style={defaultStyles.textContainer}>
+                                <FontAwesome name='lock' size={20} color={Colors.primary} style={defaultStyles.authIcon} />
+                                <TextInput
+                                    autoCapitalize='none'
+                                    secureTextEntry
+                                    placeholder='Confirm Password'
+                                    value={values.confirmation_password!}
+                                    onChangeText={handleChange('confirmation_password')}
+                                    onBlur={() => setFieldTouched('confirmation_password')}
+                                    style={[defaultStyles.inputTextField, defaultStyles.authInput]}
+                                />
+                            </View>
+
                             {
                                 touched.confirmation_password && errors.confirmation_password && (
                                     <Text style={[defaultStyles.errorText]}>
