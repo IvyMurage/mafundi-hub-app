@@ -9,7 +9,7 @@
         "userInterfaceStyle": "automatic",
         "splash": {
             "image": "./src/assets/images/splash.png",
-            "resizeMode": "contain",
+            "contentFit": "contain",
             "backgroundColor": "#0A1045"
         },
         "assetBundlePatterns": ["**/*"],

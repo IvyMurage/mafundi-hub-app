@@ -131,14 +131,20 @@ const Handymen = () => {
                         />
 
                     </View>
-                    <View>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        padding: 10,
+                    
+                    }}>
                         <Text style={{
                             fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
                             fontSize: 15,
                             paddingHorizontal: 20,
                             color: Colors.primary,
-                            paddingTop: 20
+                            
                         }}>Recommended</Text>
 
                         <HandymanList />

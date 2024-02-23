@@ -9,56 +9,80 @@ export const defaultStyles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 12,
         position: "relative",
+        paddingHorizontal: 10,
     },
 
     loginSubHeader: {
         color: Colors.lighter,
+        alignSelf: "flex-start",
         fontSize: 24,
-        fontFamily: "roboto-medium",
+        fontFamily: "roboto-bold",
         letterSpacing: 2.4,
     },
 
     loginHeader: {
-        color: Colors.secondary,
-        fontSize: 28,
-        fontFamily: "roboto-bold",
-        letterSpacing: 2.88,
+        color: Colors.lighter,
+        fontSize: 14,
+        fontFamily: "roboto",
+        alignSelf:'flex-start',
+        letterSpacing: 1.2,
+        lineHeight:10,       
+        paddingVertical:10
+
     },
 
     inputTextField: {
         fontSize: 14,
         letterSpacing: 1.68,
-        width: 357,
-        height: 56,
+        // width: 357,
+        // height: 56,
         margin: 12,
         padding: 15,
         borderRadius: 10,
         backgroundColor: Colors.light,
         fontFamily: "roboto",
     },
+    authInput: {
+        padding: 20,
+        width: "100%",
+        borderRadius: 18,
+        paddingLeft: 50,
+    },
+    textContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    authIcon: {
+        position: "absolute",
+        top: 35,
+        left: 35,
+        zIndex: 1,
+    },
 
     authOption: {
         fontSize: 14,
-        letterSpacing: 1.68,
+        letterSpacing: 1.2,
+        lineHeight:10,
         color: Colors.lighter,
         fontFamily: "roboto",
+        paddingVertical:10
     },
 
     authButton: {
-        width: 357,
-        height: 55,
+        width: "100%",
         flexShrink: 0,
-        borderRadius: 5,
+        padding: 10,
+        borderRadius: 50,
         justifyContent: "center",
         alignItems: "center",
     },
     authButtonText: {
-        fontSize: 18,
+        fontSize: 20,
         color: Colors.light,
         textAlign: "center",
         padding: 10,
         letterSpacing: 1.8,
-        fontFamily: "roboto-medium",
+        fontFamily: "roboto-bold",
     },
     errorText: {
         color: "red",

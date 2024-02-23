@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, SafeAreaView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, Text, TextInput, Pressable, SafeAreaView, } from 'react-native'
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
@@ -9,6 +9,8 @@ import { Formik } from 'formik'
 import { loginSchema } from '@/constants/validation-schema'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
+import { FontAwesome, } from '@expo/vector-icons'
+import Divider from '@/components/divider'
 
 const Login = () => {
     const router = useRouter()
@@ -41,25 +43,33 @@ const Login = () => {
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
                 <>
-                    <SafeAreaView style={{ padding: 20, flex: 1, backgroundColor: Colors.primary }}>
+                    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
                         <View style={[defaultStyles.container]}>
-                            <Text style={[defaultStyles.loginHeader]}>Welcome Back!</Text>
+                            <View>
+                                <Image
+                                    style={{ width: 300, height: 200 }}
+                                    source={require('@/assets/images/auth-image.svg')}
+                                />
 
-                            <Image
-                                style={{ width: 300, height: 200 }}
-                                source={require('@/assets/images/auth-image.svg')}
-                            />
+                            </View>
+                            <Divider />
+
 
                             <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
+                            <Text style={[defaultStyles.loginHeader]}>Please sign in to continue</Text>
 
-                            <TextInput
-                                autoCapitalize='none'
-                                placeholder='Email'
-                                value={values.email!}
-                                onChangeText={handleChange('email')}
-                                onBlur={() => setFieldTouched('email')}
-                                style={[defaultStyles.inputTextField]}
-                            />
+                            <View style={[defaultStyles.textContainer]}>
+                                <FontAwesome name='envelope-o' size={20} color={Colors.primary} style={defaultStyles.authIcon} />
+                                <TextInput
+                                    autoCapitalize='none'
+                                    placeholder='Email'
+                                    value={values.email!}
+                                    onChangeText={handleChange('email')}
+                                    onBlur={() => setFieldTouched('email')}
+                                    style={[defaultStyles.inputTextField, defaultStyles.authInput]}
+                                />
+                            </View>
+
                             {
                                 touched.email && errors.email && (
                                     <Text style={[defaultStyles.errorText]}>
@@ -67,15 +77,21 @@ const Login = () => {
                                     </Text>
                                 )
                             }
-                            <TextInput
-                                autoCapitalize='none'
-                                secureTextEntry
-                                placeholder='Password'
-                                value={values.password!}
-                                onChangeText={handleChange('password')}
-                                onBlur={() => setFieldTouched('password')}
-                                style={[defaultStyles.inputTextField]}
-                            />
+
+                            <View style={[defaultStyles.textContainer]}>
+                                <FontAwesome name='lock' size={24} color={Colors.primary} style={defaultStyles.authIcon} />
+
+                                <TextInput
+                                    autoCapitalize='none'
+                                    secureTextEntry
+                                    placeholder='Password'
+                                    value={values.password!}
+                                    onChangeText={handleChange('password')}
+                                    onBlur={() => setFieldTouched('password')}
+                                    style={[defaultStyles.inputTextField, defaultStyles.authInput]}
+                                />
+                            </View>
+
                             {
                                 touched.password && errors.password && (
                                     <Text style={[defaultStyles.errorText]}>
@@ -91,7 +107,7 @@ const Login = () => {
                                     { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
                                     ]
                                 }>
-                                <Text style={[defaultStyles.authButtonText]}>Login</Text>
+                                <Text style={[defaultStyles.authButtonText]}>LOGIN</Text>
                             </Pressable>
 
                             <Text style={[defaultStyles.authOption]}>
