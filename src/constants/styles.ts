@@ -305,16 +305,18 @@ export const handymanRegisterStyles = StyleSheet.create({
     textInput: {
         borderColor: Colors.secondary,
         borderWidth: 1,
+        width: 380,
+        borderRadius: 40,
     },
     textArea: {
         paddingTop: 0,
         height: 100,
+        borderRadius:10
     },
     submitBtn: {
-        padding: 12,
-        borderRadius: 8,
-        width: 357,
-        height: 55,
+        padding: 20,
+        borderRadius: 40,
+        width: 380,
         alignItems: "center",
         justifyContent: "center",
     },

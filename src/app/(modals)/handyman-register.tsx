@@ -12,6 +12,7 @@ import { useService } from '@/hooks/useService'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useHandyman, useHandymanPost } from '@/hooks/useHandyman'
+import { Ionicons } from '@expo/vector-icons'
 
 const HandymanRegister = () => {
     const router = useRouter()
@@ -28,12 +29,18 @@ const HandymanRegister = () => {
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, setFieldValue, }) => (
                 <>
-                    <SafeAreaView style={{ flex: 1, paddingTop: 0, backgroundColor: Colors.primary }}>
+                    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
+                        <Ionicons name='arrow-back' size={20} color={Colors.lighter} style={{
+                            marginLeft: 20,
+                            marginTop: 20
+                        }} />
                         <View style={handymanRegisterStyles.container}>
                             <View style={{ alignItems: 'center' }}>
                                 <Image
                                     style={{ width: 250, height: 200, }}
-                                    source={require('@/assets/images/handyman.svg')} />
+                                    source={require('@/assets/images/handyman.svg')}
+                                    contentFit='contain'
+                                />
                             </View>
                             <ScrollView
                                 contentContainerStyle={handymanRegisterStyles.contentContainer}
