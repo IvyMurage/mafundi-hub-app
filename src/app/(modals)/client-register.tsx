@@ -25,19 +25,24 @@ const ClientRegister = () => {
             validationSchema={clientSchema}
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, setFieldValue }) => (
-                <SafeAreaView style={{ flex: 1, backgroundColor: Colors.primary }}>
-                    <View style={ClientRegisterStyles.container}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Image
-                                style={{ width: 200, height: 150, resizeMode: 'contain' }}
-                                source={require('@/assets/images/client.svg')}
-                            />
-                            <View style={ClientRegisterStyles.titleContainer}>
-                                <Text style={ClientRegisterStyles.titleText}>
-                                    Join Mafundi Hub: Your client Solution! Register Now!
-                                </Text>
-                            </View>
+                <SafeAreaView style={{ flex: 1, backgroundColor: Colors.light }}>
+                    <View style={{
+                        alignItems: 'center',
+                        borderBottomLeftRadius: 50,
+                        borderBottomRightRadius: 50,
+                        backgroundColor: Colors.primary
+                    }}>
+                        <Image
+                            style={{ width: 200, height: 100, resizeMode: 'contain' }}
+                            source={require('@/assets/images/client.svg')}
+                        />
+                        <View style={ClientRegisterStyles.titleContainer}>
+                            <Text style={ClientRegisterStyles.titleText}>
+                                Join Mafundi Hub: Your client Solution! Register Now!
+                            </Text>
                         </View>
+                    </View>
+                    <View style={ClientRegisterStyles.container}>
                         <ScrollView
                             contentContainerStyle={ClientRegisterStyles.contentContainer}
                             style={ClientRegisterStyles.scroll}>

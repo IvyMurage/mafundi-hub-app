@@ -24,11 +24,10 @@ export const defaultStyles = StyleSheet.create({
         color: Colors.lighter,
         fontSize: 14,
         fontFamily: "roboto",
-        alignSelf:'flex-start',
+        alignSelf: "flex-start",
         letterSpacing: 1.2,
-        lineHeight:10,       
-        paddingVertical:10
-
+        lineHeight: 10,
+        paddingVertical: 10,
     },
 
     inputTextField: {
@@ -62,10 +61,10 @@ export const defaultStyles = StyleSheet.create({
     authOption: {
         fontSize: 14,
         letterSpacing: 1.2,
-        lineHeight:10,
+        lineHeight: 10,
         color: Colors.lighter,
         fontFamily: "roboto",
-        paddingVertical:10
+        paddingVertical: 10,
     },
 
     authButton: {
@@ -100,7 +99,6 @@ export const ClientRegisterStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-evenly",
         alignItems: "center",
-        overflow: "scroll",
     },
     titleText: {
         fontFamily: "roboto-medium",
@@ -113,6 +111,7 @@ export const ClientRegisterStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 20,
+        padding: 20,
     },
     scroll: {
         width: "100%",
@@ -128,13 +127,15 @@ export const ClientRegisterStyles = StyleSheet.create({
     textInput: {
         borderColor: Colors.secondary,
         borderWidth: 1,
+        width: 380,
+        borderRadius: 40,
     },
 
     submitBtn: {
         backgroundColor: Colors.primary,
-        borderRadius: 8,
-        width: 357,
-        height: 55,
+        borderRadius: 20,
+        padding: 20,
+        width: 380,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 10,
@@ -149,7 +150,7 @@ export const ClientRegisterStyles = StyleSheet.create({
     contentContainer: {
         flexGrow: 1,
         alignItems: "center",
-        marginTop: 12,
+        marginTop: 10,
         backgroundColor: Colors.light,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
@@ -187,6 +188,7 @@ export const clientProfileStyles = StyleSheet.create({
         borderColor: Colors.secondary,
         paddingLeft: 50,
         marginBottom: 30,
+        width: 380,
     },
     cameraContainer: {
         position: "absolute",

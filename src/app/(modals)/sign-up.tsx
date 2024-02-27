@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, SafeAreaView, Alert } from 'react-native'
+import { View, Text, TextInput, Pressable, SafeAreaView, Alert, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
@@ -65,29 +65,12 @@ const SignUp = () => {
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
                 <>
                     <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
-                        <Octicons name='arrow-left' size={24} color={Colors.lighter} style={{ marginTop: 18, marginLeft: 12 }} onPress={() => { router.back()}} />
-                        <View style={{
-                            alignSelf: 'flex-start',
-                            paddingTop: 20,
-                            paddingHorizontal: 10
-                        }}>
-                            <Text style={{
-                                fontFamily: 'roboto-bold',
-                                letterSpacing: 1.4,
-                                fontSize: 18,
-                                color: Colors.lighter,
-                                alignSelf: 'flex-start',
-                                paddingVertical: 5
-                            }}>
+                        <Octicons name='arrow-left' size={24} color={Colors.lighter} style={styles.backArrow} onPress={() => { router.back() }} />
+                        <View style={styles.container}>
+                            <Text style={styles.containerTitle}>
                                 Create Account
                             </Text>
-                            <Text style={{
-                                fontFamily: 'roboto',
-                                letterSpacing: 1.2,
-                                fontSize: 14,
-                                color: Colors.lighter,
-                                alignSelf: 'flex-start',
-                            }}>
+                            <Text style={styles.containerSubTitle}>
                                 Please fill the input below
                             </Text>
                         </View>
@@ -200,5 +183,34 @@ const SignUp = () => {
         </Formik>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'flex-start',
+        paddingTop: 20,
+        paddingHorizontal: 10
+    },
+    backArrow: {
+        marginTop: 18,
+        marginLeft: 15
+    },
+    containerTitle: {
+        fontFamily: 'roboto-bold',
+        letterSpacing: 1.4,
+        fontSize: 20,
+        color: Colors.lighter,
+        alignSelf: 'flex-start',
+        paddingVertical: 5,
+        paddingHorizontal: 5
+    },
+    containerSubTitle: {
+        fontFamily: 'roboto',
+        letterSpacing: 1.2,
+        fontSize: 14,
+        color: Colors.lighter,
+        alignSelf: 'flex-start',
+        paddingHorizontal: 5
+    },
+})
 
 export default SignUp

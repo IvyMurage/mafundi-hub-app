@@ -43,7 +43,7 @@ const Select: React.FC<SelectProps> = (props) => {
                     const value = data.find(item => item.label === selectedItem)?.value;
                     handleChange(value!.toString());
                 }}
-
+                showsVerticalScrollIndicator={true}
                 defaultButtonText={defaultButtonText}
                 searchPlaceHolder={searchPlaceHolder}
                 dropdownIconPosition='right'
@@ -72,8 +72,8 @@ const selectStyles = StyleSheet.create({
         backgroundColor: Colors.light,
         borderColor: Colors.secondary,
         borderWidth: 1,
-        borderRadius: 8,
-        width: 357,
+        borderRadius: 40,
+        width: 380,
         height: 55,
         alignItems: 'center',
         justifyContent: 'center'

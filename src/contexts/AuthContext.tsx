@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: any) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         })
-
+        console.log('the registeration', response)
         if (!response.ok) {
             const errorData = await response.json();
             const errorMessage = errorData?.status?.errors || "An unknown error occurred";

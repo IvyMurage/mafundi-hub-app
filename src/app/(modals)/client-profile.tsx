@@ -32,14 +32,17 @@ const ClientProfile = () => {
                 <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
                     <View style={clientProfileStyles.container}>
                         <Image
+                            placeholderContentFit='cover'
                             style={{
                                 width: 100,
                                 height: 100,
                                 borderRadius: 100,
                                 marginBottom: 20,
-                                marginTop: 1
+                                marginTop: 1,
+                                borderColor: Colors.secondary
                             }}
-                            source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
+                            placeholder={require('@/assets/images/placeholder.jpg')}
+                            source={{ uri: userState?.avatar_url! }}
                         />
                         <Pressable style={clientProfileStyles.cameraContainer} onPress={() => {
                             pickImage()
@@ -154,6 +157,7 @@ const ClientProfile = () => {
                                     onPress={() => handleSubmit()}
                                     style={[defaultStyles.authButton,
                                     {
+                                        width: 380,
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "center",
