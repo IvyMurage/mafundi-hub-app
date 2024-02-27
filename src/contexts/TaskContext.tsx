@@ -68,7 +68,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         duration_label: '',
         available: false
     })
-    const url = userState?.user_role === 'client' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?client=${userState?.user_id}&page=${pageNumber}&per_page=10` :
+    const url = userState?.user_role === 'client' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?client_id=${userState?.user_id}&page=${pageNumber}&per_page=10` :
         `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10`
     const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
         const optimisticTaskId = Math.floor(Math.random() * 1000000)

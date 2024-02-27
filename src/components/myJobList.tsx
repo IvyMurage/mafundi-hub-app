@@ -2,7 +2,7 @@ import { View, Text, Pressable, FlatList, } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
-import { MaterialIcons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Proposal from '@/app/(screens)/proposals'
 import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/contexts/TaskContext'
@@ -28,7 +28,6 @@ const JobList = () => {
     useEffect(() => {
         getMyJobs!()
     }, [tasks])
-    console.log(tasks, 'tasks')
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
@@ -111,7 +110,7 @@ const JobList = () => {
                     alignItems: 'center',
                     width: '100%',
                     position: 'absolute',
-                    top: '85%',
+                    top: '84%',
                 }}>
                     <Pressable style={{
                         alignSelf: 'flex-end',
@@ -120,9 +119,7 @@ const JobList = () => {
                     }} onPress={() => {
                         setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
                     }}>
-                        <Text style={{ color: Colors.secondary }}>
-                            Previous
-                        </Text>
+                        <Ionicons name="arrow-back-circle" color={Colors.primary} size={30} />
                     </Pressable>
 
                     <Pressable style={{
@@ -132,9 +129,7 @@ const JobList = () => {
                     }} onPress={() => {
                         setPageNumber!((prevPage) => prevPage + 1)
                     }}>
-                        <Text style={{ color: Colors.secondary }}>
-                            Next
-                        </Text>
+                        <Ionicons name='arrow-forward-circle' color={Colors.primary} size={30} />
                     </Pressable>
 
                 </View>
