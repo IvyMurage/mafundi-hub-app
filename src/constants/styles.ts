@@ -400,7 +400,7 @@ export const taskFormStyles = StyleSheet.create({
         fontFamily: "roboto",
         fontSize: 14,
         height: 60,
-        borderRadius: 10,
+        borderRadius: 40,
         padding: 15,
         borderColor: Colors.secondary,
         marginBottom: 10,

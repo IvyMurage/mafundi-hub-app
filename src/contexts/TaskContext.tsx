@@ -19,6 +19,7 @@ interface TaskProps {
     setPageNumber?: Dispatch<SetStateAction<number>>
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
     handleRoute?: () => Promise<string | null>
+    getMyJobs?: () => Promise<void>
 }
 
 interface TaskProviderProps {
@@ -82,7 +83,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             available: true
         })
 
-        setTasks(prevTasks => [task, ...prevTasks])
         try {
             setIsLoading(true)
             const location = taskForm.location_attributes?.split(', ')
@@ -129,68 +129,69 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         }
     }
 
+
+    useEffect(() => {
+        if (task.id !== null) {
+            setTasks(prevTasks => [task, ...prevTasks]); // Add the new task to tasks
+        }
+    }, [task]); // Dependency array includes task
     const handleRoute = async () => {
         const instant_book = await SecureStore.getItemAsync('instant_book')
         return instant_book
     }
 
-    useEffect(() => {
-        const getMyJobs = async () => {
-            try {
-                setLoading(true)
-                const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${authState?.token}` }
-                })
-                const data = await response.json()
-                if (!response.ok) {
-                    let error;
-                    if (data.message) {
-                        error = data.message;
-                    } else if (data.error) {
-                        router.push('/login')
-                        error = data.error;
-                    } else {
-                        error = response.statusText;
-                    }
-                    throw new Error(error);
-                }
-                console.log("Data", data)
-                if (response.ok) {
-                    setTasks(data?.task?.map((item: {
-                        id: number | null;
-                        job_title: string | null;
-                        location: { city: string; county: string; country: string } | null;
-                        created_at: string | null;
-                        job_price: number | null;
-                        service_name: string | null;
-                        duration_label: string | null;
-                        available: boolean | null;
-                    }) => {
-                        return {
-                            id: item.id,
-                            job_title: item.job_title,
-                            job_location: `${item.location!.city}, ${item.location!.county}, ${item.location!.country}`,
-                            job_date: item.created_at,
-                            job_price: `ksh.${item.job_price}`,
-                            job_category: item.service_name,
-                            duration_label: item.duration_label,
-                            available: item.available
-                        }
-                    }))
-                }
-            }
-            catch (err: any) {
-                if (err.message === "Invalid token") {
+
+    const getMyJobs = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(url, {
+                headers: { Authorization: `Bearer ${authState?.token}` }
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                let error;
+                if (data.message) {
+                    error = data.message;
+                } else if (data.error) {
                     router.push('/login')
+                    error = data.error;
+                } else {
+                    error = response.statusText;
                 }
-                console.log("thisss", err.message)
+                throw new Error(error);
             }
-            finally {
-                setLoading(false)
+            if (response.ok) {
+                setTasks(data?.task?.map((item: {
+                    id: number | null;
+                    job_title: string | null;
+                    location: { city: string; county: string; country: string } | null;
+                    created_at: string | null;
+                    job_price: number | null;
+                    service_name: string | null;
+                    duration_label: string | null;
+                    available: boolean | null;
+                }) => {
+                    return {
+                        id: item.id,
+                        job_title: item.job_title,
+                        job_location: `${item.location!.city}, ${item.location!.county}, ${item.location!.country}`,
+                        job_date: item.created_at,
+                        job_price: `ksh.${item.job_price}`,
+                        job_category: item.service_name,
+                        duration_label: item.duration_label,
+                        available: item.available
+                    }
+                }))
             }
         }
-        getMyJobs()
-    }, [pageNumber])
+        catch (err: any) {
+            console.log("thisss", err.message)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
 
     const value = {
         tasks,
@@ -203,6 +204,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         visible,
         setVisible,
         handleSubmit,
+        getMyJobs,
         handleRoute
     }
     return (

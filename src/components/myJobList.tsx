@@ -1,5 +1,5 @@
 import { View, Text, Pressable, FlatList, } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -9,9 +9,10 @@ import { TaskProvider, useTask } from '@/contexts/TaskContext'
 import { useAuth } from '@/contexts/AuthContext'
 import NotFound from './not-found'
 import { useRouter } from 'expo-router'
+import Loader from './loader'
 
 const JobList = () => {
-    const { tasks, setPageNumber } = useTask()
+    const { tasks, setPageNumber, getMyJobs, isLoading } = useTask()
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
@@ -24,6 +25,9 @@ const JobList = () => {
         }
     }
 
+    useEffect(() => {
+        getMyJobs!()
+    }, [tasks])
     console.log(tasks, 'tasks')
     const renderMyJobs = ({ item }:
         {
@@ -96,42 +100,44 @@ const JobList = () => {
                                 style={{ width: '100%', height: '100%', padding: 10 }}
                                 contentContainerStyle={{ paddingBottom: 120 }}
                             />
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                width: '100%',
-                                position: 'absolute',
-                                top: '85%',
-                            }}>
-                                <Pressable style={{
-                                    alignSelf: 'flex-end',
-                                    paddingBottom: 100,
-                                    paddingHorizontal: 20,
-                                }} onPress={() => {
-                                    setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
-                                }}>
-                                    <Text style={{ color: Colors.secondary }}>
-                                        Previous
-                                    </Text>
-                                </Pressable>
 
-                                <Pressable style={{
-                                    alignSelf: 'flex-end',
-                                    paddingBottom: 100,
-                                    paddingHorizontal: 20,
-                                }} onPress={() => {
-                                    setPageNumber!((prevPage) => prevPage + 1)
-                                }}>
-                                    <Text style={{ color: Colors.secondary }}>
-                                        Next
-                                    </Text>
-                                </Pressable>
-
-                            </View>
+                            <Loader isLoading={isLoading!} />
                             <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
                         </>
                 }
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                    position: 'absolute',
+                    top: '85%',
+                }}>
+                    <Pressable style={{
+                        alignSelf: 'flex-end',
+                        paddingBottom: 100,
+                        paddingHorizontal: 20,
+                    }} onPress={() => {
+                        setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
+                    }}>
+                        <Text style={{ color: Colors.secondary }}>
+                            Previous
+                        </Text>
+                    </Pressable>
+
+                    <Pressable style={{
+                        alignSelf: 'flex-end',
+                        paddingBottom: 100,
+                        paddingHorizontal: 20,
+                    }} onPress={() => {
+                        setPageNumber!((prevPage) => prevPage + 1)
+                    }}>
+                        <Text style={{ color: Colors.secondary }}>
+                            Next
+                        </Text>
+                    </Pressable>
+
+                </View>
             </TaskProvider>
         </>
     )

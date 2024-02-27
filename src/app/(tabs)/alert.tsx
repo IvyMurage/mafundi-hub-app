@@ -2,10 +2,11 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import ChatApp from '@/components/chatApp'
 
-const Proposals = () => {
+const Alert = () => {
     return (
-        <ChatApp />
+        <Text>Alert</Text>
+        // <ChatApp />
     )
 }
 
-export default Proposals
+export default Alert

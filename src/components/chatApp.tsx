@@ -12,37 +12,49 @@ const ChatApp = () => {
     const [message, setMessage] = useState<string>('')
     const { userState } = useAuth()
     useLayoutEffect(() => {
-        const msgCollectionRef = collection(FIREBASE_DB, 'messages')
-        const q = query(msgCollectionRef, orderBy('createdAt', 'asc'), where('senderId', '==', userState?.user_id))
+        try {
+            const msgCollectionRef = collection(FIREBASE_DB, 'messages')
+            const q = query(msgCollectionRef, orderBy('createdAt', 'asc'), where('senderId', '==', userState?.user_id))
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const messages = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-            }))
-            setMessages(messages)
-        })
-        return () => {
-            unsubscribe()
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                const messages = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }))
+                setMessages(messages)
+            })
+            return () => {
+                unsubscribe()
+            }
         }
+        catch {
+            console.log('Firebase error')
+        }
+
     })
 
     const sendMessage = async (message: string) => {
-        console.log('sending message')
-        const msg = message.trim()
-        if (msg.length === 0) return
-        const msgCollectionRef = collection(FIREBASE_DB, 'messages')
-        await addDoc(msgCollectionRef, {
-            message: msg,
-            senderId: userState?.user_id,
-            receiverId: '',
-            createdAt: serverTimestamp()
-        })
-        setMessage('')
+        try {
+            console.log('sending message')
+            const msg = message.trim()
+            if (msg.length === 0) return
+            const msgCollectionRef = collection(FIREBASE_DB, 'messages')
+            await addDoc(msgCollectionRef, {
+                message: msg,
+                senderId: userState?.user_id,
+                receiverId: '',
+                createdAt: serverTimestamp()
+            })
+            setMessage('')
+        }
+        catch {
+            console.log('Firebase error while sending messsage')
+        }
+
     }
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
-        const isSender = item.sender === userState?.user_id
+        const isSender = item.senderId === userState?.user_id
         return (
             <View>
                 <View style={[styles.messageContainer, isSender ? styles.userMessageContainer : styles.otherUserMessage]}>

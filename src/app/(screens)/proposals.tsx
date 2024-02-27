@@ -42,7 +42,7 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                     }
                     throw new Error(error)
                 }
-                console.log("This is the data", data)
+                // console.log("This is the data", data)
             }
             catch (error: any) {
                 console.log("Error fetching proposals", error.message)
