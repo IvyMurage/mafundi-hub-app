@@ -152,7 +152,7 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen name={userState?.user_role === 'client' ? 'alert' : 'handyman-proposals'}
+      <Tabs.Screen name='alert'
         options={{
           headerShown: true,
           headerTitle: userState?.user_role === 'client' ? 'Alerts' : 'Proposals',
@@ -175,7 +175,10 @@ export default function TabLayout() {
             </Pressable>
           ),
           tabBarLabel: userState?.user_role === 'client' ? "Alerts" : "Proposals",
-          tabBarIcon: ({ color, size }) => <TabBarIcon name="bell" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) =>
+            userState?.user_role === 'client' ?
+              <TabBarIcon name="bell" color={color} size={size} /> :
+              <TabBarIcon name="envelope" color={color} size={size} />,
         }}
       />
 

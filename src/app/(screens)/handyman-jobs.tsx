@@ -1,7 +1,6 @@
 import { Pressable, View } from 'react-native'
 import React, { useState } from 'react'
 import { TaskProvider, useTask } from '@/contexts/TaskContext'
-import { Image } from 'expo-image'
 import Search from '@/components/search'
 import Loader from '@/components/loader'
 import { FontAwesome5 } from '@expo/vector-icons'
@@ -13,7 +12,7 @@ import Divider from '@/components/divider'
 import { Text } from 'react-native'
 import { useAuth } from '@/contexts/AuthContext'
 
-const HandymaJobs = () => {
+const HandymanJobs = () => {
     const { loading } = useTask()
     const [location, setLocation] = useState('')
     const [service, setService] = useState('')
@@ -91,4 +90,4 @@ const HandymaJobs = () => {
     )
 }
 
-export default HandymaJobs
+export default HandymanJobs

@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import ClientHome from '../(screens)/client-home'
-import HandymaJobs from '../(screens)/handyman-jobs'
+import HandymanJobs from '../(screens)/handyman-jobs'
 
 const Page = () => {
   const { userState } = useAuth()
@@ -13,7 +13,7 @@ const Page = () => {
       </>
       ) : (
         <>
-          <HandymaJobs />
+          <HandymanJobs />
         </>
       )}
     </>
