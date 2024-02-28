@@ -6,8 +6,9 @@ import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialIcons, Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
+import { Image } from 'expo-image';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -85,18 +86,29 @@ export default function TabLayout() {
           headerTitle: `${userState?.user_role === 'client' ? null : 'Mafundi Jobs'}`,
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
-            fontSize: 16,
+            fontSize: 18,
             letterSpacing: 1.8,
-            color: Colors.lighter,
+            color: Colors.primary,
             textAlign: 'center',
+            paddingTop: 10
           },
           headerStyle: userState?.user_role === 'client' ? null : { ...headerStyles.headerStyle },
           headerLeft: () => (
-            <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.lighter}
-                style={{ left: 10 }} />
+            <Pressable onPress={handleBack} style={{ paddingLeft: 10, paddingTop: 10 }} >
+              <Image
+                source={{ uri: userState?.avatar_url! }}
+                placeholder={require('@/assets/images/placeholder.jpg')}
+                placeholderContentFit='cover'
+                style={{ width: 40, height: 40, borderRadius: 40 }} />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable onPress={handleRight} style={{ paddingRight: 10, paddingTop: 10 }} >
+              <FontAwesome5
+                name="bell"
+                size={20}
+                color={Colors.secondary}
+              />
             </Pressable>
           ),
           headerTitleAlign: 'center',
@@ -106,34 +118,36 @@ export default function TabLayout() {
       />
       <Tabs.Screen name='jobs'
         options={{
+          tabBarLabel: "Jobs",
           headerShown: true,
           headerTitle: 'My Jobs',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 16,
             letterSpacing: 1.8,
-            color: Colors.lighter,
+            color: Colors.primary,
             textAlign: 'center',
           },
           headerTitleAlign: 'center',
           headerStyle: { ...headerStyles.headerStyle },
           headerRight: () => (
             <Pressable onPress={() => router.push('/(tabs)/')} style={{ paddingRight: 10 }} >
-              <MaterialIcons name='add-circle'
+              <Ionicons
+                name='add-circle-sharp'
                 size={24}
-                color={Colors.lighter}
-                style={{ right: 10 }} />
+                color={Colors.secondary}
+              />
             </Pressable>
           ),
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.lighter}
-                style={{ left: 10 }} />
+              <Image
+                source={{ uri: userState?.avatar_url! }}
+                placeholder={require('@/assets/images/placeholder.jpg')}
+                placeholderContentFit='cover'
+                style={{ width: 40, height: 40, borderRadius: 40 }} />
             </Pressable>
           ),
-          tabBarLabel: "Jobs",
           tabBarIcon: ({ color, size }) => <TabBarIcon name="briefcase" color={color} size={size} />,
         }}
       />
@@ -146,7 +160,7 @@ export default function TabLayout() {
             fontFamily: 'roboto-medium',
             fontSize: 16,
             letterSpacing: 1.8,
-            color: Colors.lighter,
+            color: Colors.primary,
             textAlign: 'center',
           },
           headerTitleAlign: 'center',
@@ -156,7 +170,7 @@ export default function TabLayout() {
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
               <Octicons name='arrow-left'
                 size={24}
-                color={Colors.lighter}
+                color={Colors.primary}
                 style={{ left: 10 }} />
             </Pressable>
           ),
@@ -177,7 +191,7 @@ export default function TabLayout() {
             textAlign: 'center',
           },
           headerTitleAlign: 'center',
-          headerStyle: { ...headerStyles.headerStyle },
+          headerStyle: { ...headerStyles.headerStyle, backgroundColor: Colors.primary},
 
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
@@ -203,9 +217,10 @@ const headerStyles = StyleSheet.create({
     letterSpacing: 1.8
   },
   headerStyle: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.light,
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0,
+    height: 70,
   },
 })

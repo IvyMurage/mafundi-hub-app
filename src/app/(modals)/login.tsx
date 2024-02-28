@@ -14,7 +14,7 @@ import Divider from '@/components/divider'
 
 const Login = () => {
     const router = useRouter()
-    const { onLogin, isLoading } = useAuth()
+    const { onLogin, isLoading, } = useAuth()
     const [user] = useState<{ email: string | null, password: string | null }>({
         email: '',
         password: ''

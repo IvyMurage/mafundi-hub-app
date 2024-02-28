@@ -213,7 +213,7 @@ const HandymanProfile = () => {
                                         autoCapitalize='none'
                                         multiline
                                         numberOfLines={10}
-                                        value={values.handyman_skills!}
+                                        value={values.handyman_skills!.toString()}
                                         onChangeText={handleChange('handyman_skills')}
                                         onBlur={() => setFieldTouched('handyman_skills')}
                                         placeholder='Task Responsibilities e.g(cleaning, house arrangement) '

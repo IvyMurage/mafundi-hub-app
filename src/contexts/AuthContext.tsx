@@ -22,6 +22,8 @@ interface AuthProps {
     onLogin?: (user: { email: string | null; password: string | null }) => Promise<any>
     onRole?: (userRole: { role: string | null; user_id: number | null }) => Promise<any>;
     onLogout?: () => Promise<any>
+    setErrors?: React.Dispatch<React.SetStateAction<string>>
+    authError?: string
 }
 const AuthContext = createContext<AuthProps>({})
 const TOKEN_KEY = '12345'
@@ -57,6 +59,7 @@ export const AuthProvider = ({ children }: any) => {
     })
 
     const [loading, setLoading] = useState<boolean>(false)
+    const [authError, setErrors] = useState<string>('')
     useEffect(() => {
         const loadToken = async () => {
             setLoading(true)
@@ -126,7 +129,6 @@ export const AuthProvider = ({ children }: any) => {
             if (!response.ok) {
                 const errorData = await response.json();
                 const errorMessage = errorData || "An unknown error occurred";
-                console.error("API Error:", errorMessage);
                 // Optionally, you can throw an error here or update the state to show an error message in the UI
                 throw new Error(errorMessage);
             }
@@ -143,8 +145,8 @@ export const AuthProvider = ({ children }: any) => {
 
             return response
         }
-        catch (error) {
-            console.log(error)
+        catch (error: any) {
+            setErrors(error.message)
         }
         finally {
             setLoading(false)
@@ -192,7 +194,8 @@ export const AuthProvider = ({ children }: any) => {
         userState: user,
         onRole: role,
         authState,
-        isLoading: loading
+        isLoading: loading,
+        authError,
     }
 
     return (

@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { StyleSheet, Text, Pressable } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { TaskIdProvider } from '@/contexts/TaskIdContext';
 
 
 export {
@@ -47,7 +48,9 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <RootLayoutNav />
+      <TaskIdProvider>
+        <RootLayoutNav />
+      </TaskIdProvider>
     </AuthProvider>);
 }
 

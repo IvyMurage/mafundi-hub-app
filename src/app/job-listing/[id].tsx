@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Pressable, ScrollView } from 'react-native'
-import React from 'react'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import React, { useEffect } from 'react'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import { StyleSheet } from 'react-native'
 import Animated, { FadeInRight } from 'react-native-reanimated'
 import { useTaskFetch } from '@/hooks/useTaskProfile'
@@ -8,23 +8,27 @@ import Loader from '@/components/loader'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
+import { TaskIdProvider, useTaskId } from '@/contexts/TaskIdContext'
 
 const Job = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
     const { task, loading } = useTaskFetch(id)
     const router = useRouter()
-    console.log(task)
+    const { setTaskId } = useTaskId()
+
+    useEffect(() => { setTaskId(id) }, [id, setTaskId])
     return (
+
         <>
             <View >
                 <Image
                     source={require('@/assets/images/handyman.jpg')}
                     style={{ width: '100%', height: 200 }}
                     contentFit="cover"
-
                 />
                 <View style={jobStyle.overlay} />
             </View>
+
             <SafeAreaView style={jobStyle.safeStyle}>
                 <Animated.View entering={FadeInRight}>
                     <FontAwesome5 name="arrow-left" color={Colors.lighter} size={20} onPress={() => {
@@ -114,6 +118,7 @@ const Job = () => {
                                 }}
                                 onPress={() => {
                                     router.navigate('job-proposal-form')
+                                    setTaskId(id)
                                 }}
                             >
                                 <Text style={{
@@ -127,12 +132,11 @@ const Job = () => {
                             </Pressable>
                         </View>
                     </ScrollView>
-
-
                 </Animated.View>
             </SafeAreaView >
             <Loader isLoading={loading} />
         </>
+
 
 
     )

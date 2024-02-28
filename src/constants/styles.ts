@@ -504,7 +504,7 @@ export const clientHomeStyles = StyleSheet.create({
         fontFamily: "roboto-bold",
         color: Colors.lighter,
         marginBottom: 10,
-        letterSpacing: 1,
+        letterSpacing: 1.8,
         lineHeight: 30,
     },
     catergoryHeader: {

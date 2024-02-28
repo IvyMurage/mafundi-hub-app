@@ -48,7 +48,9 @@ const ClientHome = () => {
                     <View style={[clientHomeStyles.notification]}>
                         <Image
                             style={{ width: 40, height: 40, borderRadius: 40 }}
-                            source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
+                            source={{ uri: userState?.avatar_url! }}
+                            placeholder={require('@/assets/images/placeholder.jpg')}
+                            placeholderContentFit='cover'
                         />
                         <FontAwesome5
                             name="bell"

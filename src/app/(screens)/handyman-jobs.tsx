@@ -23,16 +23,6 @@ const HandymaJobs = () => {
         <>
             <TaskProvider>
                 <View style={defaultJobStyles.container}>
-                    <View style={defaultJobStyles.headerStyle}>
-                        <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
-                            style={{ width: 50, height: 50, borderRadius: 50 }} />
-                        <FontAwesome5
-                            name="bell"
-                            size={20}
-                            color={Colors.secondary}
-                        />
-                    </View>
-
                     <View>
                         <Search placeholder='Search' />
                         <Divider />

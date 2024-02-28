@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView, Dimensions } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import ClientJobs from '../(screens)/client-jobs'
@@ -10,14 +10,26 @@ const Jobs = () => {
     return (
         <>
             <TaskProvider>
-                {userState?.user_role === 'client' ? (<>
-                    <ClientJobs />
-                </>
-                ) : (
-                    <>
-                        <HandymaJobs />
+                <View style={{
+                    flex: 1,   position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height,
+                    zIndex: -1,
+                }}>
+                    <View>
+                        <Text>Jobs</Text>
+                    </View>
+                    {userState?.user_role === 'client' ? (<>
+                        <ClientJobs />
                     </>
-                )}
+                    ) : (
+                        <>
+                            <HandymaJobs />
+                        </>
+                    )}
+                </View>
             </TaskProvider>
         </>
     )

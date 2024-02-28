@@ -38,8 +38,8 @@ const JobList = () => {
                     <Text
                         onPress={() => {
                             setJobId(item.id!)
-                            // setVisible(!visible)
-                            router.push('/(modals)/appointment-form')
+                            setVisible(!visible)
+                            // router.push('/(modals)/appointment-form')
                         }}
                         style={[jobListStyle.jobText,
                         ...[userState?.user_role === 'client' ?

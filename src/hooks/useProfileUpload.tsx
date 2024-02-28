@@ -87,6 +87,9 @@ export const useProfileUpload = () => {
                 name: 'image.jpg',
                 type: 'image/jpeg',
             } as any);
+
+            console.log('j',formData)
+
             const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload_avatar`, {
                 method: 'POST',
                 headers: {
@@ -94,7 +97,9 @@ export const useProfileUpload = () => {
                 },
                 body: formData
             })
+
             const data = await response.json()
+
             console.log('Image data', data)
             if (response.ok) {
                 Alert.alert(data?.message)

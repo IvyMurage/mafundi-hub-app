@@ -1,47 +1,96 @@
-import { View, Text, TextInput, Pressable, Modal, StyleSheet } from 'react-native'
-import React from 'react'
+import { Text, TextInput, Pressable, Modal, StyleSheet, ScrollView } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { taskFormStyles } from '@/constants/styles'
 import { Image } from 'expo-image'
 import Colors from '@/constants/Colors'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { Formik } from 'formik'
+import { useAuth } from '@/contexts/AuthContext'
+import { TaskIdProvider, useTaskId } from '@/contexts/TaskIdContext'
+
 
 type ProposalFormProps = {
     visible: boolean,
-    setVisible: React.Dispatch<React.SetStateAction<boolean>>
-
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>,
+    route: any // Add the 'route' property to the type definition
 }
-const ProposalForm = ({ visible, setVisible }: ProposalFormProps) => {
+
+const ProposalForm = ({ route, }: ProposalFormProps) => {
+    const { userState } = useAuth()
+    const { authState } = useAuth()
+    const { taskId } = useTaskId()
+
     const router = useRouter()
+    const [proposal, setProposal] = useState({
+        task_id: parseInt(taskId!),
+        handyman_id: userState?.user_id,
+        proposal_text: '',
+    })
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch('https://handyman.com/api/v1/proposals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authState?.token}`
+                },
+                body: JSON.stringify(proposal)
+            })
+
+            const data = await response.json()
+            if (response.ok) {
+                console.log("This is data from job proposal", data)
+            }
+            if (response.status === 401) {
+                router.push('/login')
+            }
+            if (!response.ok) {
+                throw new Error(data.error)
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
     return (
-        <Modal animationType='slide' visible={visible} >
-            <SafeAreaView style={proposalFormStyles.modal}>
-                <FontAwesome5
-                    name="arrow-left"
-                    color={Colors.dark}
-                    size={20}
-                    onPress={() => { router.back() }}
-                    style={{ paddingLeft: 20 }}
-                />
-                <View style={proposalFormStyles.container}>
-                    <Image source={require('@/assets/images/job-proposal.svg')} style={{ width: 300, height: 300 }} contentFit='contain' />
+        <Formik
+            initialValues={proposal}
+            onSubmit={(values) => {
+            }}>
 
-                    <Text style={proposalFormStyles.headerText}>Send Your job proposal</Text>
-                    <TextInput
-                        placeholder='Description(e.g I am a plumber...)'
-                        numberOfLines={4}
-                        multiline={true}
-                        maxLength={300}
-                        style={{ ...taskFormStyles.textarea, ...proposalFormStyles.textInput }}
+            {({ values, handleChange, setFieldTouched, handleSubmit }) => (
+                <SafeAreaView style={proposalFormStyles.modal}>
+                    <FontAwesome5
+                        name="arrow-left"
+                        color={Colors.dark}
+                        size={20}
+                        onPress={() => { router.back() }}
+                        style={{ paddingLeft: 20 }}
                     />
-                    <Pressable style={proposalFormStyles.submitBtn}>
-                        <Text style={proposalFormStyles.submitText}>Send Proposal</Text>
-                    </Pressable>
-                </View>
-            </SafeAreaView>
-        </Modal>
+                    <ScrollView contentContainerStyle={proposalFormStyles.container}>
+                        <Image source={require('@/assets/images/job-proposal.svg')} style={{ width: 300, height: 300 }} contentFit='contain' />
 
+                        <Text style={proposalFormStyles.headerText}>Send Your job proposal</Text>
+                        <TextInput
+                            autoCapitalize='sentences'
+                            onChangeText={handleChange('proposal_text')}
+                            value={values.proposal_text}
+                            onBlur={() => setFieldTouched('proposal_text')}
+                            placeholder='Description(e.g I am a plumber...)'
+                            numberOfLines={4}
+                            multiline={true}
+                            maxLength={300}
+                            style={{ ...taskFormStyles.textarea, ...proposalFormStyles.textInput }}
+                        />
+                        <Pressable style={proposalFormStyles.submitBtn} onPress={() => handleSubmit()}>
+                            <Text style={proposalFormStyles.submitText}>Send Proposal</Text>
+                        </Pressable>
+                    </ScrollView>
+                </SafeAreaView>
+            )}
+        </Formik>
     )
 }
 const proposalFormStyles = StyleSheet.create({
