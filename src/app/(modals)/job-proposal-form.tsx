@@ -8,16 +8,10 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { Formik } from 'formik'
 import { useAuth } from '@/contexts/AuthContext'
-import { TaskIdProvider, useTaskId } from '@/contexts/TaskIdContext'
+import { useTaskId } from '@/contexts/TaskIdContext'
+import { request } from '@/utils/executePostRequest'
 
-
-type ProposalFormProps = {
-    visible: boolean,
-    setVisible: React.Dispatch<React.SetStateAction<boolean>>,
-    route: any // Add the 'route' property to the type definition
-}
-
-const ProposalForm = ({ route, }: ProposalFormProps) => {
+const ProposalForm = () => {
     const { userState } = useAuth()
     const { authState } = useAuth()
     const { taskId } = useTaskId()
@@ -27,19 +21,19 @@ const ProposalForm = ({ route, }: ProposalFormProps) => {
         task_id: parseInt(taskId!),
         handyman_id: userState?.user_id,
         proposal_text: '',
-    })
-    const handleSubmit = async () => {
-        try {
-            const response = await fetch('https://handyman.com/api/v1/proposals', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authState?.token}`
-                },
-                body: JSON.stringify(proposal)
-            })
+        job_status: 'proposed'
 
-            const data = await response.json()
+    })
+    const handleSubmit = async (values: { task_id: number; handyman_id: number | null | undefined; proposal_text: string }) => {
+        try {
+            const payload = {
+                ...values,
+                task_id: parseInt(taskId!),
+                handyman_id: userState?.user_id
+            }
+
+            console.log(payload)
+            const { response, data } = await request('POST', JSON.stringify(payload), '/job_proposals', authState?.token!)
             if (response.ok) {
                 console.log("This is data from job proposal", data)
             }
@@ -57,8 +51,7 @@ const ProposalForm = ({ route, }: ProposalFormProps) => {
     return (
         <Formik
             initialValues={proposal}
-            onSubmit={(values) => {
-            }}>
+            onSubmit={(values) => handleSubmit(values)}>
 
             {({ values, handleChange, setFieldTouched, handleSubmit }) => (
                 <SafeAreaView style={proposalFormStyles.modal}>

@@ -152,10 +152,10 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen name='alert'
+      <Tabs.Screen name={userState?.user_role === 'client' ? 'alert' : 'handyman-proposals'}
         options={{
           headerShown: true,
-          headerTitle: 'Alerts',
+          headerTitle: userState?.user_role === 'client' ? 'Alerts' : 'Proposals',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 16,
@@ -174,7 +174,7 @@ export default function TabLayout() {
                 style={{ left: 10 }} />
             </Pressable>
           ),
-          tabBarLabel: "Alerts",
+          tabBarLabel: userState?.user_role === 'client' ? "Alerts" : "Proposals",
           tabBarIcon: ({ color, size }) => <TabBarIcon name="bell" color={color} size={size} />,
         }}
       />
@@ -191,7 +191,7 @@ export default function TabLayout() {
             textAlign: 'center',
           },
           headerTitleAlign: 'center',
-          headerStyle: { ...headerStyles.headerStyle, backgroundColor: Colors.primary},
+          headerStyle: { ...headerStyles.headerStyle, backgroundColor: Colors.primary },
 
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
