@@ -5,7 +5,7 @@ import { FIREBASE_DB } from 'config/firebaseConfig'
 import { useAuth } from '@/contexts/AuthContext'
 import { Image } from 'expo-image'
 import Colors from '@/constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
+import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import Loader from '@/components/loader'
 
@@ -43,7 +43,11 @@ const Messages = () => {
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
         return (
-            <Pressable onPress={() => router.push('/(screens)/chatApp')}>
+            <Pressable onPress={() => router.push('/(screens)/chatApp')} style={styles.chatBtn}>
+                <View style={styles.icon}>
+                    <FontAwesome5 name="users" size={24} color={Colors.primary} />
+                </View>
+
                 <View key={item.id} style={styles.textContainer}>
                     <Text style={styles.text}>Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Ab minus provident ducimus consequatur explicabo...
@@ -104,10 +108,7 @@ const styles = StyleSheet.create({
     textContainer: {
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        padding: 20,
-        marginVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: 'gray',
+        marginHorizontal:10
     },
     text: {
         fontFamily: 'roboto',
@@ -115,6 +116,24 @@ const styles = StyleSheet.create({
         letterSpacing: 1.4,
         color: Colors.primary,
         textAlign: 'justify'
+    },
+    chatBtn: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: 'gray',
+        marginVertical: 10,
+        padding: 30,
+        paddingLeft: 20,
+        width: '100%',
+        paddingVertical: 10
+    },
+    icon: {
+        padding: 10,
+        borderRadius: 50,
+        borderWidth: 1,
+
     }
 })
 
