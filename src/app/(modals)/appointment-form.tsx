@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { FIREBASE_DB } from 'config/firebaseConfig'
-import { addDoc, collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot, query, serverTimestamp, where } from 'firebase/firestore'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import CalendarPicker from 'react-native-calendar-picker'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { appointmentStyles } from '@/constants/styles'
 
@@ -54,7 +54,7 @@ const AppointmentForm = () => {
                     id: id,
                     handyman: handymanId,
                     client: userState?.user_id,
-                    createdAt: new Date().getTime()
+                    createdAt: serverTimestamp()
                 }
                 await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
             }
@@ -71,8 +71,8 @@ const AppointmentForm = () => {
 
     return (
         <SafeAreaView style={appointmentStyles.container}>
-            <FontAwesome5
-                name='arrow-left'
+            <Ionicons
+                name='arrow-back'
                 size={24} color={Colors.lighter}
                 onPress={() => { router.back() }}
                 style={appointmentStyles.icon} />
