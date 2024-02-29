@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useAuth } from '@/contexts/AuthContext'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
+import { useRouter } from 'expo-router'
 
 interface Proposal {
     job_status: string,
@@ -17,6 +18,7 @@ const HandymanProposals = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string[]>([])
     const { userState, authState } = useAuth()
+    const router = useRouter()
 
     useEffect(() => {
         const getProposals = async () => {
@@ -59,23 +61,17 @@ const HandymanProposals = () => {
     const renderProposals = ({ item }: { item: Proposal }) => {
         return (
             <View style={proposalScreenStyles.proposalConatiner}>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: 10
-                }}>
+                <View style={proposalScreenStyles.proposalSubContainer}>
                     <Text style={proposalScreenStyles.proposalTextTitle}>{item.task_title}</Text>
                     <Text style={proposalScreenStyles.proposalTextStatus}>{item.job_status}</Text>
                 </View>
-
                 <Text style={proposalScreenStyles.proposalText}>{item.proposal_text}</Text>
             </View >
         )
     }
     return (
         <SafeAreaView style={proposalScreenStyles.safeView}>
-            <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} />
+            <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} onPress={() => router.back()} />
             <View style={proposalScreenStyles.container}>
                 <Text style={proposalScreenStyles.headerText}>Proposals</Text>
                 <FlatList
@@ -131,6 +127,12 @@ const proposalScreenStyles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    proposalSubContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10
     },
     proposalTextTitle: {
         fontSize: 12,

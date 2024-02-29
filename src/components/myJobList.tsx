@@ -99,11 +99,11 @@ const JobList = () => {
                                 style={{ width: '100%', height: '100%', padding: 10 }}
                                 contentContainerStyle={{ paddingBottom: 120 }}
                             />
-
-                            <Loader isLoading={isLoading!} />
                             <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
                         </>
                 }
+
+
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -133,6 +133,8 @@ const JobList = () => {
                     </Pressable>
 
                 </View>
+                <Loader isLoading={isLoading!} />
+
             </TaskProvider>
         </>
     )
