@@ -1,93 +1,164 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView, ScrollView, FlatList, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
 import { Ionicons } from '@expo/vector-icons'
+import { useAuth } from '@/contexts/AuthContext'
+import Loader from '@/components/loader'
+import CustomAlert from '@/components/customAlert'
 
+interface Proposal {
+    job_status: string,
+    id: number,
+    task_title: string,
+    proposal_text: string
+}
 const HandymanProposals = () => {
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.primary }}>
-            <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} />
-            <View style={{ backgroundColor: Colors.lighter, marginTop: 60, height: '100%', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
-                <View>
-                    <Text style={{ textAlign: 'left', fontSize: 20, fontFamily: 'roboto-bold', letterSpacing: 1.8, color: Colors.dark, padding: 20 }}>Proposals</Text>
+    const [proposals, setProposals] = useState<Proposal[]>([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string[]>([])
+    const { userState, authState } = useAuth()
 
-                    <ScrollView style={{
-                        flexGrow: 1,
-                        height: '100%',
-                    }}>
+    useEffect(() => {
+        const getProposals = async () => {
+            try {
+                setLoading(true)
+                const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/job_proposals?handyman_id=${userState?.user_id}`, {
+                    headers: { 'Authorization': `Bearer ${authState?.token}` }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setProposals(data?.job_proposals?.map((proposal: Proposal) => {
+                        return {
+                            job_status: proposal.job_status,
+                            id: proposal.id,
+                            task_title: proposal.task_title,
+                            proposal_text: proposal.proposal_text
+                        }
+                    }))
+                }
 
-                        <View style={{
-                            backgroundColor: Colors.light,
-                            marginHorizontal: 10,
-                            borderRadius: 15,
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2,
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 3.84,
-                            elevation: 5,
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                padding: 10
-                            }}>
-                                <Text style={{ fontSize: 12, fontFamily: 'roboto-bold', letterSpacing: 1.8, color: Colors.dark, textAlign: 'left', padding: 10 }}>Job Title</Text>
-                                <Text style={{ fontSize: 12, fontFamily: 'roboto', fontWeight: '600', letterSpacing: 1.8, backgroundColor: Colors.primary, color: Colors.lighter, borderRadius: 20, textAlign: 'justify', padding: 10 }}>Proposal Status</Text>
-                            </View>
+                if (response.status === 401) {
+                    // router.push('/login')
+                }
 
-                            <Text style={{ fontSize: 12, fontFamily: 'roboto', fontWeight: '600', letterSpacing: 1.8, lineHeight: 24, color: Colors.dark, textAlign: 'justify', padding: 10 }}>Introduction:
-                                I am embarking on a home renovation project that involves various carpentry tasks, including constructing custom furniture, installing built-in shelves, and repairing damaged woodwork.
-                                I am seeking a carpenter who has the expertise and attention to detail required to bring my vision to life.
-                                Scope of Work:
-                                The scope of work for this project includes:
-                                Constructing custom furniture pieces to fit specific dimensions and design preferences.
-                                Installing built-in shelves and storage solutions to maximize space and functionality.
-                                Repairing any damaged woodwork, including doors, trim, and cabinetry, to restore the integrity and aesthetics of the space.</Text>
-                        </View>
-
-                        <View style={{
-                            backgroundColor: Colors.light,
-                            marginHorizontal: 10,
-                            borderRadius: 15,
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2,
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 3.84,
-                            elevation: 5,
-                            marginVertical: 20
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                padding: 10
-                            }}>
-                                <Text style={{ fontSize: 12, fontFamily: 'roboto-bold', letterSpacing: 1.8, color: Colors.dark, textAlign: 'left', padding: 10 }}>Job Title</Text>
-                                <Text style={{ fontSize: 12, fontFamily: 'roboto', fontWeight: '600', letterSpacing: 1.8, backgroundColor: Colors.primary, color: Colors.lighter, borderRadius: 20, textAlign: 'justify', padding: 10 }}>Proposal Status</Text>
-                            </View>
-
-                            <Text style={{ fontSize: 12, fontFamily: 'roboto', fontWeight: '600', letterSpacing: 1.8, lineHeight: 24, color: Colors.dark, textAlign: 'justify', padding: 10 }}>Introduction:
-                                I am embarking on a home renovation project that involves various carpentry tasks, including constructing custom furniture, installing built-in shelves, and repairing damaged woodwork.
-                                I am seeking a carpenter who has the expertise and attention to detail required to bring my vision to life.
-                                Scope of Work:
-                                The scope of work for this project includes:
-                                Constructing custom furniture pieces to fit specific dimensions and design preferences.
-                                Installing built-in shelves and storage solutions to maximize space and functionality.
-                                Repairing any damaged woodwork, including doors, trim, and cabinetry, to restore the integrity and aesthetics of the space.</Text>
-                        </View>
-
-                    </ScrollView>
+                if (!response.ok) {
+                    throw new Error(data.error)
+                }
+            }
+            catch (error: any) {
+                console.log(error.message)
+                setError([error.message])
+            }
+            finally {
+                setLoading(false)
+            }
+        }
+        getProposals()
+    }, [])
+    // console.log(proposals)
+    const renderProposals = ({ item }: { item: Proposal }) => {
+        return (
+            <View style={proposalScreenStyles.proposalConatiner}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: 10
+                }}>
+                    <Text style={proposalScreenStyles.proposalTextTitle}>{item.task_title}</Text>
+                    <Text style={proposalScreenStyles.proposalTextStatus}>{item.job_status}</Text>
                 </View>
+
+                <Text style={proposalScreenStyles.proposalText}>{item.proposal_text}</Text>
+            </View >
+        )
+    }
+    return (
+        <SafeAreaView style={proposalScreenStyles.safeView}>
+            <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} />
+            <View style={proposalScreenStyles.container}>
+                <Text style={proposalScreenStyles.headerText}>Proposals</Text>
+                <FlatList
+                    data={proposals}
+                    renderItem={renderProposals}
+                    keyExtractor={(item, index) => index.toString()}
+                    style={{ width: '100%', height: '100%', padding: 10 }}
+                    contentContainerStyle={{ paddingBottom: 200, flexGrow: 1 }}
+                />
             </View>
+            {
+                error.length > 0 && <CustomAlert
+                    visible={error.length > 0}
+                    onClose={() => setError([])}
+                    message={error[0]} />
+            }
+            <Loader isLoading={loading} />
         </SafeAreaView>
     )
 }
 
+
+const proposalScreenStyles = StyleSheet.create({
+    safeView: {
+        flex: 1,
+        backgroundColor: Colors.primary
+    },
+    container: {
+        backgroundColor: Colors.lighter,
+        marginTop: 60,
+        height: '100%',
+        borderTopRightRadius: 30,
+        borderTopLeftRadius: 30
+    },
+    headerText: {
+        fontSize: 20,
+        fontFamily: 'roboto-bold',
+        letterSpacing: 1.8,
+        color: Colors.dark,
+        textAlign: 'left',
+        padding: 20
+    },
+    proposalConatiner: {
+        backgroundColor: Colors.light,
+        marginHorizontal: 10,
+        marginVertical: 20,
+        borderRadius: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    proposalTextTitle: {
+        fontSize: 12,
+        fontFamily: 'roboto-bold',
+        letterSpacing: 1.8,
+        color: Colors.dark,
+        textAlign: 'left'
+    },
+    proposalTextStatus: {
+        fontSize: 12,
+        fontFamily: 'roboto',
+        fontWeight: '600',
+        letterSpacing: 1.8,
+        backgroundColor: Colors.primary,
+        color: Colors.lighter,
+        borderRadius: 20,
+        textAlign: 'justify',
+        padding: 10
+    },
+    proposalText: {
+        fontSize: 12,
+        fontFamily: 'roboto',
+        fontWeight: '600',
+        letterSpacing: 1.8,
+        lineHeight: 24,
+        color: Colors.dark,
+        textAlign: 'justify',
+        padding: 10
+    }
+})
 export default HandymanProposals

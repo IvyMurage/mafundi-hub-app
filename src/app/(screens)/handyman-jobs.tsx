@@ -17,7 +17,6 @@ const HandymanJobs = () => {
     const [location, setLocation] = useState('')
     const [service, setService] = useState('')
     const [visible, setVisible] = useState(false)
-    const { userState } = useAuth()
     return (
         <>
             <TaskProvider>
