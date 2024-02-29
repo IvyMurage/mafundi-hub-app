@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, FlatList, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { DocumentData, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { DocumentData, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { FIREBASE_DB } from 'config/firebaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -74,7 +74,6 @@ const ChatApp = () => {
             }
             console.log('Firebase error while sending messsage')
         }
-
     }
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
@@ -96,13 +95,18 @@ const ChatApp = () => {
                     fontFamily: 'roboto',
                     textAlign: isSender ? 'right' : 'left',
                     padding: 10,
-                }}>{item.createdAt?.toDate().toLocaleDateString()}</Text>
-
+                }}>{new Date(
+                    parseInt(item.createdAt?.seconds) * 1000
+                ).toLocaleTimeString('en-US',
+                    {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    })
+                    }</Text>
             </View>
-
         )
     }
-    console.log(messages)
     return (
         <SafeAreaView style={{
             flex: 1,
@@ -211,7 +215,6 @@ const styles = StyleSheet.create({
     otherUserMessage: {
         color: Colors.dark,
         borderRadius: 10,
-        borderWidth: 1,
         fontSize: 14,
         backgroundColor: Colors.lighter
     }
