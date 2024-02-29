@@ -33,8 +33,6 @@ export const defaultStyles = StyleSheet.create({
     inputTextField: {
         fontSize: 14,
         letterSpacing: 1.68,
-        // width: 357,
-        // height: 56,
         margin: 12,
         padding: 15,
         borderRadius: 10,
@@ -243,6 +241,7 @@ export const HandymanProfileStyles = StyleSheet.create({
         borderBottomWidth: 2,
         paddingLeft: 50,
         marginBottom: 30,
+        width: 370,
     },
     textArea: {
         paddingTop: 0,
@@ -254,10 +253,9 @@ export const HandymanProfileStyles = StyleSheet.create({
         alignItems: "center",
     },
     submitBtn: {
-        padding: 12,
-        borderRadius: 8,
-        width: 357,
-        height: 55,
+        padding: 20,
+        borderRadius: 40,
+        width: 380,
         alignItems: "center",
         justifyContent: "center",
         display: "flex",

@@ -45,8 +45,8 @@ const HandymanProfile = () => {
                                         marginTop: 1
                                     }}
                                     placeholder={require('@/assets/images/placeholder.jpg')}
-
-                                    source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')} />
+                                    placeholderContentFit='cover'
+                                    source={{ uri: userState?.avatar_url! }} />
                                 <Pressable style={HandymanProfileStyles.cameraContainer} onPress={() => {
                                     pickImage()
                                 }}>
