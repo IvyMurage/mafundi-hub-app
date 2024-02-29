@@ -10,6 +10,7 @@ import CalendarPicker from 'react-native-calendar-picker'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { appointmentStyles } from '@/constants/styles'
+import { setItemAsync } from 'expo-secure-store'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const AppointmentForm = () => {
@@ -56,7 +57,8 @@ const AppointmentForm = () => {
                     client: userState?.user_id,
                     createdAt: serverTimestamp()
                 }
-                await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
+                const docRef = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
+                await setItemAsync('docRefId', docRef.id)
             }
         }
         catch (e) {

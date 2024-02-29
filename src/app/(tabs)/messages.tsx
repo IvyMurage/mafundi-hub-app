@@ -8,16 +8,16 @@ import Colors from '@/constants/Colors'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import Loader from '@/components/loader'
+import { setItemAsync } from 'expo-secure-store'
 
 
 const Messages = () => {
     const [messages, setMessages] = useState<DocumentData[]>([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const { userState } = useAuth()
     const router = useRouter()
     useLayoutEffect(() => {
         try {
-            setLoading(true)
             const chatQuery = query(
                 collection(FIREBASE_DB, 'messages'),
                 orderBy("id", "desc")
@@ -26,6 +26,7 @@ const Messages = () => {
             const unsubscribe = onSnapshot(chatQuery, (snapshot) => {
                 const messages = snapshot.docs.map((doc) => (doc.data()))
                 setMessages(messages)
+                setLoading(false)
             })
             return () => {
                 unsubscribe()
@@ -43,7 +44,10 @@ const Messages = () => {
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
         return (
-            <Pressable onPress={() => router.push('/(screens)/chatApp')} style={styles.chatBtn}>
+            <Pressable onPress={async () => {
+                await setItemAsync('chatId', item.id)
+                router.push('/(screens)/chatApp')
+            }} style={styles.chatBtn}>
                 <View style={styles.icon}>
                     <FontAwesome5 name="users" size={24} color={Colors.primary} />
                 </View>
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     textContainer: {
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginHorizontal:10
+        marginHorizontal: 10
     },
     text: {
         fontFamily: 'roboto',
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 50,
         borderWidth: 1,
-
+        borderColor: Colors.secondary
     }
 })
 

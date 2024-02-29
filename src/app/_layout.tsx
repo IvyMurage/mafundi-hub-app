@@ -99,7 +99,9 @@ function RootLayoutNav() {
       <Stack.Screen name='(onboard)/get-started'
         options={{ headerShown: false, }}
       />
-
+      <Stack.Screen name='(screens)/chatApp'
+        options={{ headerShown: false, }}
+      />
       <Stack.Screen name="(onboard)/auth-options"
         options={{ headerShown: false, }}
       />
