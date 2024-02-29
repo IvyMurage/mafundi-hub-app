@@ -155,6 +155,14 @@ export default function TabLayout() {
         }}
       />
 
+      <Tabs.Screen name='messages'
+        options={{
+          tabBarLabel: 'Messages',
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="wechat" color={color} size={size} />
+        }}
+      />
+
       <Tabs.Screen name='alert'
         options={{
           headerShown: userState?.user_role === 'client' ? true : false,
