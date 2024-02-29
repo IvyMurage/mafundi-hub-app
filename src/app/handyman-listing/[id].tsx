@@ -7,12 +7,14 @@ import { Image } from 'expo-image'
 import { HandymanProps } from '@/types/handyman'
 import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons'
+import { useHandymanId } from '@/contexts/HandymanIdContext'
 
 const Handyman = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
     const { authState } = useAuth()
     const [loading, setLoading] = useState(false)
     const [handyman, setHandyman] = useState<HandymanProps>({} as HandymanProps)
+    const { setHandymanId } = useHandymanId()
 
     useEffect(() => {
         const getHandyman = async () => {
@@ -68,7 +70,10 @@ const Handyman = () => {
                             <Text style={styles.titleText}>{handyman.location_attributes}</Text>
                         </View>
 
-                        <Pressable style={styles.appointmentBtn} onPress={() => { router.push(`/appointment-form`) }}>
+                        <Pressable style={styles.appointmentBtn} onPress={() => {
+                            setHandymanId(handyman.id.toString())
+                            router.push(`/appointment-form`)
+                        }}>
                             <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
                         </Pressable>
 

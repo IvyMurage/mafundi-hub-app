@@ -60,7 +60,7 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
         fetchProposals()
     }, [taskId])
 
-    console.log("This is the proposals", proposals)
+    // console.log("This is the proposals", proposals)
     const proposalList = proposals?.map((proposal) => {
         return (
             <View key={proposal.id} style={proposalStyle.proposalContainer}>

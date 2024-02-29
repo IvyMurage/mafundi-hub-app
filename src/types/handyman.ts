@@ -5,6 +5,7 @@ export interface ReviewType {
     user: string;
 }
 export interface HandymanProps {
+    id: number;
     first_name?: string | null;
     last_name?: string | null;
     title?: string | null;

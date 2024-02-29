@@ -1,5 +1,9 @@
 import { View, Text, SafeAreaView, ScrollView, TextInput, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { useHandymanId } from '@/contexts/HandymanIdContext'
+import { useAuth } from '@/contexts/AuthContext'
+import { FIREBASE_DB } from 'config/firebaseConfig'
+import { addDoc, collection } from 'firebase/firestore'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import CalendarPicker from 'react-native-calendar-picker'
@@ -10,6 +14,35 @@ import { appointmentStyles } from '@/constants/styles'
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const AppointmentForm = () => {
     const router = useRouter()
+
+    const [addChatGroup, setAddChatGroup] = useState("")
+    const { handymanId } = useHandymanId()
+    const { userState } = useAuth()
+    const [loading, setLoading] = useState(false)
+    const createNewChat = async () => {
+        try {
+            setLoading(true)
+            if (userState?.user_role === "client") {
+                let id = `${Date.now()}`
+                const _doc = {
+                    id: id,
+                    users: {
+                        handyman: handymanId,
+                        client: userState?.user_id
+                    },
+                    createdAt: new Date().getTime()
+                }
+                const response = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
+                console.log(response)
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     return (
         <SafeAreaView style={appointmentStyles.container}>
             <FontAwesome5
@@ -93,7 +126,10 @@ const AppointmentForm = () => {
                                     Lipa na Mpesa
                                 </Text>
                             </Pressable>
-                            <Pressable style={[appointmentStyles.button, { backgroundColor: Colors.primary }]}>
+                            <Pressable style={[appointmentStyles.button, { backgroundColor: Colors.primary }]} onPress={async () => {
+                                createNewChat()
+                                router.push('/(tabs)/messages')
+                            }}>
                                 <Text style={[appointmentStyles.buttonTitle,]}>
                                     Confirm and Chat
                                 </Text>

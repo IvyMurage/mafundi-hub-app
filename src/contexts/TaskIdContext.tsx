@@ -18,7 +18,7 @@ export const useTaskId = () => {
 export const TaskIdProvider = ({ children }: { children: React.ReactNode }) => {
     const [taskId, setTaskId] = useState<string | null>(null)
     const value = { taskId, setTaskId }
-    console.log("TaskIdProvider", taskId)
+    // console.log("TaskIdProvider", taskId)
     return (
         <TaskContextId.Provider value={value}>
             {children}

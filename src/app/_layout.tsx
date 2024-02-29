@@ -8,6 +8,7 @@ import { StyleSheet, Text, Pressable } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { TaskIdProvider } from '@/contexts/TaskIdContext';
 import { TaskProvider } from '@/contexts/TaskContext';
+import { HandymanContextIdProvider } from '@/contexts/HandymanIdContext';
 
 
 export {
@@ -49,11 +50,13 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <TaskProvider>
-        <TaskIdProvider>
-          <RootLayoutNav />
-        </TaskIdProvider>
-      </TaskProvider>
+      <HandymanContextIdProvider>
+        <TaskProvider>
+          <TaskIdProvider>
+            <RootLayoutNav />
+          </TaskIdProvider>
+        </TaskProvider>
+      </HandymanContextIdProvider>
     </AuthProvider>);
 }
 
