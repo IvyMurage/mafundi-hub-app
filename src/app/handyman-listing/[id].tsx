@@ -51,12 +51,11 @@ const Handyman = () => {
             </View>
         )
     })
-
     return (
         <SafeAreaView style={styles.safeView}>
             <Octicons name='arrow-left' size={20} color={Colors.lighter} style={{ paddingHorizontal: 12, }} onPress={() => router.back()} />
             <View style={styles.containerHeader}>
-                <Image source={require('@/assets/images/placeholder.jpg')} style={styles.profileStyle} />
+                <Image source={{ uri: handyman?.avatar_url }} placeholder={require('@/assets/images/placeholder.jpg')} placeholderContentFit='cover' style={styles.profileStyle} />
                 <Octicons name="dot-fill" size={24} color={handyman.availability ? 'green' : 'red'} style={styles.iconStyle} />
             </View>
             <ScrollView style={styles.scrollView} >
@@ -105,6 +104,8 @@ const styles = StyleSheet.create({
         height: '100%',
         marginTop: 60,
         backgroundColor: Colors.light,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
     },
     containerHeader: {
         width: '100%',
@@ -180,6 +181,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingBottom: 20,
     },
     iconStyle: {
         position: 'absolute',

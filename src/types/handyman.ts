@@ -17,6 +17,7 @@ export interface HandymanProps {
     availability?: boolean;
     media_url?: string[];
     reviews?: ReviewType[];
+    avatar_url?: string;
 }
 
 export interface HandymanType {
