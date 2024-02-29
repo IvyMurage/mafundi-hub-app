@@ -24,7 +24,6 @@ const JobList = () => {
             router.push(`/job-listing/${jobId}`)
         }
     }
-
     useEffect(() => {
         getMyJobs!()
     }, [tasks])
@@ -134,7 +133,6 @@ const JobList = () => {
 
                 </View>
                 <Loader isLoading={isLoading!} />
-
             </TaskProvider>
         </>
     )

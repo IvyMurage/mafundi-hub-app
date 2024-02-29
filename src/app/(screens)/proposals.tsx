@@ -7,6 +7,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { HandymanProps } from '@/types/handyman';
 import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
+import { useTaskId } from '@/contexts/TaskIdContext';
+import { useRouter } from 'expo-router';
+import { ProposalType } from './handyman-proposal';
 
 type JobProposalType = {
     id?: number,
@@ -14,10 +17,10 @@ type JobProposalType = {
     proposal_text?: string,
 }
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
-    const { authState } = useAuth()
+    const { authState, userState } = useAuth()
     const { visible, setVisible, taskId } = props
-    const [proposals, setProposals] = useState<JobProposalType[]>([])
-
+    const [proposals, setProposals] = useState<ProposalType[]>([])
+    const router = useRouter()
     useEffect(() => {
         const fetchProposals = async () => {
             try {
@@ -29,7 +32,13 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                 const data = await response.json()
 
                 if (response.ok) {
-                    setProposals(data?.job_proposal)
+                    setProposals(data?.job_proposals.map((proposal: ProposalType) => {
+                        return {
+                            id: proposal.id,
+                            handyman_id: proposal.handyman_id,
+                            proposal_text: proposal.proposal_text
+                        }
+                    }))
                 }
 
                 if (!response.ok) {
@@ -51,7 +60,7 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
         fetchProposals()
     }, [taskId])
 
-
+    console.log("This is the proposals", proposals)
     const proposalList = proposals?.map((proposal) => {
         return (
             <View key={proposal.id} style={proposalStyle.proposalContainer}>
@@ -61,7 +70,9 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                 <Divider />
                 <View style={proposalStyle.btnContainer}>
 
-                    <Pressable style={proposalStyle.btnProfile}>
+                    <Pressable style={proposalStyle.btnProfile} onPress={() => {
+                        router.push(`/handyman-listing/${proposal.handyman_id}`)
+                    }}>
                         <Text style={[proposalStyle.textStyle, { color: Colors.lighter, fontFamily: 'roboto-bold' }]}>View Profile</Text>
                     </Pressable>
                     <Pressable style={proposalStyle.button}>
@@ -122,10 +133,19 @@ const proposalStyle = StyleSheet.create({
         padding: 10,
         backgroundColor: Colors.light,
         borderRadius: 10,
-        marginBottom: 10,
+        marginVertical: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 
     container: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -138,7 +158,6 @@ const proposalStyle = StyleSheet.create({
     contentStyle: {
         alignItems: 'center',
         justifyContent: 'space-between',
-        flex: 1,
         flexDirection: "column",
         width: "100%",
         paddingBottom: 50,

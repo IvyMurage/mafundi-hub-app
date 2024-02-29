@@ -7,14 +7,15 @@ import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useRouter } from 'expo-router'
 
-interface Proposal {
+export interface ProposalType {
     job_status: string,
     id: number,
     task_title: string,
     proposal_text: string
+    handyman_id?: number
 }
 const HandymanProposals = () => {
-    const [proposals, setProposals] = useState<Proposal[]>([])
+    const [proposals, setProposals] = useState<ProposalType[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string[]>([])
     const { userState, authState } = useAuth()
@@ -29,7 +30,7 @@ const HandymanProposals = () => {
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    setProposals(data?.job_proposals?.map((proposal: Proposal) => {
+                    setProposals(data?.job_proposals?.map((proposal: ProposalType) => {
                         return {
                             job_status: proposal.job_status,
                             id: proposal.id,
@@ -58,7 +59,7 @@ const HandymanProposals = () => {
         getProposals()
     }, [])
     // console.log(proposals)
-    const renderProposals = ({ item }: { item: Proposal }) => {
+    const renderProposals = ({ item }: { item: ProposalType }) => {
         return (
             <View style={proposalScreenStyles.proposalConatiner}>
                 <View style={proposalScreenStyles.proposalSubContainer}>
