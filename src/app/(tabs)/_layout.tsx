@@ -154,7 +154,7 @@ export default function TabLayout() {
 
       <Tabs.Screen name='alert'
         options={{
-          headerShown: true,
+          headerShown: userState?.user_role === 'client' ? true : false,
           headerTitle: userState?.user_role === 'client' ? 'Alerts' : 'Proposals',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
