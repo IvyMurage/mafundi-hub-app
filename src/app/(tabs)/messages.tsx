@@ -32,7 +32,7 @@ const Messages = () => {
         }
     }, [])
 
-    console.log("messages", messages)
+    // console.log("messages", messages)
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
         return (

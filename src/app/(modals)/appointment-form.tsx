@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { FIREBASE_DB } from 'config/firebaseConfig'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import CalendarPicker from 'react-native-calendar-picker'
@@ -19,21 +19,18 @@ const AppointmentForm = () => {
     const { handymanId } = useHandymanId()
     const { userState } = useAuth()
     const [loading, setLoading] = useState(false)
-    const createNewChat = async () => {
+
+    const chatExists = async () => {
         try {
             setLoading(true)
             if (userState?.user_role === "client") {
-                let id = `${Date.now()}`
-                const _doc = {
-                    id: id,
-                    users: {
-                        handyman: handymanId,
-                        client: userState?.user_id
-                    },
-                    createdAt: new Date().getTime()
+                const chatRef = collection(FIREBASE_DB, 'messages')
+                const q = query(chatRef, where('handyman', '==', handymanId), where('client', '==', userState?.user_id))
+                const result = await getDocs(q)
+                if (result.empty) {
+                    return false
                 }
-                const response = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
-                console.log(response)
+                return true
             }
         }
         catch (e) {
@@ -43,6 +40,35 @@ const AppointmentForm = () => {
             setLoading(false)
         }
     }
+
+    const createNewChat = async () => {
+        const exist = await chatExists()
+        if (exist) {
+            return
+        }
+        try {
+            setLoading(true)
+            if (userState?.user_role === "client") {
+                let id = `${Date.now()}`
+                const _doc = {
+                    id: id,
+                    handyman: handymanId,
+                    client: userState?.user_id,
+                    createdAt: new Date().getTime()
+                }
+                await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+
+
     return (
         <SafeAreaView style={appointmentStyles.container}>
             <FontAwesome5
