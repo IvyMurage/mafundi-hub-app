@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, Modal } from 'react-native'
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native'
 import React, { Dispatch, SetStateAction } from 'react'
-import { LocationFilter, ServiceFilter } from './locationFilter'
+import { AvailabilityFilter, LocationFilter, ServiceFilter } from './locationFilter'
 import { useTask } from '@/contexts/TaskContext'
 import Divider from './divider'
 import { Ionicons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 
 const Filter = ({ setVisible, visible }: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>> }) => {
-    const { location, setLocation, setServiceId, service_id } = useTask()
+    const { location, setLocation, setServiceId, service_id, available, setAvailable } = useTask()
     return (
         <Modal animationType='fade' visible={visible} transparent>
             <View style={styles.modal}>
@@ -20,18 +20,47 @@ const Filter = ({ setVisible, visible }: { visible: boolean; setVisible: Dispatc
 
                     <Divider />
                     <View style={styles.filterContainer}>
-                        <LocationFilter
-                            setLocation={setLocation!}
-                            visible={true}
-                        />
-
-                        <ServiceFilter
-                            setService={setServiceId!}
-                            visible={true}
-                        />
+                        <View style={styles.row1}>
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                <LocationFilter
+                                    setLocation={setLocation!}
+                                    visible={true}
+                                    setVisible={setVisible}
+                                />
+                            </View>
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                <ServiceFilter
+                                    setService={setServiceId!}
+                                    visible={true}
+                                    setVisible={setVisible}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ marginTop: 20 }}>
+                            <AvailabilityFilter
+                                visible={true}
+                                setVisible={setVisible}
+                                setAvailable={setAvailable!}
+                            />
+                        </View>
                     </View>
-
+                    <Pressable onPress={() => {
+                        if (location) {
+                            setLocation!('')
+                        }
+                        if (service_id) {
+                            setServiceId!('')
+                        }
+                        if (available) {
+                            setAvailable!(false)
+                        }
+                        setVisible(!visible)
+                    }}
+                        style={styles.clearBtn}>
+                        <Text style={styles.clearText}>Clear Filter</Text>
+                    </Pressable>
                 </View>
+
             </View>
         </Modal>
     )
@@ -44,13 +73,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.6)'
     },
     container: {
-        flex: 1,
+        flex: 4,
         marginTop: 25,
         paddingTop: 20,
         backgroundColor: Colors.lighter,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         width: '100%',
+        height: 400
     },
     headerText: {
         fontFamily: 'roboto-bold',
@@ -68,7 +98,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     filterContainer: {
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 20,
@@ -76,6 +105,24 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
         width: '100%',
+    },
+    row1: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    clearText: {
+        textAlign: 'center',
+        color: Colors.light,
+        fontFamily: 'roboto-bold',
+        fontSize: 14,
+        letterSpacing: 1.4
+    },
+    clearBtn: {
+        padding: 10,
+        backgroundColor: Colors.primary,
+        borderRadius: 20,
+        marginHorizontal: 20
     }
 })
 

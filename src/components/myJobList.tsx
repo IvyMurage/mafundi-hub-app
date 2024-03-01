@@ -1,5 +1,5 @@
 import { View, Text, Pressable, FlatList, } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
@@ -8,7 +8,7 @@ import { jobListStyle } from '@/constants/styles'
 import { TaskProvider, useTask } from '@/contexts/TaskContext'
 import { useAuth } from '@/contexts/AuthContext'
 import NotFound from './not-found'
-import { useRouter } from 'expo-router'
+import { useFocusEffect, useRouter } from 'expo-router'
 import Loader from './loader'
 
 const JobList = () => {
@@ -26,14 +26,13 @@ const JobList = () => {
         }
     }
 
-    console.log('tasks:', tasks)
-    useEffect(() => {
-        getMyJobs!()
-    }, [tasks, service_id])
-    const renderMyJobs = ({ item }:
-        {
-            item: JobPropType
-        }) => {
+    useFocusEffect(
+        useCallback(() => {
+            return () => getMyJobs!()
+        }, [service_id, tasks, getMyJobs])
+    )
+
+    const renderMyJobs = ({ item }: { item: JobPropType }) => {
         return (
             <Pressable onPress={() => handlePress(item.id!)}>
                 <View key={item.id} style={jobListStyle.jobContainer}>

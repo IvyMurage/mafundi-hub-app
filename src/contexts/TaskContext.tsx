@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 interface TaskProps {
     tasks?: JobPropType[],
     service_id?: string,
+    available?: boolean,
     location?: string,
     setTasks?: Dispatch<SetStateAction<JobPropType[]>>,
     loading?: boolean,
@@ -21,6 +22,7 @@ interface TaskProps {
     setLocation?: Dispatch<SetStateAction<string>>,
     setServiceId?: Dispatch<SetStateAction<string>>,
     setPageNumber?: Dispatch<SetStateAction<number>>
+    setAvailable?: Dispatch<SetStateAction<boolean>>,
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
     handleRoute?: () => Promise<string | null>
     getMyJobs?: () => Promise<void>
@@ -74,9 +76,20 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     })
     const [service_id, setServiceId] = useState<string>('')
     const [location, setLocation] = useState<string>('')
-    const url = userState?.user_role === 'client' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?client_id=${userState?.user_id}&page=${pageNumber}&per_page=10` :
-        service_id === '' ? `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10` :
-            `${process.env.EXPO_PUBLIC_API_URL}/tasks?service_id=${service_id}&page=${pageNumber}&per_page=10`
+    const [available, setAvailable] = useState<boolean>(false)
+    const getUrl = () => {
+        return userState?.user_role === 'client' ?
+            `${process.env.EXPO_PUBLIC_API_URL}/tasks?client_id=${userState?.user_id}&page=${pageNumber}&per_page=10` :
+            service_id.length > 0 ?
+                `${process.env.EXPO_PUBLIC_API_URL}/tasks?service_id=${service_id}&page=${pageNumber}&per_page=10` :
+                available ?
+                    `${process.env.EXPO_PUBLIC_API_URL}/tasks?service_id=${service_id}&available=${available}&page=${pageNumber}&per_page=10` :
+                    location.length > 0 ?
+                        `${process.env.EXPO_PUBLIC_API_URL}/tasks?city=${location}&page=${pageNumber}&per_page=10` :
+                        `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10`
+    }
+
+
     const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
         const optimisticTaskId = Math.floor(Math.random() * 1000000)
         setTask({
@@ -151,7 +164,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const getMyJobs = async () => {
         try {
             setLoading(true)
-            const response = await fetch(url, {
+            const response = await fetch(getUrl(), {
                 headers: { Authorization: `Bearer ${authState?.token}` }
             })
             const data = await response.json()
@@ -202,6 +215,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
     const value = {
         tasks,
+        location,
+        available,
         setTasks,
         loading,
         setPageNumber,
@@ -215,6 +230,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         handleRoute,
         service_id,
         setServiceId,
+        setAvailable,
+        setLocation
     }
     return (
         <TaskContext.Provider value={value}>

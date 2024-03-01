@@ -11,6 +11,7 @@ type SelectProps = {
     handleChange: (value: string) => void
     profile: boolean,
     task: boolean,
+    search?: boolean,
     name?: string
 
 }
