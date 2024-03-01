@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
-import { DocumentData, collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { DocumentData, collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import { FIREBASE_DB } from 'config/firebaseConfig'
 import { useAuth } from '@/contexts/AuthContext'
 import { Image } from 'expo-image'
@@ -9,6 +9,7 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import Loader from '@/components/loader'
 import { setItemAsync } from 'expo-secure-store'
+import MessageNotFound from '@/components/message-not-found'
 
 
 const Messages = () => {
@@ -17,11 +18,16 @@ const Messages = () => {
     const { userState } = useAuth()
     const router = useRouter()
     useLayoutEffect(() => {
+        let chatQuery
         try {
-            const chatQuery = query(
-                collection(FIREBASE_DB, 'messages'),
-                orderBy("id", "desc")
-            )
+            const queryRef = query(collection(FIREBASE_DB, 'messages'), orderBy("id", "desc"),)
+            userState?.user_role === 'client' ? chatQuery = query(queryRef,
+                where('client', '==', userState?.user_id))
+                :
+                chatQuery = query(queryRef,
+                    where('handyman', '==', userState?.user_id))
+
+
 
             const unsubscribe = onSnapshot(chatQuery, (snapshot) => {
                 const messages = snapshot.docs.map((doc) => (doc.data()))
@@ -73,6 +79,9 @@ const Messages = () => {
                     placeholderContentFit='cover'
                     style={styles.profile} />
             </View>
+            {
+                !loading && messages.length === 0 && <MessageNotFound />
+            }
             <FlatList
                 data={messages}
                 renderItem={renderMessage}

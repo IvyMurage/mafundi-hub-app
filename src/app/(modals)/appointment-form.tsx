@@ -59,6 +59,7 @@ const AppointmentForm = () => {
                 }
                 const docRef = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
                 await setItemAsync('docRefId', docRef.id)
+                userState.user_role === 'client' && await setItemAsync('client_id', JSON.stringify(userState?.user_id))
             }
         }
         catch (e) {

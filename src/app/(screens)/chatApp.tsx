@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, FlatList, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { DocumentData, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
+import { DocumentData, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 import { FIREBASE_DB } from 'config/firebaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -24,9 +24,10 @@ const ChatApp = () => {
             const chatId = await getItemAsync('docRefId')
             try {
                 const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats')
-                const q = query(msgCollectionRef, orderBy('createdAt', 'asc'))
+                const q = query(msgCollectionRef, orderBy('createdAt', 'asc'),)
+                const chatRef = query(q, where('senderId', '==', userState?.user_id), where('receiverId', '==', userState?.user_id))
 
-                const unsubscribe = onSnapshot(q, (snapshot) => {
+                const unsubscribe = onSnapshot(chatRef, (snapshot) => {
                     const messages = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data()
@@ -46,6 +47,7 @@ const ChatApp = () => {
 
     const sendMessage = async (message: string) => {
         const chatId = await getItemAsync('docRefId')
+        const client_id = await getItemAsync('client_id')
 
         try {
             const msg = message.trim()
@@ -54,7 +56,7 @@ const ChatApp = () => {
                 message: msg,
                 chatId: chatId,
                 senderId: userState?.user_id,
-                receiverId: userState?.user_role === 'client' ? handymanId : null,
+                receiverId: userState?.user_role === 'client' ? handymanId : client_id,
                 createdAt: serverTimestamp()
             }
             const msgCollectionRef = doc(FIREBASE_DB, 'messages', chatId!)
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         height: 80,
-        paddingTop:0,
+        paddingTop: 0,
         backgroundColor: Colors.primary,
     },
     messageInput: {

@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useRouter } from 'expo-router'
+import ProposalNotFound from '@/components/proposal-not-found'
 
 export interface ProposalType {
     job_status: string,
@@ -75,6 +76,7 @@ const HandymanProposals = () => {
             <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} onPress={() => router.back()} />
             <View style={proposalScreenStyles.container}>
                 <Text style={proposalScreenStyles.headerText}>Proposals</Text>
+                {!loading && proposals.length === 0 && <ProposalNotFound />}
                 <FlatList
                     data={proposals}
                     renderItem={renderProposals}
