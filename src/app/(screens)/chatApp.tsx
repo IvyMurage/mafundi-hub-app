@@ -12,7 +12,7 @@ import CustomAlert from '@/components/customAlert'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Loader from '@/components/loader'
-
+import _ from 'lodash'
 const ChatApp = () => {
     const [messages, setMessages] = useState<DocumentData[]>([])
     const router = useRouter()
@@ -21,31 +21,50 @@ const ChatApp = () => {
     const { userState } = useAuth()
     const { handymanId } = useHandymanId()
     const [isError, setError] = useState(false)
+
+
     // useLayoutEffect(() => {
     //     const getMessages = async () => {
-    //         const chatId = await getItemAsync('docRefId')
+    //         const chatId = await getItemAsync('docRefId');
     //         try {
-    //             const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats')
-    //             const q = query(msgCollectionRef, orderBy('createdAt', 'asc'),)
-    //             const chatRef = query(q, where('senderId', '==', userState?.user_id), where('receiverId', '==', userState?.user_id?.toString()))
+    //             const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats');
+    //             const senderMessagesQuery = query(msgCollectionRef, where('senderId', '==', userState?.user_id?.toString()));
+    //             const receiverMessagesQuery = query(msgCollectionRef, where('receiverId', '==', userState?.user_id?.toString()));
 
-    //             const unsubscribe = onSnapshot(chatRef, (snapshot) => {
+    //             // Create an array to store the merged messages
+    //             let mergedMessages: any[] = [];
+
+    //             // Function to handle snapshot changes
+    //             const handleSnapshot = (snapshot: QuerySnapshot<DocumentData>) => {
     //                 const messages = snapshot.docs.map((doc) => ({
     //                     id: doc.id,
     //                     ...doc.data()
-    //                 }))
-    //                 setMessages(messages)
-    //             })
+    //                 }));
+    //                 mergedMessages = _.uniq([...mergedMessages, ...messages]);
+    //                 // Sort merged messages by createdAt timestamp
+    //                 mergedMessages.sort((a, b) => a.createdAt - b.createdAt);
+    //                 // Update state with sorted merged messages
+    //                 setMessages(mergedMessages);
+    //                 setLoading(false)
+    //             };
+    //             // Subscribe to sender messages
+    //             const senderUnsubscribe = onSnapshot(senderMessagesQuery, handleSnapshot);
+    //             // Subscribe to receiver messages
+    //             const receiverUnsubscribe = onSnapshot(receiverMessagesQuery, handleSnapshot);
+
+    //             // Return cleanup function
     //             return () => {
-    //                 unsubscribe()
-    //             }
+    //                 senderUnsubscribe();
+    //                 receiverUnsubscribe();
+    //             };
+    //         } catch (error) {
+    //             console.error('Firebase error:', error);
+    //             setLoading(false)
     //         }
-    //         catch {
-    //             console.log('Firebase error')
-    //         }
-    //     }
-    //     getMessages()
-    // }, [])
+    //     };
+
+    //     getMessages();
+    // }, []);
 
     useLayoutEffect(() => {
         const getMessages = async () => {
@@ -55,27 +74,40 @@ const ChatApp = () => {
                 const senderMessagesQuery = query(msgCollectionRef, where('senderId', '==', userState?.user_id?.toString()));
                 const receiverMessagesQuery = query(msgCollectionRef, where('receiverId', '==', userState?.user_id?.toString()));
 
-                // Create an array to store the merged messages
-                let mergedMessages: any[] = [];
+                let senderMessages: any[] = [];
+                let receiverMessages: any[] = [];
 
-                // Function to handle snapshot changes
-                const handleSnapshot = (snapshot: QuerySnapshot<DocumentData>) => {
-                    const messages = snapshot.docs.map((doc) => ({
+                // Function to handle sender snapshot changes
+                const handleSenderSnapshot = (snapshot: QuerySnapshot<DocumentData>) => {
+                    senderMessages = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data()
                     }));
-                    mergedMessages = [...mergedMessages, ...messages];
-                    // Sort merged messages by createdAt timestamp
+                    updateMergedMessages();
+                };
+
+                // Function to handle receiver snapshot changes
+                const handleReceiverSnapshot = (snapshot: QuerySnapshot<DocumentData>) => {
+                    receiverMessages = snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    updateMergedMessages();
+                };
+
+                // Function to merge sender and receiver messages, remove duplicates, and update state
+                const updateMergedMessages = () => {
+                    const mergedMessages = _.uniqBy([...senderMessages, ...receiverMessages], 'id');
                     mergedMessages.sort((a, b) => a.createdAt - b.createdAt);
-                    // Update state with sorted merged messages
                     setMessages(mergedMessages);
-                    setLoading(false)
+                    setLoading(false);
                 };
 
                 // Subscribe to sender messages
-                const senderUnsubscribe = onSnapshot(senderMessagesQuery, handleSnapshot);
+                const senderUnsubscribe = onSnapshot(senderMessagesQuery, handleSenderSnapshot);
+
                 // Subscribe to receiver messages
-                const receiverUnsubscribe = onSnapshot(receiverMessagesQuery, handleSnapshot);
+                const receiverUnsubscribe = onSnapshot(receiverMessagesQuery, handleReceiverSnapshot);
 
                 // Return cleanup function
                 return () => {
@@ -84,7 +116,7 @@ const ChatApp = () => {
                 };
             } catch (error) {
                 console.error('Firebase error:', error);
-                setLoading(false)
+                setLoading(false);
             }
         };
 
@@ -125,7 +157,7 @@ const ChatApp = () => {
     }
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
-        const isSender = item.senderId === userState?.user_id
+        const isSender = item.senderId === userState?.user_id?.toString()
         return (
             <View style={{ padding: 12 }}>
                 <View style={[styles.messageContainer, isSender ? styles.userMessageContainer : styles.otherUserMessage]}>

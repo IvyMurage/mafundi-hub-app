@@ -60,127 +60,24 @@ export default function RootLayout() {
     </AuthProvider>);
 }
 
+
 function RootLayoutNav() {
 
   const { authState } = useAuth()
-  const router = useRouter()
 
-  const handleBack = () => {
-    router.back()
-  }
-
-  const handleRight = () => {
-    router.push('/(modals)/login')
+  const initialRoute = () => {
+    if (authState?.authenicated) return '(tabs)'
+    if (authState === null) return '(onboard)/get-started'
+    return '(modals)/login'
   }
   return (
-    <Stack initialRouteName='(modals)/login'
-      screenOptions={{
-        headerStyle: { ...headerStyles.headerStyle }, headerShown: false
-      }}
-    >
-      {
-        authState?.authenicated ? (
-          <Stack.Screen name='(modals)/handyman-register'
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <Stack.Screen name='(modals)/login'
-            options={{ headerShown: false, }}
-          />
+    <Stack initialRouteName={initialRoute()} screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
 
-        )
-      }
-      <Stack.Screen name="(tabs)"
-        options={{
-          headerShown: false,
-          headerStyle: { ...headerStyles.headerStyle }
-        }} />
+      <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
 
-      <Stack.Screen name='(onboard)/get-started'
-        options={{ headerShown: false, }}
-      />
-      <Stack.Screen name='(screens)/chatApp'
-        options={{ headerShown: false, }}
-      />
-      <Stack.Screen name="(onboard)/auth-options"
-        options={{ headerShown: false, }}
-      />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
 
-      <Stack.Screen name="(modals)/sign-up"
-        options={{ headerShown: false, animation: 'simple_push', }}
-      />
-
-      <Stack.Screen name='(modals)/task-form'
-        options={{ presentation: 'modal' }}
-      />
-
-      <Stack.Screen name='(modals)/job-proposal-form'
-        options={{ presentation: 'modal' }}
-      />
-
-      <Stack.Screen name='(modals)/appointment-form'
-        options={{ presentation: 'modal' }}
-      />
-      <Stack.Screen name='(screens)/handymen'
-        options={{
-          headerTitle: '',
-          headerLeft: () => (
-            <Pressable onPress={handleBack} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.dark}
-                style={{ left: 10 }} />
-            </Pressable>
-          )
-        }} />
-
-      {/* <Stack.Screen name="(modals)/handyman-register"
-        options={{
-          headerShown: true,
-          headerTitle: '',
-          headerStyle: { ...headerStyles.headerStyle },
-          headerLeft: () => (
-            <Pressable onPress={handleBack} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.lighter}
-                style={{ left: 10 }} />
-            </Pressable>
-          )
-        }}
-      /> */}
-
-      <Stack.Screen name="(modals)/client-register"
-        options={{
-          headerShown: true,
-          headerTitle: '',
-          headerStyle: { ...headerStyles.headerStyle },
-          headerLeft: () => (
-            <Pressable onPress={handleBack} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.lighter}
-                style={{ left: 10 }} />
-            </Pressable>)
-        }} />
-
-      <Stack.Screen name="(image-picker)/image-picker"
-        options={{
-          headerShown: true,
-          headerTitle: '',
-          headerStyle: { ...headerStyles.headerStyle },
-          headerLeft: () => (
-            <Pressable onPress={handleBack} >
-              <Octicons name='arrow-left'
-                size={24}
-                color={Colors.lighter}
-                style={{ left: 10 }} />
-            </Pressable>),
-          headerRight: () => (
-            <Pressable onPress={handleRight} >
-              <Text style={headerStyles.headerRight}>Skip</Text>
-            </Pressable>)
-        }} />
+      <Stack.Screen name='(modals)/login' options={{ headerShown: false, }} />
     </Stack>
   );
 }

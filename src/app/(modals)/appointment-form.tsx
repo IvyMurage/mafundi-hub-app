@@ -18,14 +18,14 @@ const AppointmentForm = () => {
 
     const { handymanId } = useHandymanId()
     const { userState } = useAuth()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     const chatExists = async () => {
         try {
             setLoading(true)
             if (userState?.user_role === "client") {
                 const chatRef = collection(FIREBASE_DB, 'messages')
-                const q = query(chatRef, where('handyman', '==', handymanId), where('client', '==', userState?.user_id))
+                const q = query(chatRef, where('handyman', '==', handymanId), where('client', '==', userState?.user_id?.toString()))
                 const result = await getDocs(q)
                 if (result.empty) {
                     return false

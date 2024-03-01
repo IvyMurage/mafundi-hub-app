@@ -8,15 +8,18 @@ import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
 import { useRouter } from 'expo-router';
 import { ProposalType } from './handyman-proposal';
+import Loader from '@/components/loader';
 
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
     const { authState, userState } = useAuth()
     const { visible, setVisible, taskId } = props
     const [proposals, setProposals] = useState<ProposalType[]>([])
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
     useEffect(() => {
         const fetchProposals = async () => {
             try {
+                setLoading(true)
                 const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/job_proposals/?task_id=${taskId}`, {
                     headers: {
                         Authorization: `Bearer ${authState?.token}`
@@ -48,6 +51,9 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
             }
             catch (error: any) {
                 console.log("Error fetching proposals", error.message)
+            }
+            finally {
+                setLoading(false)
             }
         }
         fetchProposals()
@@ -91,9 +97,10 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                                 setVisible(!visible)
                             }} />
                         </View>
-                        {proposalList?.length === 0 ? <ProposalNotFound /> : proposalList}
+                        {!loading && proposalList?.length === 0 ? <ProposalNotFound /> : proposalList}
                     </ScrollView>
                 </SafeAreaView>
+                <Loader isLoading={loading} />
             </Modal>
         </Animated.View >
 
