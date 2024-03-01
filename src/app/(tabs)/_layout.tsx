@@ -114,10 +114,12 @@ export default function TabLayout() {
         }}
 
       />
+
+
       <Tabs.Screen name='jobs'
         options={{
-          tabBarLabel: userState?.user_role === 'client' ? 'Jobs' : 'Messages',
-          headerShown: userState?.user_role === 'client' ? true : false,
+          tabBarLabel: 'Jobs',
+          headerShown: true,
           headerTitle: 'My Jobs',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
@@ -146,12 +148,7 @@ export default function TabLayout() {
                 style={{ width: 40, height: 40, borderRadius: 40 }} />
             </Pressable>
           ),
-          tabBarIcon: ({ color, size }) => {
-            return userState?.user_role === 'client' ?
-              <TabBarIcon name="briefcase" color={color} size={size} /> :
-              <TabBarIcon name="wechat" color={color} size={size} />
-
-          }
+          tabBarIcon: ({ color, size }) => <TabBarIcon name="briefcase" color={color} size={size} />
         }}
       />
 

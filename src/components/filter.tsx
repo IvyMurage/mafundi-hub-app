@@ -1,64 +1,82 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet, Modal } from 'react-native'
 import React, { Dispatch, SetStateAction } from 'react'
-import Select from './select'
-import { useLocation } from '@/hooks/useLocation'
-import { stringfy } from '@/utils/stringify'
-import { useService } from '@/hooks/useService'
+import { LocationFilter, ServiceFilter } from './locationFilter'
+import { useTask } from '@/contexts/TaskContext'
+import Divider from './divider'
+import { Ionicons } from '@expo/vector-icons'
+import Colors from '@/constants/Colors'
 
-export const LocationFilter = ({ setLocation, visible }: { setLocation: Dispatch<SetStateAction<string>>, visible: boolean }) => {
-    const locations = useLocation()
-
+const Filter = ({ setVisible, visible }: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>> }) => {
+    const { location, setLocation, setServiceId, service_id } = useTask()
     return (
-        <>
-            {
-                visible &&
-                <View style={{
-                    justifyContent: 'center',
-                    marginHorizontal: 20,
-                }}>
-                   
-                    <Select
-                        data={locations?.length > 0 &&
-                            locations !== undefined &&
-                            locations?.map((location) => {
-                                return {
-                                    label: stringfy(location),
-                                    value: stringfy(location)
-                                }
-                            }) || []}
-                        defaultButtonText={'Location'}
-                        profile={false}
-                        handleChange={(value) => setLocation(value)}
-                        searchPlaceHolder='Search for a Location'
-                        task={true}
-                    />
-                </View>
-            }
-        </>
-    )
+        <Modal animationType='fade' visible={visible} transparent>
+            <View style={styles.modal}>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Ionicons name="filter" size={24} color="rgba(0, 0, 0, .28)" />
+                        <Text style={styles.headerText}>Filter</Text>
+                        <Ionicons name="close-circle-outline" size={24} color="rgba(0, 0, 0, .28)" onPress={() => setVisible(!visible)} />
+                    </View>
 
-}
+                    <Divider />
+                    <View style={styles.filterContainer}>
+                        <LocationFilter
+                            setLocation={setLocation!}
+                            visible={true}
+                        />
 
-export const ServiceFilter = ({ setService, visible }: { setService: Dispatch<SetStateAction<string>>, visible: boolean }) => {
-    const services = useService()
-    return (
-        <>
-            {
-                visible &&
-                <View style={{
-                    justifyContent: 'center',
-                    marginHorizontal: 20,
-                }}>
-                    <Select
-                        data={services || []}
-                        searchPlaceHolder='Search for a service'
-                        handleChange={(value) => setService(value)}
-                        defaultButtonText={'Service'}
-                        profile={false}
-                        task={true}
-                    />
+                        <ServiceFilter
+                            setService={setServiceId!}
+                            visible={true}
+                        />
+                    </View>
+
                 </View>
-            }
-        </>
+            </View>
+        </Modal>
     )
 }
+
+const styles = StyleSheet.create({
+    modal: {
+        flex: 1,
+        paddingTop: 20,
+        backgroundColor: 'rgba(0,0,0,0.6)'
+    },
+    container: {
+        flex: 1,
+        marginTop: 25,
+        paddingTop: 20,
+        backgroundColor: Colors.lighter,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        width: '100%',
+    },
+    headerText: {
+        fontFamily: 'roboto-bold',
+        letterSpacing: 1.6,
+        paddingBottom: 5,
+        fontSize: 16,
+        color: Colors.secondary,
+        textAlign: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+        paddingHorizontal: 10
+    },
+    filterContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+        backgroundColor: Colors.light,
+        borderRadius: 10,
+        marginBottom: 10,
+        width: '100%',
+    }
+})
+
+export default Filter

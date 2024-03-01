@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getItemAsync } from 'expo-secure-store'
 import { useService } from '@/hooks/useService'
 import Divider from '@/components/divider'
-import { LocationFilter } from '@/components/filter'
+import { LocationFilter } from '@/components/locationFilter'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 

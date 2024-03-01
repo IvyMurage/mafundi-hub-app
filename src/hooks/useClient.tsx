@@ -2,6 +2,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { ClientProfileProps } from "@/types/client"
 import { request } from "@/utils/executePostRequest"
 import { useRouter } from "expo-router"
+import { setItemAsync } from "expo-secure-store"
 import { FormikHelpers } from "formik"
 import { useEffect, useState } from "react"
 
@@ -117,6 +118,7 @@ export const useClientPost = () => {
             if (response.ok) {
                 resetForm.resetForm()
                 router.push('/(modals)/login')
+                await setItemAsync('client_id', data.id)
             }
             setIsLoading(false)
         }

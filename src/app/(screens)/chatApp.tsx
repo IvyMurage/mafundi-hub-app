@@ -123,7 +123,8 @@ const ChatApp = () => {
 
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <FlatList data={messages} keyExtractor={(item) => item.id} renderItem={renderMessage} contentContainerStyle={{
-
+                    borderTopRightRadius: 50,
+                    borderTopLeftRadius: 50,
                 }} />
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -170,7 +171,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 20,
-        height: 100,
+        height: 80,
+        paddingTop:0,
         backgroundColor: Colors.primary,
     },
     messageInput: {
@@ -185,9 +187,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     profile: {
-        width: 40,
-        height: 40,
-        borderRadius: 40,
+        width: 50,
+        height: 50,
+        borderRadius: 50,
         borderColor: Colors.secondary,
         borderWidth: 1,
     },

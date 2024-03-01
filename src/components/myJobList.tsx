@@ -12,21 +12,24 @@ import { useRouter } from 'expo-router'
 import Loader from './loader'
 
 const JobList = () => {
-    const { tasks, setPageNumber, getMyJobs, isLoading } = useTask()
+    const { tasks, setPageNumber, getMyJobs, isLoading, service_id } = useTask()
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const { userState } = useAuth()
+    // console.log('service:', service)
 
     const handlePress = (jobId: number) => {
         if (userState?.user_role === 'handyman') {
             router.push(`/job-listing/${jobId}`)
         }
     }
+
+    console.log('tasks:', tasks)
     useEffect(() => {
         getMyJobs!()
-    }, [tasks])
+    }, [tasks, service_id])
     const renderMyJobs = ({ item }:
         {
             item: JobPropType
