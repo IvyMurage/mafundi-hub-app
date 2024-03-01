@@ -1,13 +1,13 @@
-import { View, Text, SafeAreaView, ScrollView, TextInput, Pressable, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, TextInput, Pressable, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { FIREBASE_DB } from 'config/firebaseConfig'
-import { addDoc, collection, getDocs, onSnapshot, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 import Colors from '@/constants/Colors'
 import { Image } from 'expo-image'
 import CalendarPicker from 'react-native-calendar-picker'
-import { FontAwesome5, Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { appointmentStyles } from '@/constants/styles'
 import { setItemAsync } from 'expo-secure-store'
@@ -16,10 +16,9 @@ import { setItemAsync } from 'expo-secure-store'
 const AppointmentForm = () => {
     const router = useRouter()
 
-    const [addChatGroup, setAddChatGroup] = useState("")
     const { handymanId } = useHandymanId()
     const { userState } = useAuth()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const chatExists = async () => {
         try {
@@ -54,12 +53,13 @@ const AppointmentForm = () => {
                 const _doc = {
                     id: id,
                     handyman: handymanId,
-                    client: userState?.user_id,
+                    client: userState?.user_id?.toString(),
                     createdAt: serverTimestamp()
                 }
                 const docRef = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
                 await setItemAsync('docRefId', docRef.id)
                 userState.user_role === 'client' && await setItemAsync('client_id', JSON.stringify(userState?.user_id))
+                setLoading(false)
             }
         }
         catch (e) {
@@ -69,8 +69,6 @@ const AppointmentForm = () => {
             setLoading(false)
         }
     }
-
-
 
     return (
         <SafeAreaView style={appointmentStyles.container}>
@@ -159,6 +157,7 @@ const AppointmentForm = () => {
                                 createNewChat()
                                 router.push('/(tabs)/messages')
                             }}>
+                                {loading && <ActivityIndicator size="large" color="white" />}
                                 <Text style={[appointmentStyles.buttonTitle,]}>
                                     Confirm and Chat
                                 </Text>

@@ -202,6 +202,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                         available: item.available
                     }
                 }))
+                setLoading(false)
             }
         }
         catch (err: any) {

@@ -11,42 +11,35 @@ import Loader from '@/components/loader'
 import { setItemAsync } from 'expo-secure-store'
 import MessageNotFound from '@/components/message-not-found'
 
-
 const Messages = () => {
     const [messages, setMessages] = useState<DocumentData[]>([])
     const [loading, setLoading] = useState(true)
     const { userState } = useAuth()
     const router = useRouter()
     useLayoutEffect(() => {
-        let chatQuery
+        let chatQuery;
         try {
-            const queryRef = query(collection(FIREBASE_DB, 'messages'), orderBy("id", "desc"),)
-            userState?.user_role === 'client' ? chatQuery = query(queryRef,
-                where('client', '==', userState?.user_id))
-                :
-                chatQuery = query(queryRef,
-                    where('handyman', '==', userState?.user_id))
-
-
+            const queryRef = query(collection(FIREBASE_DB, 'messages'), orderBy("id", "desc"));
+            userState?.user_role === 'client' ? chatQuery = query(queryRef, where('client', '==', userState?.user_id?.toString()))
+                : chatQuery = query(queryRef, where('handyman', '==', userState?.user_id?.toString()));
 
             const unsubscribe = onSnapshot(chatQuery, (snapshot) => {
-                const messages = snapshot.docs.map((doc) => (doc.data()))
-                setMessages(messages)
-                setLoading(false)
-            })
-            return () => {
-                unsubscribe()
-            }
-        }
-        catch {
-            console.log('Firebase error')
-        }
-        finally {
-            setLoading(false)
-        }
-    }, [])
+                const messages = snapshot.docs.map((doc) => (doc.data()));
+                setMessages(messages);
+                // Set loading to false after data retrieval
+                setLoading(false);
+            });
 
-    // console.log("messages", messages)
+            return () => {
+                unsubscribe();
+            };
+        } catch (error) {
+            console.error('Firebase error:', error);
+            // Consider showing an error message to the user
+            setLoading(false); // Set loading to false in case of error
+        }
+    }, []);
+
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
         return (

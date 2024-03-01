@@ -12,7 +12,7 @@ import { useFocusEffect, useRouter } from 'expo-router'
 import Loader from './loader'
 
 const JobList = () => {
-    const { tasks, setPageNumber, getMyJobs, isLoading, service_id } = useTask()
+    const { tasks, setPageNumber, getMyJobs, loading, service_id } = useTask()
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
@@ -25,13 +25,16 @@ const JobList = () => {
             router.push(`/job-listing/${jobId}`)
         }
     }
-
-    useFocusEffect(
-        useCallback(() => {
-            return () => getMyJobs!()
-        }, [service_id, tasks, getMyJobs])
-    )
-
+    userState?.user_role === 'client' ?
+        useEffect(() => {
+            getMyJobs!()
+        }, [tasks])
+        :
+        useFocusEffect(
+            useCallback(() => {
+                return () => getMyJobs!()
+            }, [service_id, tasks])
+        )
     const renderMyJobs = ({ item }: { item: JobPropType }) => {
         return (
             <Pressable onPress={() => handlePress(item.id!)}>
@@ -89,7 +92,7 @@ const JobList = () => {
         <>
             <TaskProvider>
                 {
-                    tasks?.length === 0 ?
+                    !loading && tasks?.length === 0 ?
                         <NotFound />
                         :
                         <>
@@ -134,7 +137,7 @@ const JobList = () => {
                     </Pressable>
 
                 </View>
-                <Loader isLoading={isLoading!} />
+                <Loader isLoading={loading!} />
             </TaskProvider>
         </>
     )

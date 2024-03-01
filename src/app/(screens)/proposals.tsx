@@ -4,18 +4,11 @@ import Animated, { FadeOutDown, FadeOutUp } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
 import { FontAwesome5, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
-import { HandymanProps } from '@/types/handyman';
 import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
-import { useTaskId } from '@/contexts/TaskIdContext';
 import { useRouter } from 'expo-router';
 import { ProposalType } from './handyman-proposal';
 
-type JobProposalType = {
-    id?: number,
-    handyman?: HandymanProps[],
-    proposal_text?: string,
-}
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
     const { authState, userState } = useAuth()
     const { visible, setVisible, taskId } = props

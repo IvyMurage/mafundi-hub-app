@@ -636,6 +636,8 @@ export const appointmentStyles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginVertical: 10,
+        display: "flex",
+        flexDirection: "row",
     },
     buttonTitle: {
         color: Colors.lighter,

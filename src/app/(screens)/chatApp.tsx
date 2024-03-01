@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, FlatList, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { DocumentData, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { DocumentData, QuerySnapshot, addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 import { FIREBASE_DB } from 'config/firebaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -11,39 +11,85 @@ import { getItemAsync } from 'expo-secure-store'
 import CustomAlert from '@/components/customAlert'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
+import Loader from '@/components/loader'
 
 const ChatApp = () => {
     const [messages, setMessages] = useState<DocumentData[]>([])
     const router = useRouter()
     const [message, setMessage] = useState<string>('')
+    const [loading, setLoading] = useState(true)
     const { userState } = useAuth()
     const { handymanId } = useHandymanId()
     const [isError, setError] = useState(false)
+    // useLayoutEffect(() => {
+    //     const getMessages = async () => {
+    //         const chatId = await getItemAsync('docRefId')
+    //         try {
+    //             const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats')
+    //             const q = query(msgCollectionRef, orderBy('createdAt', 'asc'),)
+    //             const chatRef = query(q, where('senderId', '==', userState?.user_id), where('receiverId', '==', userState?.user_id?.toString()))
+
+    //             const unsubscribe = onSnapshot(chatRef, (snapshot) => {
+    //                 const messages = snapshot.docs.map((doc) => ({
+    //                     id: doc.id,
+    //                     ...doc.data()
+    //                 }))
+    //                 setMessages(messages)
+    //             })
+    //             return () => {
+    //                 unsubscribe()
+    //             }
+    //         }
+    //         catch {
+    //             console.log('Firebase error')
+    //         }
+    //     }
+    //     getMessages()
+    // }, [])
+
     useLayoutEffect(() => {
         const getMessages = async () => {
-            const chatId = await getItemAsync('docRefId')
+            const chatId = await getItemAsync('docRefId');
             try {
-                const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats')
-                const q = query(msgCollectionRef, orderBy('createdAt', 'asc'),)
-                const chatRef = query(q, where('senderId', '==', userState?.user_id), where('receiverId', '==', userState?.user_id))
+                const msgCollectionRef = collection(FIREBASE_DB, 'messages', chatId!, 'chats');
+                const senderMessagesQuery = query(msgCollectionRef, where('senderId', '==', userState?.user_id?.toString()));
+                const receiverMessagesQuery = query(msgCollectionRef, where('receiverId', '==', userState?.user_id?.toString()));
 
-                const unsubscribe = onSnapshot(chatRef, (snapshot) => {
+                // Create an array to store the merged messages
+                let mergedMessages: any[] = [];
+
+                // Function to handle snapshot changes
+                const handleSnapshot = (snapshot: QuerySnapshot<DocumentData>) => {
                     const messages = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data()
-                    }))
-                    setMessages(messages)
-                })
+                    }));
+                    mergedMessages = [...mergedMessages, ...messages];
+                    // Sort merged messages by createdAt timestamp
+                    mergedMessages.sort((a, b) => a.createdAt - b.createdAt);
+                    // Update state with sorted merged messages
+                    setMessages(mergedMessages);
+                    setLoading(false)
+                };
+
+                // Subscribe to sender messages
+                const senderUnsubscribe = onSnapshot(senderMessagesQuery, handleSnapshot);
+                // Subscribe to receiver messages
+                const receiverUnsubscribe = onSnapshot(receiverMessagesQuery, handleSnapshot);
+
+                // Return cleanup function
                 return () => {
-                    unsubscribe()
-                }
+                    senderUnsubscribe();
+                    receiverUnsubscribe();
+                };
+            } catch (error) {
+                console.error('Firebase error:', error);
+                setLoading(false)
             }
-            catch {
-                console.log('Firebase error')
-            }
-        }
-        getMessages()
-    }, [])
+        };
+
+        getMessages();
+    }, []);
 
     const sendMessage = async (message: string) => {
         const chatId = await getItemAsync('docRefId')
@@ -55,7 +101,7 @@ const ChatApp = () => {
             const _doc = {
                 message: msg,
                 chatId: chatId,
-                senderId: userState?.user_id,
+                senderId: userState?.user_id?.toString(),
                 receiverId: userState?.user_role === 'client' ? handymanId : client_id,
                 createdAt: serverTimestamp()
             }
@@ -124,7 +170,7 @@ const ChatApp = () => {
             </View>
 
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
-                <FlatList data={messages} keyExtractor={(item) => item.id} renderItem={renderMessage} contentContainerStyle={{
+                <FlatList data={messages} keyExtractor={(item, index) => item.id} renderItem={renderMessage} contentContainerStyle={{
                     borderTopRightRadius: 50,
                     borderTopLeftRadius: 50,
                 }} />
@@ -149,6 +195,7 @@ const ChatApp = () => {
                     }
                 </View>
             </KeyboardAvoidingView>
+            <Loader isLoading={loading} />
         </SafeAreaView>
     )
 }
