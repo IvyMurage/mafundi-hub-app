@@ -3,6 +3,9 @@ import { createContext, useContext, useState } from "react";
 type HandymanIdTYpe = {
     handymanId: string | null,
     setHandymanId: React.Dispatch<React.SetStateAction<string | null>>
+    proposal_status?: string | null,
+    setProposalStatus?: React.Dispatch<React.SetStateAction<string | null>>
+
 }
 
 const HandymanContextId = createContext<HandymanIdTYpe>({ handymanId: null, setHandymanId: () => { } });
@@ -15,9 +18,12 @@ export const useHandymanId = () => {
     return context
 }
 
+
+
 export const HandymanContextIdProvider = ({ children }: { children: React.ReactNode }) => {
     const [handymanId, setHandymanId] = useState<string | null>(null)
-    const value = { handymanId, setHandymanId }
+    const [proposal_status, setProposalStatus] = useState<string | null>(null)
+    const value = { handymanId, setHandymanId, proposal_status, setProposalStatus }
     console.log("handyman", handymanId)
     return (
         <HandymanContextId.Provider value={value}>

@@ -9,12 +9,14 @@ import ProposalNotFound from '@/components/proposal-not-found';
 import { useRouter } from 'expo-router';
 import { ProposalType } from './handyman-proposal';
 import Loader from '@/components/loader';
+import { useHandymanId } from '@/contexts/HandymanIdContext';
 
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
     const { authState, userState } = useAuth()
     const { visible, setVisible, taskId } = props
     const [proposals, setProposals] = useState<ProposalType[]>([])
     const [loading, setLoading] = useState(false)
+    const { proposal_status, setProposalStatus } = useHandymanId()
     const router = useRouter()
     useEffect(() => {
         const fetchProposals = async () => {
@@ -59,6 +61,39 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
         fetchProposals()
     }, [taskId])
 
+
+    const handleProposalUpdate = async (proposalId: number, payload: string) => {
+        try {
+            setLoading(true)
+
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/job_proposals/${proposalId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authState?.token}`
+                },
+                body: JSON.stringify({
+                    job_status: payload
+                })
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                console.log("Proposal accepted", data)
+                setProposalStatus!(data?.data.job_status)
+                router.push(`/handyman-listing/${data?.data.handyman_id}`)
+            }
+
+        }
+        catch (error: any) {
+            console.log("Error accepting proposal", error.message)
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
     // console.log("This is the proposals", proposals)
     const proposalList = proposals?.map((proposal) => {
         return (
@@ -74,10 +109,15 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                     }}>
                         <Text style={[proposalStyle.textStyle, { color: Colors.lighter, fontFamily: 'roboto-bold' }]}>View Profile</Text>
                     </Pressable>
-                    <Pressable style={proposalStyle.button}>
+                    <Pressable style={proposalStyle.button} onPress={() => {
+                        handleProposalUpdate(proposal.id, 'accepted')
+                    }}>
                         <FontAwesome5 name="check" color={'green'} size={20} />
                     </Pressable>
-                    <Pressable style={proposalStyle.button}>
+                    <Pressable style={proposalStyle.button} onPress={() => {
+                        handleProposalUpdate(proposal.id, 'rejected')
+
+                    }}>
                         <Octicons name="x" color={'red'} size={20} />
                     </Pressable>
 

@@ -14,7 +14,7 @@ const Handyman = () => {
     const { authState } = useAuth()
     const [loading, setLoading] = useState(false)
     const [handyman, setHandyman] = useState<HandymanProps>({} as HandymanProps)
-    const { setHandymanId } = useHandymanId()
+    const { setHandymanId, proposal_status } = useHandymanId()
 
     useEffect(() => {
         const getHandyman = async () => {
@@ -70,10 +70,12 @@ const Handyman = () => {
                             <Text style={styles.titleText}>{handyman.location_attributes}</Text>
                         </View>
 
-                        <Pressable style={styles.appointmentBtn} onPress={() => {
-                            setHandymanId(handyman.id.toString())
-                            router.push(`/appointment-form`)
-                        }}>
+                        <Pressable
+                            disabled={proposal_status === null}
+                            style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
+                                setHandymanId(handyman.id.toString())
+                                router.push(`/appointment-form`)
+                            }}>
                             <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
                         </Pressable>
 
