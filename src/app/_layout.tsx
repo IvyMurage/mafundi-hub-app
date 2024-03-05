@@ -77,7 +77,7 @@ function RootLayoutNav() {
 
       <Stack.Screen name="(tabs)" options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
 
-      <Stack.Screen name='(modals)/login' options={{ headerShown: false, }} />
+      <Stack.Screen name='(modals)/login' options={{ headerShown: false, animation:'fade' }} />
     </Stack>
   );
 }

@@ -64,7 +64,7 @@ const SignUp = () => {
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit, }) => (
                 <>
-                    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
+                    <SafeAreaView style={{ flex: 1, paddingTop: 30, paddingHorizontal: 10, backgroundColor: Colors.primary }}>
                         <Octicons name='arrow-left' size={24} color={Colors.lighter} style={styles.backArrow} onPress={() => { router.back() }} />
                         <View style={styles.container}>
                             <Text style={styles.containerTitle}>

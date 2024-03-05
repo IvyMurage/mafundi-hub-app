@@ -17,8 +17,9 @@ const AppointmentForm = () => {
     const router = useRouter()
 
     const { handymanId } = useHandymanId()
-    const { userState } = useAuth()
+    const { userState, authState } = useAuth()
     const [loading, setLoading] = useState(false)
+
 
     const chatExists = async () => {
         try {
@@ -70,6 +71,30 @@ const AppointmentForm = () => {
         }
     }
 
+    const makePayment = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/stkpush`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authState?.token}`
+                },
+                body: JSON.stringify({
+                    amount: "1",
+                    phone_number: '254707974698'
+                })
+            })
+            const data = await response.json()
+            console.log(data.error)
+        }
+        catch (e: any) {
+            console.log(e.message)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     return (
         <SafeAreaView style={appointmentStyles.container}>
             <Ionicons
@@ -148,7 +173,9 @@ const AppointmentForm = () => {
                             numberOfLines={6}
                         />
                         <View style={appointmentStyles.buttonContainer}>
-                            <Pressable style={appointmentStyles.button}>
+                            <Pressable style={appointmentStyles.button} onPress={() => {
+                                makePayment()
+                            }}>
                                 <Text style={appointmentStyles.buttonTitle}>
                                     Lipa na Mpesa
                                 </Text>

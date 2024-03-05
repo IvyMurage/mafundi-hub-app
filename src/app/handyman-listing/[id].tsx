@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     safeView: {
         flex: 1,
         paddingTop: 10,
+        paddingHorizontal: 10,
         backgroundColor: Colors.primary,
     },
     scrollView: {
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto-bold',
         marginBottom: 10,
         alignSelf: 'flex-start',
+        padding: 10
     },
     imageScroll: {
         marginTop: 10,

@@ -43,20 +43,20 @@ const Login = () => {
         >
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
                 <>
-                    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: Colors.primary }}>
+                    <SafeAreaView style={{ flex: 1, paddingTop: 20, paddingHorizontal: 10, backgroundColor: Colors.primary }}>
                         <View style={[defaultStyles.container]}>
-                            <View>
+                            <View style={{ marginTop: 10 }}>
                                 <Image
-                                    style={{ width: 300, height: 200 }}
-                                    source={require('@/assets/images/auth-image.svg')}
+                                    style={{ width: 250, height: 200 }}
+                                    source={require("@/assets/images/auth-image.svg")}
                                 />
-
                             </View>
                             <Divider />
 
-
-                            <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
-                            <Text style={[defaultStyles.loginHeader]}>Please sign in to continue</Text>
+                            <View style={{ alignSelf: 'flex-start' }}>
+                                <Text style={[defaultStyles.loginSubHeader]}>Login</Text>
+                                <Text style={[defaultStyles.loginHeader]}>Please sign in to continue</Text>
+                            </View>
 
                             <View style={[defaultStyles.textContainer]}>
                                 <FontAwesome name='envelope-o' size={20} color={Colors.primary} style={defaultStyles.authIcon} />

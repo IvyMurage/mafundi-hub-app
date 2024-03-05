@@ -94,7 +94,6 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
         }
 
     }
-    // console.log("This is the proposals", proposals)
     const proposalList = proposals?.map((proposal) => {
         return (
             <View key={proposal.id} style={proposalStyle.proposalContainer}>
@@ -116,7 +115,6 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                     </Pressable>
                     <Pressable style={proposalStyle.button} onPress={() => {
                         handleProposalUpdate(proposal.id, 'rejected')
-
                     }}>
                         <Octicons name="x" color={'red'} size={20} />
                     </Pressable>
@@ -201,24 +199,24 @@ const proposalStyle = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         paddingBottom: 50,
-        marginTop: 25,
+        marginTop: 100,
         paddingTop: 20,
-        paddingHorizontal: 10,
+        paddingHorizontal: 14,
         backgroundColor: Colors.lighter,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        flex: 1
     }
     ,
     textStyle: {
         fontFamily: 'roboto',
         letterSpacing: 1.4,
-        paddingBottom: 5,
         fontSize: 14,
         color: Colors.dark,
         textAlign: 'justify'
     },
     btnProfile: {
-        borderRadius: 10,
+        borderRadius: 18,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -227,9 +225,9 @@ const proposalStyle = StyleSheet.create({
     },
     button: {
         backgroundColor: Colors.lighter,
-        borderRadius: 50,
-        width: 50,
-        height: 50,
+        borderRadius: 40,
+        width: 40,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
