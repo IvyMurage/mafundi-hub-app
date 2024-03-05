@@ -174,6 +174,8 @@ export const clientProfileStyles = StyleSheet.create({
         borderTopRightRadius: 20,
         backgroundColor: Colors.light,
         overflow: "scroll",
+        paddingHorizontal: 10,
+
     },
     contentContainer: {
         flexGrow: 1,
@@ -184,9 +186,9 @@ export const clientProfileStyles = StyleSheet.create({
     textInput: {
         borderBottomWidth: 1,
         borderColor: Colors.secondary,
-        paddingLeft: 50,
+        paddingLeft: 30,
         marginBottom: 30,
-        width: 380,
+        width: 350,
     },
     cameraContainer: {
         position: "absolute",
@@ -202,7 +204,7 @@ export const clientProfileStyles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
     },
 });
@@ -309,7 +311,7 @@ export const handymanRegisterStyles = StyleSheet.create({
     textArea: {
         paddingTop: 0,
         height: 100,
-        borderRadius:10
+        borderRadius: 10,
     },
     submitBtn: {
         padding: 20,
@@ -358,13 +360,13 @@ export const taskFormStyles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
         paddingBottom: 50,
         marginTop: 25,
         paddingTop: 20,
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
         backgroundColor: "white",
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -390,7 +392,7 @@ export const taskFormStyles = StyleSheet.create({
     },
     viewTextContainer: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         width: "100%",
         paddingBottom: 50,
@@ -407,7 +409,7 @@ export const taskFormStyles = StyleSheet.create({
         letterSpacing: 1.2,
     },
     textarea: {
-        width: 384,
+        width: 350,
         height: 120,
         borderRadius: 10,
         padding: 15,

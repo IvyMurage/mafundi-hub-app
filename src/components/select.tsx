@@ -81,7 +81,7 @@ const selectStyles = StyleSheet.create({
     },
     dropdownButtonText: {
         fontFamily: 'roboto',
-        fontSize: 14,
+        fontSize: 12,
         letterSpacing: 1.8,
         textAlign: 'left',
 
@@ -103,7 +103,7 @@ const selectStyles = StyleSheet.create({
     },
     selectContainer: {
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
     }
 })

@@ -29,7 +29,7 @@ const ClientProfile = () => {
             enableReinitialize={true}
         >
             {({ handleChange, handleSubmit, setFieldTouched, errors, touched, setFieldValue, values, isValid }) => (
-                <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: Colors.primary }}>
+                <SafeAreaView style={{ flex: 1, paddingTop: 10,   backgroundColor: Colors.primary }}>
                     <View style={clientProfileStyles.container}>
                         <Image
                             placeholderContentFit='cover'
@@ -57,7 +57,7 @@ const ClientProfile = () => {
                             <View style={clientProfileStyles.subContainer}>
                                 <View style={[clientProfileStyles.textContainer]} >
                                     <FontAwesome name="user" size={20} color={Colors.primary} style={{
-                                        left: 50,
+                                        left: 35,
                                         paddingBottom: 15,
                                         zIndex: 1
                                     }} />
@@ -80,7 +80,7 @@ const ClientProfile = () => {
                                 }
                                 <View style={[clientProfileStyles.textContainer]}>
                                     <FontAwesome name="user" size={20} color={Colors.primary} style={{
-                                        left: 50,
+                                        left: 35,
                                         paddingBottom: 15,
                                         zIndex: 1
                                     }} />
@@ -104,7 +104,7 @@ const ClientProfile = () => {
                                 }
                                 <View style={[clientProfileStyles.textContainer]}>
                                     <FontAwesome name="phone" size={20} color={Colors.primary} style={{
-                                        left: 50,
+                                        left: 35,
                                         paddingBottom: 15,
                                         zIndex: 1
                                     }} />
@@ -157,7 +157,7 @@ const ClientProfile = () => {
                                     onPress={() => handleSubmit()}
                                     style={[defaultStyles.authButton,
                                     {
-                                        width: 380,
+                                        width: 350,
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "center",

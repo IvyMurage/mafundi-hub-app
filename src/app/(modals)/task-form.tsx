@@ -52,7 +52,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                     </View>
 
                                     <View style={taskFormStyles.viewTextContainer}>
-                                        <View>
+                                        <View style={{ marginHorizontal: 5 }}>
                                             <TextInput
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
@@ -74,7 +74,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 )
                                             }
                                         </View>
-                                        <View>
+                                        <View style={{ marginHorizontal: 5 }}>
                                             <TextInput
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
@@ -100,67 +100,77 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                     </View>
 
                                     <View style={taskFormStyles.viewTextContainer}>
-                                        <TextInput
-                                            autoCapitalize='none'
-                                            autoCorrect={false}
-                                            autoFocus={true}
-                                            keyboardType='default'
-                                            placeholder='Duratuion (e.g. "2 hours")'
-                                            returnKeyLabel='next'
-                                            value={values.duration_label}
-                                            onChangeText={handleChange('duration_label')}
-                                            onBlur={() => setFieldTouched('duration_label')}
-                                            style={[taskFormStyles.textInput, taskFormStyles.inputField]}
-                                        />
-                                        <Select
-                                            data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
-                                            searchPlaceHolder='Instant booking'
-                                            handleChange={(value) => setFieldValue('instant_booking', value)}
-                                            defaultButtonText='Instant Booking'
-                                            profile={false}
-                                            task={true}
-                                        />
+                                        <View style={{ marginHorizontal: 5 }}>
+                                            <TextInput
+                                                autoCapitalize='none'
+                                                autoCorrect={false}
+                                                autoFocus={true}
+                                                keyboardType='default'
+                                                placeholder='Duratuion (e.g. "2 hours")'
+                                                returnKeyLabel='next'
+                                                value={values.duration_label}
+                                                onChangeText={handleChange('duration_label')}
+                                                onBlur={() => setFieldTouched('duration_label')}
+                                                style={[taskFormStyles.textInput, taskFormStyles.inputField]}
+                                            />
+                                        </View>
+                                        <View style={{ marginHorizontal: 5, marginBottom: 10 }}>
+                                            <Select
+                                                data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
+                                                searchPlaceHolder='Instant booking'
+                                                handleChange={(value) => setFieldValue('instant_booking', value)}
+                                                defaultButtonText='Instant Booking'
+                                                profile={false}
+                                                task={true}
+                                            />
+                                        </View>
+
+
 
                                     </View>
 
                                     <View style={taskFormStyles.viewTextContainer}>
-                                        <Select
-                                            data={services || []}
-                                            searchPlaceHolder='Search for a service'
-                                            handleChange={(value) => setFieldValue('service_id', value)}
-                                            defaultButtonText='Service'
-                                            profile={false}
-                                            task={true}
-                                        />
+                                        <View style={{ marginHorizontal: 5 }}>
+                                            <Select
+                                                data={services || []}
+                                                searchPlaceHolder='Search for a service'
+                                                handleChange={(value) => setFieldValue('service_id', value)}
+                                                defaultButtonText='Service'
+                                                profile={false}
+                                                task={true}
+                                            />
 
-                                        {
-                                            touched.service_id && errors.service_id && (
-                                                <Text style={[defaultStyles.errorText]}>
-                                                    {errors.service_id}
-                                                </Text>
-                                            )
-                                        }
+                                            {
+                                                touched.service_id && errors.service_id && (
+                                                    <Text style={[defaultStyles.errorText]}>
+                                                        {errors.service_id}
+                                                    </Text>
+                                                )
+                                            }
+                                        </View>
 
-                                        <Select
-                                            data={locations?.length > 0 &&
-                                                locations !== undefined &&
-                                                locations?.map(location => {
-                                                    return { label: stringfy(location), value: stringfy(location) }
-                                                }) || []}
-                                            defaultButtonText='Location'
-                                            handleChange={(value) => setFieldValue('location_attributes', value)}
-                                            searchPlaceHolder='Search for a Location'
-                                            profile={false}
-                                            task={true}
-                                        />
+                                        <View style={{ marginHorizontal: 5 }}>
+                                            <Select
+                                                data={locations?.length > 0 &&
+                                                    locations !== undefined &&
+                                                    locations?.map(location => {
+                                                        return { label: stringfy(location), value: stringfy(location) }
+                                                    }) || []}
+                                                defaultButtonText='Location'
+                                                handleChange={(value) => setFieldValue('location_attributes', value)}
+                                                searchPlaceHolder='Search for a Location'
+                                                profile={false}
+                                                task={true}
+                                            />
 
-                                        {
-                                            touched.location_attributes && errors.location_attributes && (
-                                                <Text style={[defaultStyles.errorText]}>
-                                                    {errors.location_attributes}
-                                                </Text>
-                                            )
-                                        }
+                                            {
+                                                touched.location_attributes && errors.location_attributes && (
+                                                    <Text style={[defaultStyles.errorText]}>
+                                                        {errors.location_attributes}
+                                                    </Text>
+                                                )
+                                            }
+                                        </View>
                                     </View>
 
                                     <View>
