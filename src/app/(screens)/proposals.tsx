@@ -129,10 +129,14 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
             <Modal animationType='slide' visible={visible} transparent>
                 <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: 'rgba(0,0,0,0.6)' }}>
                     <ScrollView style={proposalStyle.scroll} contentContainerStyle={proposalStyle.contentStyle}>
-                        <View style={proposalStyle.container}>
-                            <Text style={proposalStyle.proposalHeader}>Proposals</Text>
+                        <View style={[proposalStyle.container]}>
+                            <Text style={[proposalStyle.proposalHeader, !loading && proposalList.length === 0 && {
+                                alignSelf: 'flex-start'
+                            }]}>Proposals</Text>
                             <Octicons name='x-circle' size={20} color={Colors.primary} onPress={() => {
                                 setVisible(!visible)
+                            }} style={!loading && proposalList.length === 0 && {
+                                alignSelf: 'flex-start'
                             }} />
                         </View>
                         {!loading && proposalList?.length === 0 ? <ProposalNotFound /> : proposalList}

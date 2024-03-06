@@ -1,40 +1,28 @@
 import { View, Text, Pressable, FlatList, } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { JobPropType } from '@/types/job'
 import Colors from '@/constants/Colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Proposal from '@/app/(screens)/proposals'
 import { jobListStyle } from '@/constants/styles'
-import { TaskProvider, useTask } from '@/contexts/TaskContext'
+import { useTask } from '@/contexts/TaskContext'
 import { useAuth } from '@/contexts/AuthContext'
-import NotFound from './not-found'
-import { useFocusEffect, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import Loader from './loader'
 
-const JobList = () => {
-    const { tasks, setPageNumber, getMyJobs, loading, service_id } = useTask()
+const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const { userState } = useAuth()
-    // console.log('service:', service)
-
+    const { setPageNumber, loading, } = useTask()
     const handlePress = (jobId: number) => {
         if (userState?.user_role === 'handyman') {
             router.push(`/job-listing/${jobId}`)
         }
     }
-    userState?.user_role === 'client' ?
-        useEffect(() => {
-            getMyJobs!()
-        }, [tasks])
-        :
-        useFocusEffect(
-            useCallback(() => {
-                return () => getMyJobs!()
-            }, [service_id, tasks])
-        )
+
     const renderMyJobs = ({ item }: { item: JobPropType }) => {
         return (
             <Pressable onPress={() => handlePress(item.id!)}>
@@ -69,16 +57,16 @@ const JobList = () => {
                             { fontFamily: 'roboto-medium' }]}>
                             {item?.job_category}
                         </Text>
-                        <View style={{
+                        <Pressable style={{
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center'
-                        }}>
+                        }} onPress={() => { router.push('/maps') }}>
                             <MaterialIcons name="location-pin" size={16} color={Colors.secondary} />
                             <Text style={[jobListStyle.jobText, { fontSize: 10 }]}>
                                 {item.job_location}
                             </Text>
-                        </View>
+                        </Pressable>
                     </View>
                     <View style={jobListStyle.jobFooter}>
                         <Text style={[jobListStyle.jobText, { fontSize: 12 }]}>{item?.job_price}</Text>
@@ -90,55 +78,51 @@ const JobList = () => {
     }
     return (
         <>
-            <TaskProvider>
-                {
-                    !loading && tasks?.length === 0 ?
-                        <NotFound />
-                        :
-                        <>
-                            <FlatList
-                                ref={jobRef}
-                                data={tasks || []}
-                                renderItem={renderMyJobs}
-                                style={{ width: '100%', height: '100%', padding: 10 }}
-                                contentContainerStyle={{ paddingBottom: 120 }}
-                            />
-                            <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
-                        </>
-                }
 
 
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '100%',
-                    position: 'absolute',
-                    top: '84%',
+            <>
+                <FlatList
+                    ref={jobRef}
+                    data={tasks || []}
+                    renderItem={renderMyJobs}
+                    style={{ width: '100%', height: '100%', padding: 10 }}
+                    contentContainerStyle={{ paddingBottom: 120 }}
+                />
+                <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
+            </>
+
+
+
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                position: 'absolute',
+                top: '84%',
+            }}>
+                <Pressable style={{
+                    alignSelf: 'flex-end',
+                    paddingBottom: 100,
+                    paddingHorizontal: 20,
+                }} onPress={() => {
+                    setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
                 }}>
-                    <Pressable style={{
-                        alignSelf: 'flex-end',
-                        paddingBottom: 100,
-                        paddingHorizontal: 20,
-                    }} onPress={() => {
-                        setPageNumber!((prevPage) => prevPage === 1 ? 1 : prevPage - 1)
-                    }}>
-                        <Ionicons name="arrow-back-circle" color={Colors.primary} size={30} />
-                    </Pressable>
+                    <Ionicons name="arrow-back-circle" color={Colors.primary} size={30} />
+                </Pressable>
 
-                    <Pressable style={{
-                        alignSelf: 'flex-end',
-                        paddingBottom: 100,
-                        paddingHorizontal: 20,
-                    }} onPress={() => {
-                        setPageNumber!((prevPage) => prevPage + 1)
-                    }}>
-                        <Ionicons name='arrow-forward-circle' color={Colors.primary} size={30} />
-                    </Pressable>
+                <Pressable style={{
+                    alignSelf: 'flex-end',
+                    paddingBottom: 100,
+                    paddingHorizontal: 20,
+                }} onPress={() => {
+                    setPageNumber!((prevPage) => prevPage + 1)
+                }}>
+                    <Ionicons name='arrow-forward-circle' color={Colors.primary} size={30} />
+                </Pressable>
 
-                </View>
-                <Loader isLoading={loading!} />
-            </TaskProvider>
+            </View>
+            <Loader isLoading={loading!} />
         </>
     )
 }

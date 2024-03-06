@@ -25,11 +25,11 @@ const HandymanList = () => {
                 <Pressable onPress={() => handlePress(item.id)}>
                     <View style={{
                         flex: 1,
-                        width: 180,
+                        width: 160,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: Colors.primary,
-                        padding: 8,
+                        padding: 10,
                         margin: 10,
                         borderRadius: 10
                     }}>
@@ -39,20 +39,23 @@ const HandymanList = () => {
                             width: '100%',
                             paddingHorizontal: 8
                         }}>
-                            <Image source={require('@/assets/images/placeholder.jpg')}
-                                style={{ width: 80, height: 80, borderRadius: 80, alignSelf: 'center' }} />
+                            <Image source={{uri:item.avatar_url}}
+                                style={{ width: 50, height: 50, borderRadius: 50, alignSelf: 'center' }} />
                             <Text style={{
                                 fontSize: 14,
                                 letterSpacing: 1.2,
                                 fontFamily: 'roboto-medium',
-                                color: Colors.lighter
+                                color: Colors.lighter,
+                                marginTop:10,
+                                textAlign: 'center'
                             }}>
                                 {item.first_name} {item.last_name}
                             </Text>
                             <View style={{
                                 flexDirection: 'row',
-                                justifyContent: 'flex-start',
-                                alignItems: 'center'
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 5
 
                             }}>
                                 <MaterialIcons name="location-on" size={14} color={Colors.secondary} />
@@ -62,9 +65,7 @@ const HandymanList = () => {
                                     letterSpacing: 1.2,
                                     fontFamily: 'roboto',
                                     color: Colors.lighter,
-                                    paddingLeft: 5
-
-
+                                    paddingLeft: 2
                                 }}>{item.location}</Text>
                             </View>
 

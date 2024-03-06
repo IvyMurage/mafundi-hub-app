@@ -51,11 +51,9 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <HandymanContextIdProvider>
-        <TaskProvider>
-          <TaskIdProvider>
-            <RootLayoutNav />
-          </TaskIdProvider>
-        </TaskProvider>
+        <TaskIdProvider>
+          <RootLayoutNav />
+        </TaskIdProvider>
       </HandymanContextIdProvider>
     </AuthProvider>);
 }
@@ -68,7 +66,7 @@ function RootLayoutNav() {
   const initialRoute = () => {
     if (authState?.authenicated) return '(tabs)'
     if (authState === null) return '(onboard)/get-started'
-    return '(modals)/login'
+    return '(tabs)'
   }
   return (
     <Stack initialRouteName={initialRoute()} screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
@@ -77,7 +75,10 @@ function RootLayoutNav() {
 
       <Stack.Screen name="(tabs)" options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
 
-      <Stack.Screen name='(modals)/login' options={{ headerShown: false, animation:'fade' }} />
+      <Stack.Screen name='(modals)/login' options={{ headerShown: false, animation: 'fade' }} />
+
+      <Stack.Screen name='(screens)/maps' options={{ headerShown: true, animation: 'fade' }} />
+
     </Stack>
   );
 }

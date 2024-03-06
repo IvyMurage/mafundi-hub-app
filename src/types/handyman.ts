@@ -26,5 +26,6 @@ export interface HandymanType {
     first_name?: string;
     last_name?: string;
     location?: string;
-    user_rating: number;
+    avatar_url?: string;
+    user_rating?: number;
 }

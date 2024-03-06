@@ -55,13 +55,15 @@ export const HandymanProvider = ({ children }: HandymanProviderProps) => {
                         last_name: string | null;
                         location: { city: string; county: string; country: string } | null;
                         user_rating: number | null;
+                        avatar_url: string | null;
                     }) => {
                         return {
                             id: item.id,
                             first_name: item.first_name,
                             last_name: item.last_name,
                             location: `${item.location!.city}, ${item.location!.county}`,
-                            user_rating: item.user_rating
+                            user_rating: item.user_rating,
+                            avatar_url: item.avatar_url
                         }
                     }))
                     setLoading(false)

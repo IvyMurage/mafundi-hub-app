@@ -50,6 +50,7 @@ const Handymen = () => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         width: '100%',
+                        paddingHorizontal: 10,
                     }}>
                         <FontAwesome5 name='arrow-left' size={20} color={Colors.primary} style={{
                             paddingHorizontal: 12,
@@ -63,38 +64,30 @@ const Handymen = () => {
                         <Text style={{
                             fontFamily: 'roboto-medium',
                             letterSpacing: 1.4,
-                            fontSize: 16,
+                            fontSize: 20,
                             color: Colors.secondary,
                             alignSelf: 'center',
-                            width: '90%',
                             textAlign: 'center',
                         }}>{service}</Text>
-                    </View>
 
-                    <View style={defaultJobStyles.headerStyle}>
                         <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
                             style={{ width: 50, height: 50, borderRadius: 50 }} />
-
-                        <FontAwesome5
-                            name="bell"
-                            size={20}
-                            color={Colors.secondary}
-                        />
                     </View>
+
                     <View style={{
                         marginVertical: 10,
                     }}>
                         <Text style={{
                             fontFamily: 'roboto-bold',
                             letterSpacing: 1.4,
-                            fontSize: 18,
+                            fontSize: 24,
                             paddingHorizontal: 16,
                             color: Colors.primary
                         }}>Best Handymen in the</Text>
                         <Text style={{
                             fontFamily: 'roboto-bold',
                             letterSpacing: 1.4,
-                            fontSize: 18,
+                            fontSize: 24,
                             paddingHorizontal: 16,
                             color: Colors.secondary
 
@@ -128,6 +121,7 @@ const Handymen = () => {
                         <LocationFilter
                             setLocation={setLocation}
                             visible={visible}
+                            setVisible={() => { }}
                         />
 
                     </View>
@@ -136,15 +130,15 @@ const Handymen = () => {
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                         padding: 10,
-                    
+
                     }}>
                         <Text style={{
                             fontFamily: 'roboto-medium',
                             letterSpacing: 1.2,
-                            fontSize: 15,
-                            paddingHorizontal: 20,
+                            fontSize: 20,
+                            paddingHorizontal: 10,
                             color: Colors.primary,
-                            
+
                         }}>Recommended</Text>
 
                         <HandymanList />

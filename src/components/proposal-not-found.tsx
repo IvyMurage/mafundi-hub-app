@@ -9,7 +9,7 @@ const ProposalNotFound = () => {
         <View style={{
             justifyContent: 'center',
             alignItems: 'center',
-            height: userState?.user_role === 'client' ? '100%' : 'auto'
+            height: userState?.user_role === 'client' ? '80%' : 'auto',
         }}>
             <Image source={require('@/assets/images/proposal_empty.svg')} style={{ width: 300, height: 300 }} />
             <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 16, textAlign: 'center' }}>

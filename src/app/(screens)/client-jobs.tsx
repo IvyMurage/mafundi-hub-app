@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Search from '@/components/search'
 import JobList from '@/components/myJobList'
 import Loader from '@/components/loader'
@@ -8,10 +8,12 @@ import { TaskProvider, useTask } from '@/contexts/TaskContext'
 import { useAuth } from '@contexts/AuthContext'
 
 const ClientJobs = () => {
-    const { loading } = useTask()
+    const { loading, getMyJobs, tasks } = useTask()
     const { userState } = useAuth()
-    // console.log(userState?.avatar_url)
-    // console.log(loading, "loading")
+    useEffect(() => {
+        getMyJobs!()
+    }, [tasks])
+
     return (
         <>
             <TaskProvider>
@@ -19,14 +21,12 @@ const ClientJobs = () => {
                     <View>
                         <Search placeholder='Search' />
                     </View>
-                    <JobList />
+                    <JobList tasks={tasks!} />
                 </View>
                 <Loader isLoading={loading!} />
             </TaskProvider>
         </>
     )
 }
-
-
 
 export default ClientJobs

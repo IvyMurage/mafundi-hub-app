@@ -9,6 +9,7 @@ import { useRouter } from "expo-router";
 
 interface TaskProps {
     tasks?: JobPropType[],
+    locations?: { city: string; county: string; country: string, latitude?: number, longitude?: number }[],
     service_id?: string,
     available?: boolean,
     location?: string,
@@ -23,6 +24,7 @@ interface TaskProps {
     setServiceId?: Dispatch<SetStateAction<string>>,
     setPageNumber?: Dispatch<SetStateAction<number>>
     setAvailable?: Dispatch<SetStateAction<boolean>>,
+    setLocations?: Dispatch<SetStateAction<{ city: string; county: string; country: string, latitude?: number, longitude?: number }[]>>,
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
     handleRoute?: () => Promise<string | null>
     getMyJobs?: () => Promise<void>
@@ -58,6 +60,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const router = useRouter()
     const { authState, userState } = useAuth()
     const [tasks, setTasks] = useState<JobPropType[]>([])
+    const [locations, setLocations] = useState<{ city: string; county: string; country: string, latitude?: number, longitude?: number }[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -77,8 +80,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const [service_id, setServiceId] = useState<string>('')
     const [location, setLocation] = useState<string>('')
     const [available, setAvailable] = useState<boolean>(false)
-    const getUrl = () => {
-        return userState?.user_role === 'client' ?
+    const url =
+        userState?.user_role === 'client' ?
             `${process.env.EXPO_PUBLIC_API_URL}/tasks?client_id=${userState?.user_id}&page=${pageNumber}&per_page=10` :
             service_id.length > 0 ?
                 `${process.env.EXPO_PUBLIC_API_URL}/tasks?service_id=${service_id}&page=${pageNumber}&per_page=10` :
@@ -87,7 +90,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                     location.length > 0 ?
                         `${process.env.EXPO_PUBLIC_API_URL}/tasks?city=${location}&page=${pageNumber}&per_page=10` :
                         `${process.env.EXPO_PUBLIC_API_URL}/tasks?page=${pageNumber}&per_page=10`
-    }
+
 
 
     const handleSubmit = async (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => {
@@ -164,7 +167,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const getMyJobs = async () => {
         try {
             setLoading(true)
-            const response = await fetch(getUrl(), {
+            const response = await fetch(url, {
                 headers: { Authorization: `Bearer ${authState?.token}` }
             })
             const data = await response.json()
@@ -202,6 +205,16 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                         available: item.available
                     }
                 }))
+
+                setLocations(data?.task?.map((item: { location: { city?: string; county?: string; country?: string, latitude?: number, longitude?: number } }) => {
+                    return {
+                        city: item.location.city!,
+                        county: item.location.county!,
+                        country: item.location.country!,
+                        latitude: item.location.latitude!,
+                        longitude: item.location.longitude!
+                    }
+                }))
                 setLoading(false)
             }
         }
@@ -216,6 +229,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
     const value = {
         tasks,
+        locations,
         location,
         available,
         setTasks,
@@ -232,7 +246,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         service_id,
         setServiceId,
         setAvailable,
-        setLocation
+        setLocation,
+        setLocations
     }
     return (
         <TaskContext.Provider value={value}>
