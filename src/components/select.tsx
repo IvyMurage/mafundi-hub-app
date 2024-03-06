@@ -33,7 +33,7 @@ const Select: React.FC<SelectProps> = (props) => {
             }} />
             }
 
-            {profile && name === 'service' && <MaterialIcons name="home-repair-service" size={26} color={Colors.primary} style={{
+            {profile && name === 'service' && <MaterialIcons name="home-repair-service" size={24} color={Colors.primary} style={{
                 left: 40,
                 zIndex: 1
             }} />
@@ -69,6 +69,7 @@ const selectStyles = StyleSheet.create({
         height: 60,
         backgroundColor: 'transparent',
     },
+
     selectButtonStyle: {
         backgroundColor: Colors.light,
         borderColor: Colors.secondary,

@@ -9,6 +9,7 @@ import { useTask } from '@/contexts/TaskContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 import Loader from './loader'
+import NotFound from '@/components/not-found'
 
 const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     const [jobId, setJobId] = useState<number | null>(null)
@@ -78,7 +79,10 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     }
     return (
         <>
-
+            {
+                !loading && tasks?.length === 0 &&
+                <NotFound />
+            }
 
             <>
                 <FlatList
@@ -89,9 +93,8 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                     contentContainerStyle={{ paddingBottom: 120 }}
                 />
                 <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
+
             </>
-
-
 
             <View style={{
                 flexDirection: 'row',

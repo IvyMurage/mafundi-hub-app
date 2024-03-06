@@ -2,6 +2,7 @@ import { View, Text, Dimensions } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import ClientJobs from '../(screens)/client-jobs'
+import { TaskProvider } from '@/contexts/TaskContext'
 
 const Jobs = () => {
     const { userState } = useAuth()
@@ -16,7 +17,9 @@ const Jobs = () => {
                 zIndex: -1,
             }}>
                 {userState?.user_role === 'client' ? (<>
-                    <ClientJobs />
+                    <TaskProvider>
+                        <ClientJobs />
+                    </TaskProvider>
                 </>
                 ) : (
                     <>

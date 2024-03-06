@@ -175,7 +175,6 @@ export const clientProfileStyles = StyleSheet.create({
         backgroundColor: Colors.light,
         overflow: "scroll",
         paddingHorizontal: 10,
-
     },
     contentContainer: {
         flexGrow: 1,
@@ -224,7 +223,6 @@ export const HandymanProfileStyles = StyleSheet.create({
         backgroundColor: Colors.light,
         justifyContent: "space-evenly",
         alignItems: "center",
-        overflow: "scroll",
         paddingBottom: 100,
     },
     cameraContainer: {
@@ -243,11 +241,12 @@ export const HandymanProfileStyles = StyleSheet.create({
         borderBottomWidth: 2,
         paddingLeft: 50,
         marginBottom: 30,
-        width: 370,
+        width: 350,
     },
     textArea: {
         paddingTop: 0,
         height: 100,
+        marginTop: 20,
     },
     textContainer: {
         flexDirection: "row",
@@ -257,7 +256,7 @@ export const HandymanProfileStyles = StyleSheet.create({
     submitBtn: {
         padding: 20,
         borderRadius: 40,
-        width: 380,
+        width: 340,
         alignItems: "center",
         justifyContent: "center",
         display: "flex",
@@ -274,13 +273,13 @@ export const HandymanProfileStyles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: "space-evenly",
         alignItems: "center",
-        overflow: "scroll",
         marginTop: 20,
         paddingBottom: 20,
         paddingTop: 25,
         backgroundColor: Colors.light,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        paddingHorizontal: 12,
     },
 });
 

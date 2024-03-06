@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, {  useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Search from '@/components/search'
 import JobList from '@/components/myJobList'
 import { defaultJobStyles } from '@/constants/styles'
@@ -7,7 +7,6 @@ import Filter from '@/components/filter'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useTask } from '@/contexts/TaskContext'
-import NotFound from '@/components/not-found'
 import { useLocations } from '@/contexts/LocationContext'
 import { setItemAsync } from 'expo-secure-store'
 
@@ -33,10 +32,7 @@ const HandymanJobs = () => {
     useEffect(() => {
         getMyJobs()
         getLocations()
-        console.log("This is the tasks", tasks)
-
     }, [service_id, location, available, tasks, pageNumber])
-
 
     return (
         <>
@@ -53,14 +49,8 @@ const HandymanJobs = () => {
                     marginBottom: 10,
                     marginRight: 10,
                 }} onPress={() => { router.push('/maps') }}><Text style={{ fontFamily: 'roboto' }}>View on Maps</Text></Pressable>
-                {
 
-                    !loading && tasks?.length === 0 ?
-                        <NotFound />
-                        : <JobList tasks={tasks!} />
-                }
-
-
+                <JobList tasks={tasks!} />
                 <Filter
                     visible={visible}
                     setVisible={setVisible}
