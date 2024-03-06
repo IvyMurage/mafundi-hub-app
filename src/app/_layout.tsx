@@ -77,7 +77,14 @@ function RootLayoutNav() {
 
       <Stack.Screen name='(modals)/login' options={{ headerShown: false, animation: 'fade' }} />
 
-      <Stack.Screen name='(screens)/maps' options={{ headerShown: true, animation: 'fade' }} />
+      <Stack.Screen name='(screens)/maps' options={{
+        headerShown: true,
+        animation: 'fade',
+        headerTitle: 'Maps',
+        headerTitleAlign: 'center',
+        headerTitleStyle: { color: Colors.lighter, fontFamily: 'roboto-medium',},
+        headerTintColor: Colors.lighter,
+      }} />
 
     </Stack>
   );

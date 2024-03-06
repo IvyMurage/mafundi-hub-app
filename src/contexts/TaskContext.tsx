@@ -6,10 +6,12 @@ import { TaskFormProps } from "@/types/task";
 import { FormikHelpers } from "formik";
 import * as SecureStore from 'expo-secure-store'
 import { useRouter } from "expo-router";
+import { MapPropType } from "./LocationContext";
 
 interface TaskProps {
     tasks?: JobPropType[],
-    locations?: { city: string; county: string; country: string, latitude?: number, longitude?: number }[],
+    pageNumber?: number,
+    locations?: MapPropType[],
     service_id?: string,
     available?: boolean,
     location?: string,
@@ -24,16 +26,37 @@ interface TaskProps {
     setServiceId?: Dispatch<SetStateAction<string>>,
     setPageNumber?: Dispatch<SetStateAction<number>>
     setAvailable?: Dispatch<SetStateAction<boolean>>,
-    setLocations?: Dispatch<SetStateAction<{ city: string; county: string; country: string, latitude?: number, longitude?: number }[]>>,
+    setLocations?: Dispatch<SetStateAction<MapPropType[]>>,
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
     handleRoute?: () => Promise<string | null>
-    getMyJobs?: () => Promise<void>
+    getMyJobs: () => Promise<void>
 }
 
 interface TaskProviderProps {
     children: React.ReactNode
 }
-const TaskContext = createContext<TaskProps>({})
+const TaskContext = createContext<TaskProps>({
+    tasks: [],
+    locations: [],
+    pageNumber: 1,
+    location: '',
+    available: false,
+    setTasks: () => { },
+    loading: false,
+    isLoading: false,
+    isError: false,
+    error: '',
+    visible: false,
+    setVisible: () => { },
+    handleSubmit: async () => { },
+    getMyJobs: async () => { },
+    service_id: '',
+    setServiceId: () => { },
+    setAvailable: () => { },
+    setLocation: () => { },
+    setLocations: () => { },
+    setPageNumber: () => { }
+})
 
 export const useTask = () => {
     const context = useContext(TaskContext)
@@ -60,7 +83,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const router = useRouter()
     const { authState, userState } = useAuth()
     const [tasks, setTasks] = useState<JobPropType[]>([])
-    const [locations, setLocations] = useState<{ city: string; county: string; country: string, latitude?: number, longitude?: number }[]>([])
+    const [locations, setLocations] = useState<MapPropType[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -230,6 +253,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const value = {
         tasks,
         locations,
+        pageNumber,
         location,
         available,
         setTasks,

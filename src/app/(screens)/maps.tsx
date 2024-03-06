@@ -1,30 +1,21 @@
 import { View, StyleSheet, Text } from 'react-native'
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import React, { useEffect, useRef, useState } from 'react'
-import { TaskProvider, useTask } from '@/contexts/TaskContext'
-import Loader from '@/components/loader'
-
-
+import { LocationProvider, MapPropType, useLocations } from '@/contexts/LocationContext'
+import { getItemAsync } from 'expo-secure-store'
 
 const MapsView = () => {
     return (
-        <TaskProvider>
+        <LocationProvider>
             <Maps />
-        </TaskProvider>
+        </LocationProvider>
     )
 }
-type MapPropType = {
-    city: string;
-    country: string;
-    county: string,
-    latitude: number,
-    longitude: number,
-    longitudeDelta: number,
-    latitudeDelta: number
-}
-
 
 const Maps = () => {
+    const { locations } = useLocations()
+    const [regions, setRegions] = useState<MapPropType[]>([])
+
     const KENYA_COORDINATES = {
         latitude: 1.2921,
         longitude: 36.8219,
@@ -35,36 +26,35 @@ const Maps = () => {
         longitudeDelta: 8,
     }
 
-    const [regions, setRegions] = useState<MapPropType[]>([])
-    const { locations, getMyJobs, loading } = useTask()
+    const getLocations = async () => {
+        const locations = await getItemAsync('locations')
+        console.log("This is the locations", locations)
+        if (locations) {
+            setRegions(JSON.parse(locations)?.map((location: MapPropType) => {
+                return {
+                    city: location.city,
+                    country: location.country,
+                    county: location.county,
+                    latitude: location.latitude!,
+                    longitude: location.longitude!,
+                    longitudeDelta: 0.01,
+                    latitudeDelta: 0.01
+                }
+            }) || [])
+        }
+    }
     useEffect(() => {
-        getMyJobs!()
+        getLocations()
     }, [])
-
-
-    useEffect(() => {
-        setRegions(locations?.map((location) => {
-            return {
-                city: location.city,
-                country: location.country,
-                county: location.county,
-                latitude: location.latitude!,
-                longitude: location.longitude!,
-                longitudeDelta: 0.01,
-                latitudeDelta: 0.01
-            }
-        }) || [])
-    }, [locations])
-    console.log('locations', regions)
 
     const mapRef = useRef<MapView | null>(null)
 
     const markerSelected = (location: MapPropType) => {
         mapRef.current?.animateToRegion({
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: location.latitudeDelta,
-            longitudeDelta: location.longitudeDelta
+            latitude: location.latitude!,
+            longitude: location.longitude!,
+            latitudeDelta: location.latitudeDelta!,
+            longitudeDelta: location.longitudeDelta!
         })
     }
     return (
@@ -81,7 +71,7 @@ const Maps = () => {
                 ref={mapRef}
             >
                 {
-                    regions?.map((location, index) => <Marker key={index} coordinate={location} onPress={() => markerSelected(location)}>
+                    regions?.map((location, index) => <Marker key={index} coordinate={location!} onPress={() => markerSelected(location)}>
                         <Callout tooltip>
                             <View>
                                 <View>
@@ -96,7 +86,6 @@ const Maps = () => {
                 }
 
             </MapView>
-            <Loader isLoading={loading!} />
         </View>
     )
 }

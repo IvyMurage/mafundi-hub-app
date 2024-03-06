@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import Search from '@/components/search'
 import JobList from '@/components/myJobList'
 import { defaultJobStyles } from '@/constants/styles'
@@ -8,26 +8,35 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useTask } from '@/contexts/TaskContext'
 import NotFound from '@/components/not-found'
+import { useLocations } from '@/contexts/LocationContext'
+import { setItemAsync } from 'expo-secure-store'
 
 const HandymanJobs = () => {
     const [visible, setVisible] = useState<boolean>(false)
-    const { tasks, getMyJobs, service_id, location, available, loading, locations } = useTask()
+    const { tasks, getMyJobs, service_id, location, available, loading, pageNumber, locations: taskLocations } = useTask()
+    const { setLocations } = useLocations()
     const router = useRouter()
     // useFocusEffect(
     //     useCallback(() => {
     //         if (getMyJobs) {
     //             getMyJobs()
     //         }
-    //     }, [service_id, location, available])
+    //     }, [service_id, location, available, pageNumber])
     // )
 
-    // useEffect(() => {
-    //     if (getMyJobs) {
-    //         getMyJobs()
-    //     }
-    // }, [service_id, location, available, tasks])
+    const getLocations = async () => {
+        if (taskLocations) {
+            await setItemAsync('locations', JSON.stringify(taskLocations))
+            setLocations(taskLocations)
+        }
+    }
+    useEffect(() => {
+        getMyJobs()
+        getLocations()
+        console.log("This is the tasks", tasks)
 
-    // console.log('locations', locations)
+    }, [service_id, location, available, tasks, pageNumber])
+
 
     return (
         <>
