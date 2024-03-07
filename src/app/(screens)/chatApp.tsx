@@ -12,7 +12,7 @@ import CustomAlert from '@/components/customAlert'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Loader from '@/components/loader'
-import _ from 'lodash'
+import _, { set } from 'lodash'
 const ChatApp = () => {
     const [messages, setMessages] = useState<DocumentData[]>([])
     const router = useRouter()
@@ -115,7 +115,13 @@ const ChatApp = () => {
                     receiverUnsubscribe();
                 };
             } catch (error) {
-                console.error('Firebase error:', error);
+                setError(true);
+                <CustomAlert
+                    message='Something went wrong'
+                    visible={isError}
+                    onClose={() => setError(false)
+                    }
+                />
                 setLoading(false);
             }
         };

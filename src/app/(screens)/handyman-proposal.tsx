@@ -9,7 +9,7 @@ import { useRouter } from 'expo-router'
 import ProposalNotFound from '@/components/proposal-not-found'
 
 export interface ProposalType {
-    job_status: string,
+    job_status?: string | null,
     id: number,
     task_title: string,
     proposal_text: string

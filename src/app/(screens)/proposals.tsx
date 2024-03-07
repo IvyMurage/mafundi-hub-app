@@ -1,8 +1,8 @@
-import { View, Text, Modal, SafeAreaView, StyleSheet, ScrollView, Pressable } from 'react-native'
+import { View, Text, Modal, SafeAreaView, StyleSheet, Pressable, FlatList } from 'react-native'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Animated, { FadeOutDown, FadeOutUp } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
-import { FontAwesome5, Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
@@ -94,27 +94,28 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
         }
 
     }
-    const proposalList = proposals?.map((proposal) => {
+
+    const renderProposals = ({ item }: { item: ProposalType }) => {
         return (
-            <View key={proposal.id} style={proposalStyle.proposalContainer}>
+            <View key={item.id} style={proposalStyle.proposalContainer}>
                 <Text style={[proposalStyle.textStyle, { marginBottom: 10 }]}>
-                    {proposal.proposal_text}
+                    {item.proposal_text}
                 </Text>
                 <Divider />
                 <View style={proposalStyle.btnContainer}>
 
                     <Pressable style={proposalStyle.btnProfile} onPress={() => {
-                        router.push(`/handyman-listing/${proposal.handyman_id}`)
+                        router.push(`/handyman-listing/${item.handyman_id}`)
                     }}>
                         <Text style={[proposalStyle.textStyle, { color: Colors.lighter, fontFamily: 'roboto-bold' }]}>View Profile</Text>
                     </Pressable>
                     <Pressable style={proposalStyle.button} onPress={() => {
-                        handleProposalUpdate(proposal.id, 'accepted')
+                        handleProposalUpdate(item.id, 'accepted')
                     }}>
                         <FontAwesome5 name="check" color={'green'} size={20} />
                     </Pressable>
                     <Pressable style={proposalStyle.button} onPress={() => {
-                        handleProposalUpdate(proposal.id, 'rejected')
+                        handleProposalUpdate(item.id, 'rejected')
                     }}>
                         <Octicons name="x" color={'red'} size={20} />
                     </Pressable>
@@ -122,25 +123,34 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                 </View>
             </View>
         )
-    })
+    }
+
+
 
     return (
         <Animated.View entering={FadeOutUp} exiting={FadeOutDown}>
             <Modal animationType='slide' visible={visible} transparent>
                 <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: 'rgba(0,0,0,0.6)' }}>
-                    <ScrollView style={proposalStyle.scroll} contentContainerStyle={proposalStyle.contentStyle}>
+                    <View style={proposalStyle.contentStyle}>
                         <View style={[proposalStyle.container]}>
-                            <Text style={[proposalStyle.proposalHeader, !loading && proposalList.length === 0 && {
-                                alignSelf: 'flex-start'
-                            }]}>Proposals</Text>
+                            <Text style={[proposalStyle.proposalHeader]}>Proposals</Text>
                             <Octicons name='x-circle' size={20} color={Colors.primary} onPress={() => {
                                 setVisible(!visible)
-                            }} style={!loading && proposalList.length === 0 && {
-                                alignSelf: 'flex-start'
                             }} />
                         </View>
-                        {!loading && proposalList?.length === 0 ? <ProposalNotFound /> : proposalList}
-                    </ScrollView>
+                        <FlatList
+                            data={proposals || []}
+                            renderItem={renderProposals}
+                            keyExtractor={item => item.id.toString()}
+                            style={{ width: '100%', height: '100%', padding: 10, backgroundColor: Colors.lighter, }}
+                            contentContainerStyle={{ paddingBottom: 50, flexGrow: 1 }}
+                            showsVerticalScrollIndicator={false}
+                        />
+
+                    </View>
+
+                    {!loading && proposals?.length === 0 && <ProposalNotFound />}
+
                 </SafeAreaView>
                 <Loader isLoading={loading} />
             </Modal>
@@ -170,7 +180,6 @@ const proposalStyle = StyleSheet.create({
     proposalContainer: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'center',
         width: '100%',
         padding: 10,
         backgroundColor: Colors.light,
@@ -187,7 +196,6 @@ const proposalStyle = StyleSheet.create({
     },
 
     container: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -202,20 +210,18 @@ const proposalStyle = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: "column",
         width: "100%",
-        paddingBottom: 50,
         marginTop: 100,
-        paddingTop: 20,
-        paddingHorizontal: 14,
         backgroundColor: Colors.lighter,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        flex: 1
+        paddingTop: 20,
+        paddingHorizontal: 14,
     }
     ,
     textStyle: {
         fontFamily: 'roboto',
         letterSpacing: 1.4,
-        fontSize: 14,
+        fontSize: 12,
         color: Colors.dark,
         textAlign: 'justify'
     },
@@ -225,7 +231,7 @@ const proposalStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.primary,
     },
     button: {
         backgroundColor: Colors.lighter,
