@@ -8,6 +8,7 @@ import { HandymanProps } from '@/types/handyman'
 import Colors from '@/constants/Colors'
 import { Octicons } from '@expo/vector-icons'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
+import Reviews from '@/components/reviews'
 
 const Handyman = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -93,6 +94,10 @@ const Handyman = () => {
                         <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
                             {workPictures}
                         </ScrollView>
+
+                        <View>
+                            <Text>Reviews</Text>
+                        </View>
                     </View>
                 </View>
             </ScrollView>

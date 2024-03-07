@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     textContainer: {
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        paddingHorizontal: 10,
     },
     text: {
         fontFamily: 'roboto',
