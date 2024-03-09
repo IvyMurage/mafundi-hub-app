@@ -61,46 +61,49 @@ const Handyman = () => {
                 <Image source={{ uri: handyman?.avatar_url }} placeholder={require('@/assets/images/placeholder.jpg')} placeholderContentFit='cover' style={styles.profileStyle} />
                 <Octicons name="dot-fill" size={24} color={handyman.availability ? 'green' : 'red'} style={styles.iconStyle} />
             </View>
-            <ScrollView style={styles.scrollView} >
-                <View style={styles.conatiner}>
+            <View style={styles.scrollView}>
+                <ScrollView style={styles.scroll} >
+                    <View style={styles.conatiner}>
 
-                    <View style={styles.subConatiner}>
-                        <View style={styles.nameConatiner}>
-                            <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
-                            <Text style={styles.titleText}>{handyman.title}</Text>
-                            <Text style={styles.titleText}>{handyman.location_attributes}</Text>
-                        </View>
+                        <View style={styles.subConatiner}>
+                            <View style={styles.nameConatiner}>
+                                <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
+                                <Text style={styles.titleText}>{handyman.title}</Text>
+                                <Text style={styles.titleText}>{handyman.location_attributes}</Text>
+                            </View>
 
-                        <Pressable
-                            disabled={proposal_status === null}
-                            style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
-                                setHandymanId(handyman.id.toString())
-                                router.push(`/appointment-form`)
-                            }}>
-                            <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
-                        </Pressable>
+                            <Pressable
+                                disabled={proposal_status === null}
+                                style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
+                                    setHandymanId(handyman.id.toString())
+                                    router.push(`/appointment-form`)
+                                }}>
+                                <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
+                            </Pressable>
 
-                        <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
-                            {handymanSkills}
-                        </ScrollView>
+                            <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
+                                {handymanSkills}
+                            </ScrollView>
 
-                        <View style={styles.bioContainer}>
-                            <Text style={styles.bioHeader}>Bio</Text>
-                            <Text style={styles.bioDescription}>{handyman.description}</Text>
-                        </View>
+                            <View style={styles.bioContainer}>
+                                <Text style={styles.bioHeader}>Bio</Text>
+                                <Text style={styles.bioDescription}>{handyman.description}</Text>
+                            </View>
 
-                        <Text style={styles.imageHeader}>Images</Text>
+                            <Text style={styles.imageHeader}>Images</Text>
 
-                        <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
-                            {workPictures}
-                        </ScrollView>
-
-                        <View>
-                            <Text>Reviews</Text>
+                            <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
+                                {workPictures}
+                            </ScrollView>
                         </View>
                     </View>
-                </View>
-            </ScrollView>
+
+                    <View style={{ borderWidth: 1 }}>
+                        <Text>Reviews</Text>
+                        <Reviews />
+                    </View>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -109,16 +112,20 @@ const styles = StyleSheet.create({
     safeView: {
         flex: 1,
         paddingTop: 10,
-        paddingHorizontal: 10,
         backgroundColor: Colors.primary,
     },
-    scrollView: {
+    scroll: {
         width: '100%',
         height: '100%',
+    },
+    scrollView: {
+        height: '100%',
         marginTop: 60,
+        paddingHorizontal: 10,
         backgroundColor: Colors.light,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+
     },
     containerHeader: {
         width: '100%',

@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
+import { jwtDecode } from "jwt-decode";
+
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -63,8 +65,11 @@ export const AuthProvider = ({ children }: any) => {
     useEffect(() => {
         const loadToken = async () => {
             setLoading(true)
+
             try {
                 const token = await SecureStore.getItemAsync(TOKEN_KEY)
+                const decodedToken = jwtDecode(token!)
+                console.log('token', decodedToken)
                 const user = await SecureStore.getItemAsync('user')
                 if (user) {
                     setUser(JSON.parse(user))
@@ -72,7 +77,7 @@ export const AuthProvider = ({ children }: any) => {
                 if (token) {
                     setAuthState({ token, authenicated: true })
                 }
-                console.log(user)
+                console.log('user,', user)
             }
             catch {
                 console.log('error')
@@ -152,6 +157,8 @@ export const AuthProvider = ({ children }: any) => {
             setLoading(false)
         }
     }
+
+
 
     const role = async (
         userRole: {

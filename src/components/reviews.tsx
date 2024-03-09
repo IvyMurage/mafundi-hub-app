@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, FlatList, SectionList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
@@ -46,7 +46,7 @@ const Reviews = () => {
         return (
             <View>
                 <View>
-                    <Image source={{ uri: item.client_avatar! }} placeholder={require('@/assets/images/placeholder.png')} style={{ width: 200, height: 200 }} />
+                    <Image source={{ uri: item.client_avatar! }} placeholder={require('@/assets/images/placeholder.jpg')} style={{ width: 200, height: 200 }} />
                 </View>
                 <View>
                     <View>
@@ -66,10 +66,32 @@ const Reviews = () => {
         )
     }
     return (
+
         <View>
-            <Text>Reviews</Text>
+            <View>
+                <Image source={require('@/assets/images/placeholder.jpg')} placeholder={require('@/assets/images/placeholder.jpg')} style={{ width: 200, height: 200 }} />
+            </View>
+            <View>
+                <View>
+                    <Text>Jane Doe</Text>
+                    {Array.from(JSON.stringify(5)).map((_, index) => <Ionicons name='star-sharp' size={15} color='gold' key={index} />)}
+                </View>
+                <View>
+                    <Text>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        Consequatur rem dolorem vero dolores nesciunt eum obcaecati maxime,
+                        optio velit beatae molestiae dolor eaque vitae,
+                        iste architecto pariatur distinctio repudiandae libero!
+                    </Text>
+                </View>
+            </View>
         </View>
+
     )
+
+
 }
+
+
 
 export default Reviews

@@ -1,15 +1,13 @@
 import Colors from '@/constants/Colors';
-import { Octicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { StyleSheet, Text, Pressable } from 'react-native';
+import { StyleSheet,} from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { TaskIdProvider } from '@/contexts/TaskIdContext';
-import { TaskProvider } from '@/contexts/TaskContext';
 import { HandymanContextIdProvider } from '@/contexts/HandymanIdContext';
-
+import { MenuProvider } from 'react-native-popup-menu';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,13 +47,15 @@ export default function RootLayout() {
 
 
   return (
-    <AuthProvider>
-      <HandymanContextIdProvider>
-        <TaskIdProvider>
-          <RootLayoutNav />
-        </TaskIdProvider>
-      </HandymanContextIdProvider>
-    </AuthProvider>);
+    <MenuProvider>
+      <AuthProvider>
+        <HandymanContextIdProvider>
+          <TaskIdProvider>
+            <RootLayoutNav />
+          </TaskIdProvider>
+        </HandymanContextIdProvider>
+      </AuthProvider>
+    </MenuProvider>);
 }
 
 
@@ -82,7 +82,7 @@ function RootLayoutNav() {
         animation: 'fade',
         headerTitle: 'Maps',
         headerTitleAlign: 'center',
-        headerTitleStyle: { color: Colors.lighter, fontFamily: 'roboto-medium',},
+        headerTitleStyle: { color: Colors.lighter, fontFamily: 'roboto-medium', },
         headerTintColor: Colors.lighter,
       }} />
 

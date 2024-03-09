@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { FontAwesome5, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { Image } from 'expo-image';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -20,7 +21,7 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const [visible, setVisible] = useState<boolean>(false);
   const router = useRouter()
-  const { userState } = useAuth()
+  const { userState, onLogout } = useAuth()
 
   const handleBack = () => {
     router.back()
@@ -93,11 +94,45 @@ export default function TabLayout() {
           headerStyle: userState?.user_role === 'client' ? null : { ...headerStyles.headerStyle },
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10, paddingTop: 10 }} >
-              <Image
-                source={{ uri: userState?.avatar_url! }}
-                placeholder={require('@/assets/images/placeholder.jpg')}
-                placeholderContentFit='cover'
-                style={{ width: 40, height: 40, borderRadius: 40 }} />
+              <Menu style={headerStyles.menuStyles}>
+                <MenuTrigger>
+                  <Image
+                    source={{ uri: userState?.avatar_url! }}
+                    placeholder={require('@/assets/images/placeholder.jpg')}
+                    placeholderContentFit='cover'
+                    style={{ width: 40, height: 40, borderRadius: 40 }} />
+                </MenuTrigger>
+
+                <MenuOptions customStyles={{
+                  optionsContainer: {
+                    backgroundColor: Colors.light,
+                    padding: 10,
+                    borderRadius: 10,
+                    width: 100,
+                    elevation: 5,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                  },
+                  optionText: {
+                    fontFamily: 'roboto-medium',
+                    fontSize: 14,
+                    letterSpacing: 1.4,
+                    color: Colors.primary
+                  }
+                }}>
+                  <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
+                  <MenuOption onSelect={() => {
+                    onLogout!()
+                    router.push('/(modals)/login')
+                  }} text='Logout' />
+                </MenuOptions>
+              </Menu>
+
             </Pressable>
           ),
           headerRight: () => (
@@ -141,11 +176,44 @@ export default function TabLayout() {
           ),
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10 }} >
-              <Image
-                source={{ uri: userState?.avatar_url! }}
-                placeholder={require('@/assets/images/placeholder.jpg')}
-                placeholderContentFit='cover'
-                style={{ width: 40, height: 40, borderRadius: 40 }} />
+              <Menu style={headerStyles.menuStyles}>
+                <MenuTrigger>
+                  <Image
+                    source={{ uri: userState?.avatar_url! }}
+                    placeholder={require('@/assets/images/placeholder.jpg')}
+                    placeholderContentFit='cover'
+                    style={{ width: 40, height: 40, borderRadius: 40 }} />
+                </MenuTrigger>
+
+                <MenuOptions customStyles={{
+                  optionsContainer: {
+                    backgroundColor: Colors.light,
+                    padding: 10,
+                    borderRadius: 10,
+                    width: 100,
+                    elevation: 5,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                  },
+                  optionText: {
+                    fontFamily: 'roboto-medium',
+                    fontSize: 14,
+                    letterSpacing: 1.4,
+                    color: Colors.primary
+                  }
+                }}>
+                  <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
+                  <MenuOption onSelect={() => {
+                    onLogout!()
+                    router.push('/(modals)/login')
+                  }} text='Logout' />
+                </MenuOptions>
+              </Menu>
             </Pressable>
           ),
           tabBarIcon: ({ color, size }) => <TabBarIcon name="briefcase" color={color} size={size} />
@@ -233,5 +301,12 @@ const headerStyles = StyleSheet.create({
     shadowOpacity: 0,
     borderBottomWidth: 0,
     height: 70,
+  },
+  menuStyles: {
+    backgroundColor: Colors.light,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+    fontFamily: 'roboto-medium',
   },
 })

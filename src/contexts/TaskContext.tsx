@@ -199,7 +199,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 if (data.message) {
                     error = data.message;
                 } else if (data.error) {
-                    // router.push('/login')
                     error = data.error;
                 } else {
                     error = response.statusText;
