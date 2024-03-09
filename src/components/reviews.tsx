@@ -4,6 +4,7 @@ import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { Ionicons } from '@expo/vector-icons'
 import { Image } from 'expo-image'
+import Colors from '@/constants/Colors'
 
 type ReviewType = {
     id: number,
@@ -42,19 +43,37 @@ const Reviews = () => {
         fetchReviews()
     }, [])
 
-    const renderReviews = ({ item }: { item: ReviewType }) => {
+
+    const rating = (rating: number) => {
+        const stars = []
+        for (let i = 0; i < rating; i++) {
+            stars.push(<Ionicons name='star-sharp' size={12} key={i} color={Colors.secondary} />
+            )
+        }
         return (
-            <View>
-                <View>
-                    <Image source={{ uri: item.client_avatar! }} placeholder={require('@/assets/images/placeholder.jpg')} style={{ width: 200, height: 200 }} />
+            <View style={{ flexDirection: 'row' }}>
+                {stars}
+            </View>
+        )
+    }
+    return (
+        <>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginVertical: 18 }}>
+                <View style={{ alignSelf: 'flex-start', marginRight: 12 }}>
+                    <Image
+                        source={require('@/assets/images/placeholder.jpg')}
+                        placeholder={require('@/assets/images/placeholder.jpg')}
+                        placeholderContentFit='cover'
+                        style={{ width: 50, height: 50, borderRadius: 50 }}
+                    />
                 </View>
-                <View>
-                    <View>
-                        <Text>Jane Doe</Text>
-                        {Array.from(JSON.stringify(5)).map((_, index) => <Ionicons name='star-sharp' size={15} color='gold' key={index} />)}
+                <View style={{ maxWidth: '80%' }}>
+                    <View style={{ alignSelf: 'flex-end', justifyContent: 'center' }}>
+                        <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1 }}>Jane Doe</Text>
+                        {rating(5)}
                     </View>
                     <View>
-                        <Text>
+                        <Text style={{ textAlign: 'justify', fontFamily: 'roboto', fontSize: 14, letterSpacing: 1 }}>
                             Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                             Consequatur rem dolorem vero dolores nesciunt eum obcaecati maxime,
                             optio velit beatae molestiae dolor eaque vitae,
@@ -63,30 +82,7 @@ const Reviews = () => {
                     </View>
                 </View>
             </View>
-        )
-    }
-    return (
-
-        <View>
-            <View>
-                <Image source={require('@/assets/images/placeholder.jpg')} placeholder={require('@/assets/images/placeholder.jpg')} style={{ width: 200, height: 200 }} />
-            </View>
-            <View>
-                <View>
-                    <Text>Jane Doe</Text>
-                    {Array.from(JSON.stringify(5)).map((_, index) => <Ionicons name='star-sharp' size={15} color='gold' key={index} />)}
-                </View>
-                <View>
-                    <Text>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Consequatur rem dolorem vero dolores nesciunt eum obcaecati maxime,
-                        optio velit beatae molestiae dolor eaque vitae,
-                        iste architecto pariatur distinctio repudiandae libero!
-                    </Text>
-                </View>
-            </View>
-        </View>
-
+        </>
     )
 
 

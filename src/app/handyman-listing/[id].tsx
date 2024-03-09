@@ -61,49 +61,46 @@ const Handyman = () => {
                 <Image source={{ uri: handyman?.avatar_url }} placeholder={require('@/assets/images/placeholder.jpg')} placeholderContentFit='cover' style={styles.profileStyle} />
                 <Octicons name="dot-fill" size={24} color={handyman.availability ? 'green' : 'red'} style={styles.iconStyle} />
             </View>
-            <View style={styles.scrollView}>
-                <ScrollView style={styles.scroll} >
-                    <View style={styles.conatiner}>
+            <ScrollView style={styles.scrollView} >
+                <View style={styles.conatiner}>
 
-                        <View style={styles.subConatiner}>
-                            <View style={styles.nameConatiner}>
-                                <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
-                                <Text style={styles.titleText}>{handyman.title}</Text>
-                                <Text style={styles.titleText}>{handyman.location_attributes}</Text>
-                            </View>
-
-                            <Pressable
-                                disabled={proposal_status === null}
-                                style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
-                                    setHandymanId(handyman.id.toString())
-                                    router.push(`/appointment-form`)
-                                }}>
-                                <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
-                            </Pressable>
-
-                            <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
-                                {handymanSkills}
-                            </ScrollView>
-
-                            <View style={styles.bioContainer}>
-                                <Text style={styles.bioHeader}>Bio</Text>
-                                <Text style={styles.bioDescription}>{handyman.description}</Text>
-                            </View>
-
-                            <Text style={styles.imageHeader}>Images</Text>
-
-                            <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
-                                {workPictures}
-                            </ScrollView>
+                    <View style={styles.subConatiner}>
+                        <View style={styles.nameConatiner}>
+                            <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
+                            <Text style={styles.titleText}>{handyman.title}</Text>
+                            <Text style={styles.titleText}>{handyman.location_attributes}</Text>
                         </View>
-                    </View>
 
-                    <View style={{ borderWidth: 1 }}>
-                        <Text>Reviews</Text>
+                        <Pressable
+                            disabled={proposal_status === null}
+                            style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
+                                setHandymanId(handyman.id.toString())
+                                router.push(`/appointment-form`)
+                            }}>
+                            <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
+                        </Pressable>
+
+                        <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
+                            {handymanSkills}
+                        </ScrollView>
+
+                        <View style={styles.bioContainer}>
+                            <Text style={styles.bioHeader}>Bio</Text>
+                            <Text style={styles.bioDescription}>{handyman.description}</Text>
+                        </View>
+
+                        <Text style={styles.imageHeader}>Images</Text>
+
+                        <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
+                            {workPictures}
+                        </ScrollView>
+                    </View>
+                    <View style={{ paddingHorizontal: 10 }}>
+                        <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 14 }}>Reviews</Text>
                         <Reviews />
                     </View>
-                </ScrollView>
-            </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -114,11 +111,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         backgroundColor: Colors.primary,
     },
-    scroll: {
-        width: '100%',
-        height: '100%',
-    },
+
     scrollView: {
+        width: '100%',
         height: '100%',
         marginTop: 60,
         paddingHorizontal: 10,
