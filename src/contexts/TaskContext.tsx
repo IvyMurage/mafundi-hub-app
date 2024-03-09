@@ -80,7 +80,6 @@ export const useTaskProps = () => {
     return { taskForm, setTaskForm }
 }
 export const TaskProvider = ({ children }: TaskProviderProps) => {
-    const router = useRouter()
     const { authState, userState } = useAuth()
     const [tasks, setTasks] = useState<JobPropType[]>([])
     const [locations, setLocations] = useState<MapPropType[]>([])
@@ -185,7 +184,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         const instant_book = await SecureStore.getItemAsync('instant_book')
         return instant_book
     }
-
 
     const getMyJobs = async () => {
         try {

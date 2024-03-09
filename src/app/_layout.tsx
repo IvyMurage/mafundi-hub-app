@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack, } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { StyleSheet,} from 'react-native';
+import { StyleSheet, } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { TaskIdProvider } from '@/contexts/TaskIdContext';
 import { HandymanContextIdProvider } from '@/contexts/HandymanIdContext';
@@ -61,11 +61,12 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 
-  const { authState } = useAuth()
+  const { authState, userState } = useAuth()
 
   const initialRoute = () => {
     if (authState?.authenicated) return '(tabs)'
-    if (authState === null) return '(onboard)/get-started'
+    if (userState === null) return '(onboard)/get-started'
+    if (authState?.authenicated === false) return '(modals)/login'
     return '(tabs)'
   }
   return (

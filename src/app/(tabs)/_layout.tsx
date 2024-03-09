@@ -80,9 +80,9 @@ export default function TabLayout() {
 
       <Tabs.Screen name='index'
         options={{
-          headerShown: userState?.user_role === 'client' ? false : true,
+          headerShown: true,
           tabBarLabel: "Home",
-          headerTitle: `${userState?.user_role === 'client' ? null : 'Mafundi Jobs'}`,
+          headerTitle: `${userState?.user_role === 'client' ? '' : 'Mafundi Jobs'}`,
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 18,
@@ -91,7 +91,7 @@ export default function TabLayout() {
             textAlign: 'center',
             paddingTop: 10
           },
-          headerStyle: userState?.user_role === 'client' ? null : { ...headerStyles.headerStyle },
+          headerStyle: userState?.user_role === 'client' ? { ...headerStyles.headerStyle, backgroundColor: Colors.primary, } : { ...headerStyles.headerStyle },
           headerLeft: () => (
             <Pressable onPress={handleBack} style={{ paddingLeft: 10, paddingTop: 10 }} >
               <Menu style={headerStyles.menuStyles}>
@@ -124,6 +124,7 @@ export default function TabLayout() {
                     letterSpacing: 1.4,
                     color: Colors.primary
                   }
+
                 }}>
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
@@ -206,6 +207,7 @@ export default function TabLayout() {
                     letterSpacing: 1.4,
                     color: Colors.primary
                   }
+
                 }}>
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
@@ -214,6 +216,7 @@ export default function TabLayout() {
                   }} text='Logout' />
                 </MenuOptions>
               </Menu>
+
             </Pressable>
           ),
           tabBarIcon: ({ color, size }) => <TabBarIcon name="briefcase" color={color} size={size} />
@@ -303,7 +306,6 @@ const headerStyles = StyleSheet.create({
     height: 70,
   },
   menuStyles: {
-    backgroundColor: Colors.light,
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0,

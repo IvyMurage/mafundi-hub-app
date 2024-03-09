@@ -45,19 +45,7 @@ const ClientHome = () => {
         <TaskProvider>
             < SafeAreaView style={[clientHomeStyles.safeareaView]}>
                 <Animated.View entering={FadeInRight} exiting={FadeOutLeft} style={[clientHomeStyles.container]}>
-                    <View style={[clientHomeStyles.notification]}>
-                        <Image
-                            style={{ width: 40, height: 40, borderRadius: 40 }}
-                            source={{ uri: userState?.avatar_url! }}
-                            placeholder={require('@/assets/images/placeholder.jpg')}
-                            placeholderContentFit='cover'
-                        />
-                        <FontAwesome5
-                            name="bell"
-                            size={20}
-                            color={Colors.secondary}
-                        />
-                    </View>
+               
                     <View style={[clientHomeStyles.headerContainer]}>
                         <Text style={[clientHomeStyles.headerText]}>Find the Best</Text>
                         <Text style={[clientHomeStyles.headerText]}><Text style={{ color: Colors.secondary }}>Handyman</Text> Service Providers</Text>

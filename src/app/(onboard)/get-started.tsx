@@ -22,7 +22,7 @@ export default function GetStarted() {
                     <Text style={styles.title}>Welcome to</Text>
                     <Text style={styles.mafundi}>Mafundi <Text style={styles.hub}>Hub</Text></Text>
                 </View>
-                <Image style={{ width: 300, height: 300 }} source={require('@/assets/images/welcome-image.svg')} />
+                <Image style={{ width: 300, height: 300 }} source={require('@/assets/images/welcome-image.svg')} contentFit='cover' />
 
                 <Link href={"/(onboard)/auth-options"} >
                     <Pressable style={styles.startButton}>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         letterSpacing: 3.6,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         fontFamily: 'roboto-bold',
         letterSpacing: 2.4,
         color: '#FEFEFE'

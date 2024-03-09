@@ -8,13 +8,14 @@ const AuthOPtions = () => {
     return (
         <SafeAreaView style={{
             flex: 1,
-            padding: 10,
+            padding: 20,
             backgroundColor: Colors.primary
         }}>
             <View style={authOptionStyles.container}>
                 <Text style={[authOptionStyles.title, { color: Colors.secondary }]}>Mafundi <Text style={{ color: Colors.lighter }}>Hub</Text></Text>
                 <Image
-                    style={{ width: 300, height: 200 }}
+                    style={{ width: 300, height: 300 }}
+                    contentFit='cover'
                     source={require('@/assets/images/auth.png')}
                 />
                 <Text style={authOptionStyles.authText}>Effortless Repairs at Your

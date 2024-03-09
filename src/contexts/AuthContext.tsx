@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { jwtDecode } from "jwt-decode";
+import { useRouter } from 'expo-router';
 
 
 interface AuthProps {
@@ -40,6 +41,7 @@ export const useAuth = () => {
 
 }
 export const AuthProvider = ({ children }: any) => {
+    const router = useRouter()
     const [authState, setAuthState] = useState<
         { token: string | null; authenicated: boolean | null }>
         ({
@@ -62,22 +64,40 @@ export const AuthProvider = ({ children }: any) => {
 
     const [loading, setLoading] = useState<boolean>(false)
     const [authError, setErrors] = useState<string>('')
+
+    const hasTokenExpired = async () => {
+        const token = await SecureStore.getItemAsync(TOKEN_KEY)
+        if (token) {
+            const decodedToken: any = jwtDecode(token)
+            const expiryDate = new Date(decodedToken.exp * 1000)
+            if (new Date() > expiryDate) {
+                return true
+            }
+        }
+        return false
+    }
+
     useEffect(() => {
         const loadToken = async () => {
             setLoading(true)
-
             try {
-                const token = await SecureStore.getItemAsync(TOKEN_KEY)
-                const decodedToken = jwtDecode(token!)
-                console.log('token', decodedToken)
-                const user = await SecureStore.getItemAsync('user')
-                if (user) {
-                    setUser(JSON.parse(user))
+                // check if token has expired and delete it
+                if (await hasTokenExpired()) {
+                    await SecureStore.deleteItemAsync(TOKEN_KEY)
+                    setAuthState({ token: null, authenicated: false })
+                    router.push('/login')
                 }
-                if (token) {
-                    setAuthState({ token, authenicated: true })
+                else {
+                    const token = await SecureStore.getItemAsync(TOKEN_KEY)
+                    const user = await SecureStore.getItemAsync('user')
+                    if (user) {
+                        setUser(JSON.parse(user))
+                    }
+                    if (token) {
+                        setAuthState({ token, authenicated: true })
+                    }
                 }
-                console.log('user,', user)
+
             }
             catch {
                 console.log('error')
