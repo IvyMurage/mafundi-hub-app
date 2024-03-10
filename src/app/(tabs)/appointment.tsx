@@ -1,13 +1,13 @@
 import React from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import HandymanProposals from '../(screens)/handyman-proposal'
-import Notifications from '../(screens)/notifications'
+import Appointments from '../(screens)/notifications'
 
 const Alert = () => {
     const { userState } = useAuth()
     return (
         <>
-            {userState?.user_role === 'client' ? <Notifications /> : <HandymanProposals />}
+            {userState?.user_role === 'client' ? <Appointments /> : <HandymanProposals />}
         </>
     )
 }
