@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, TextInput, Pressable, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import { useAuth } from '@/contexts/AuthContext'
@@ -11,14 +11,45 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { appointmentStyles } from '@/constants/styles'
 import { setItemAsync } from 'expo-secure-store'
+import { Formik } from 'formik'
+import { useTaskId } from '@/contexts/TaskIdContext'
 
+
+type AppointmentFormProps = {
+    handyman_id: number | null;
+    task_id: number | null;
+    appointment_notes: string | null;
+    duration: number | null;
+    client_id: number | null;
+    appointment_date: string | null;
+    appointment_time: string | null;
+    appointment_status: string | null;
+}
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const AppointmentForm = () => {
     const router = useRouter()
 
     const { handymanId } = useHandymanId()
+    const { taskId } = useTaskId()
     const { userState, authState } = useAuth()
     const [loading, setLoading] = useState(false)
+    const [appointment, setAppointment] = useState<AppointmentFormProps>({
+        handyman_id: parseInt(handymanId!),
+        task_id: parseInt(taskId!),
+        appointment_notes: '',
+        duration: 0,
+        client_id: userState?.user_id!,
+        appointment_date: '',
+        appointment_time: '',
+        appointment_status: "scheduled"
+    })
+    const [payment, setPayment] = useState({
+        phone_number: '',
+        amount: ''
+    })
+    const [isLoading, setIsLoading] = useState(false)
+    const [paymentResponse, setPaymentResponse] = useState('')
+    const [paymentError, setPaymentError] = useState('')
 
 
     const chatExists = async () => {
@@ -40,6 +71,28 @@ const AppointmentForm = () => {
         finally {
             setLoading(false)
         }
+    }
+
+    const bookAppointment = async (payload: AppointmentFormProps) => {
+        console.log('payload', payload)
+        // try {
+        //     setLoading(true)
+        //     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             Authorization: `Bearer ${authState?.token}`
+        //         },
+        //         body: JSON.stringify(payload)
+        //     })
+        //     console.log(response)
+        // }
+        // catch (e) {
+        //     console.log(e)
+        // }
+        // finally {
+        //     setLoading(false)
+        // }
     }
 
     const createNewChat = async () => {
@@ -71,9 +124,39 @@ const AppointmentForm = () => {
         }
     }
 
+
+    const stkPushQuery = async () => {
+        try {
+            setIsLoading(true)
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/stkpushquery`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authState?.token}`
+                },
+                body: JSON.stringify({
+                    checkout_request_id: paymentResponse
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                console.log('data', data)
+            }
+
+            if (!response.ok) {
+                setPaymentError(data?.errorMessage)
+            }
+        }
+        catch (e: any) {
+            Alert.alert('Error', paymentError)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
     const makePayment = async () => {
         try {
-            setLoading(true)
+            setIsLoading(true)
             const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/stkpush`, {
                 method: 'POST',
                 headers: {
@@ -81,120 +164,155 @@ const AppointmentForm = () => {
                     Authorization: `Bearer ${authState?.token}`
                 },
                 body: JSON.stringify({
-                    amount: "1",
-                    phone_number: '254707974698'
+                    amount: payment.amount,
+                    phone_number: payment.phone_number,
                 })
             })
             const data = await response.json()
-            console.log(data.error)
+            if (response.ok) {
+                setPaymentResponse(data?.success?.CheckoutRequestID)
+
+                if (paymentResponse !== '') {
+                    stkPushQuery()
+                }
+            }
+            if (!response.ok) {
+                setPaymentError(data?.errorMessage)
+            }
         }
         catch (e: any) {
-            console.log(e.message)
+            Alert.alert('Error', paymentError)
         }
         finally {
-            setLoading(false)
+            setIsLoading(false)
         }
     }
+    console.log('paymentResponse', paymentResponse)
     return (
-        <SafeAreaView style={appointmentStyles.container}>
-            <Ionicons
-                name='arrow-back'
-                size={24} color={Colors.lighter}
-                onPress={() => { router.back() }}
-                style={appointmentStyles.icon} />
+        <Formik
+            initialValues={appointment}
+            onSubmit={(values) => {
+                bookAppointment(values)
+            }}
+        >
+            {({ values, errors, touched, setFieldTouched, isValid, handleChange, handleSubmit, setFieldValue }) => (
+                <SafeAreaView style={appointmentStyles.container}>
+                    <Ionicons
+                        name='arrow-back'
+                        size={24} color={Colors.lighter}
+                        onPress={() => { router.back() }}
+                        style={appointmentStyles.icon} />
 
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image
-                    source={require('@/assets/images/calendar.svg')}
-                    style={appointmentStyles.image}
-                    contentFit='contain' />
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Image
+                            source={require('@/assets/images/calendar.svg')}
+                            style={appointmentStyles.image}
+                            contentFit='contain' />
 
-                <Text style={appointmentStyles.title}>
-                    Book an Appointment
-                </Text>
+                        <Text style={appointmentStyles.title}>
+                            Book an Appointment
+                        </Text>
 
-                <ScrollView
-                    style={appointmentStyles.scrollView}
-                    contentContainerStyle={appointmentStyles.scrollViewContent}
-                    showsVerticalScrollIndicator={false}>
-                    <View style={appointmentStyles.calendarContainer}>
-                        <CalendarPicker
-                            onDateChange={(date) => { console.log(date) }}
-                            width={350}
-                            height={400}
-                            startFromMonday={true}
-                            minDate={new Date()}
-                            todayBackgroundColor={Colors.primary}
-                            todayTextStyle={{
-                                color: Colors.lighter,
-                                fontWeight: 'bold',
-                                fontFamily: 'roboto-medium',
-                                letterSpacing: 1.2
-                            }}
-                            selectedDayColor={Colors.primary}
-                            selectedDayTextColor={Colors.lighter}
-                            textStyle={{
-                                color: Colors.primary,
-                                fontWeight: 'bold',
-                                fontFamily: 'roboto-medium',
-                                letterSpacing: 1.2
-                            }}
-                        />
+                        <ScrollView
+                            style={appointmentStyles.scrollView}
+                            contentContainerStyle={appointmentStyles.scrollViewContent}
+                            showsVerticalScrollIndicator={false}>
+                            <View style={appointmentStyles.calendarContainer}>
+                                <CalendarPicker
+                                    onDateChange={(date) => { console.log(date) }}
+                                    width={350}
+                                    height={400}
+                                    startFromMonday={true}
+                                    minDate={new Date()}
+                                    todayBackgroundColor={Colors.primary}
+                                    todayTextStyle={{
+                                        color: Colors.lighter,
+                                        fontWeight: 'bold',
+                                        fontFamily: 'roboto-medium',
+                                        letterSpacing: 1.2
+                                    }}
+                                    selectedDayColor={Colors.primary}
+                                    selectedDayTextColor={Colors.lighter}
+                                    textStyle={{
+                                        color: Colors.primary,
+                                        fontWeight: 'bold',
+                                        fontFamily: 'roboto-medium',
+                                        letterSpacing: 1.2
+                                    }}
+                                />
+                            </View>
+
+                            <View style={appointmentStyles.textContainer}>
+                                <View style={appointmentStyles.inputContainter}>
+                                    <TextInput
+                                        placeholder='Task duration'
+                                        value={values.duration!.toString()}
+                                        onChangeText={handleChange('duration')}
+                                        onBlur={() => setFieldTouched('duration', true)}
+                                        style={appointmentStyles.textInput}
+                                    />
+
+                                    <TextInput
+                                        placeholder='Task Time'
+                                        value={values.appointment_time!}
+                                        onChangeText={handleChange('appointment_time')}
+                                        onBlur={() => setFieldTouched('appointment_time', true)}
+                                        style={appointmentStyles.textInput}
+                                    />
+                                </View>
+
+                                <View style={appointmentStyles.inputContainter}>
+                                    <TextInput
+                                        placeholder='Phone number(07xx)'
+                                        value={payment.phone_number}
+                                        onChangeText={(text) => { setPayment({ ...payment, phone_number: text }) }}
+                                        style={appointmentStyles.textInput}
+                                    />
+                                    <TextInput
+                                        placeholder='Enter Amount'
+                                        value={payment.amount.toString()}
+                                        onChangeText={(text) => { setPayment({ ...payment, amount: text }) }}
+                                        style={appointmentStyles.textInput}
+                                    />
+                                </View>
+
+                                <TextInput
+                                    placeholder='Appointment Notes'
+                                    value={values.appointment_notes!}
+                                    onChangeText={handleChange('appointment_notes')}
+                                    onBlur={() => setFieldTouched('appointment_notes', true)}
+                                    style={appointmentStyles.textArea}
+                                    multiline
+                                    numberOfLines={6}
+                                />
+                                <View style={appointmentStyles.buttonContainer}>
+                                    <Pressable style={appointmentStyles.button} onPress={() => {
+                                        makePayment()
+                                    }}>
+                                        {isLoading && <ActivityIndicator size="large" color="white" />}
+                                        <Text style={appointmentStyles.buttonTitle}>
+                                            Lipa na Mpesa
+                                        </Text>
+                                    </Pressable>
+                                    <Pressable
+                                        disabled={paymentResponse === ''}
+                                        style={[appointmentStyles.button, { backgroundColor: isValid && paymentResponse ? Colors.primary : '#a5c9ca' }]} onPress={async () => {
+                                            handleSubmit()
+                                            // createNewChat()
+                                            router.push('/(tabs)/messages')
+                                        }}>
+                                        {loading && <ActivityIndicator size="large" color="white" />}
+                                        <Text style={[appointmentStyles.buttonTitle,]}>
+                                            Confirm and Chat
+                                        </Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </ScrollView>
                     </View>
-
-                    <View style={appointmentStyles.textContainer}>
-                        <View style={appointmentStyles.inputContainter}>
-                            <TextInput
-                                placeholder='Task duration'
-                                style={appointmentStyles.textInput}
-                            />
-
-                            <TextInput
-                                placeholder='Task Time'
-                                style={appointmentStyles.textInput}
-                            />
-                        </View>
-
-                        <View style={appointmentStyles.inputContainter}>
-                            <TextInput
-                                placeholder='Phone number(07xx)'
-                                style={appointmentStyles.textInput}
-                            />
-                            <TextInput
-                                placeholder='Enter Amount'
-                                style={appointmentStyles.textInput}
-                            />
-                        </View>
-
-                        <TextInput
-                            placeholder='Appointment Notes'
-                            style={appointmentStyles.textArea}
-                            multiline
-                            numberOfLines={6}
-                        />
-                        <View style={appointmentStyles.buttonContainer}>
-                            <Pressable style={appointmentStyles.button} onPress={() => {
-                                makePayment()
-                            }}>
-                                <Text style={appointmentStyles.buttonTitle}>
-                                    Lipa na Mpesa
-                                </Text>
-                            </Pressable>
-                            <Pressable style={[appointmentStyles.button, { backgroundColor: Colors.primary }]} onPress={async () => {
-                                createNewChat()
-                                router.push('/(tabs)/messages')
-                            }}>
-                                {loading && <ActivityIndicator size="large" color="white" />}
-                                <Text style={[appointmentStyles.buttonTitle,]}>
-                                    Confirm and Chat
-                                </Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
-        </SafeAreaView>
-
+                </SafeAreaView>
+            )}
+        </Formik>
     );
 }
 
