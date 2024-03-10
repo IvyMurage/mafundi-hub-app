@@ -24,7 +24,6 @@ export const HandymanContextIdProvider = ({ children }: { children: React.ReactN
     const [handymanId, setHandymanId] = useState<string | null>(null)
     const [proposal_status, setProposalStatus] = useState<string | null>(null)
     const value = { handymanId, setHandymanId, proposal_status, setProposalStatus }
-    console.log("handyman", handymanId)
     return (
         <HandymanContextId.Provider value={value}>
             {children}

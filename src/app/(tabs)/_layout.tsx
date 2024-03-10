@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, } from 'react-native';
 import { useRouter } from 'expo-router';
-import { FontAwesome5, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { Image } from 'expo-image';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
@@ -21,7 +21,7 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const [visible, setVisible] = useState<boolean>(false);
   const router = useRouter()
-  const { userState, onLogout } = useAuth()
+  const { userState, onLogout, authState } = useAuth()
 
   const handleBack = () => {
     router.back()
