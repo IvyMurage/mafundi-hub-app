@@ -151,7 +151,6 @@ export default function TabLayout() {
 
       />
 
-
       <Tabs.Screen name='jobs'
         options={{
           tabBarLabel: 'Jobs',
@@ -231,10 +230,10 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen name='alert'
+      <Tabs.Screen name='appointment'
         options={{
           headerShown: userState?.user_role === 'client' ? true : false,
-          headerTitle: userState?.user_role === 'client' ? 'Alerts' : 'Proposals',
+          headerTitle: userState?.user_role === 'client' ? 'Appointments' : 'Proposals',
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 16,
@@ -253,7 +252,7 @@ export default function TabLayout() {
                 style={{ left: 10 }} />
             </Pressable>
           ),
-          tabBarLabel: userState?.user_role === 'client' ? "Alerts" : "Proposals",
+          tabBarLabel: userState?.user_role === 'client' ? "Appointments" : "Proposals",
           tabBarIcon: ({ color, size }) =>
             userState?.user_role === 'client' ?
               <TabBarIcon name="bell" color={color} size={size} /> :

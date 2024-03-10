@@ -14,6 +14,7 @@ export interface ProposalType {
     task_title: string,
     proposal_text: string
     handyman_id?: number
+    task_id?: number
 }
 const HandymanProposals = () => {
     const [proposals, setProposals] = useState<ProposalType[]>([])

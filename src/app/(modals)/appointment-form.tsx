@@ -21,16 +21,18 @@ type AppointmentFormProps = {
     appointment_notes: string | null;
     duration: number | null;
     client_id: number | null;
-    appointment_date: string | null;
+    appointment_date: Date | null;
     appointment_time: string | null;
     appointment_status: string | null;
+    job_proposal_id: string | null;
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const AppointmentForm = () => {
     const router = useRouter()
 
     const { handymanId } = useHandymanId()
-    const { taskId } = useTaskId()
+    const { taskId, proposalId } = useTaskId()
+    console.log('taskId', proposalId)
     const { userState, authState } = useAuth()
     const [loading, setLoading] = useState(false)
     const [appointment, setAppointment] = useState<AppointmentFormProps>({
@@ -39,9 +41,10 @@ const AppointmentForm = () => {
         appointment_notes: '',
         duration: 0,
         client_id: userState?.user_id!,
-        appointment_date: '',
+        appointment_date: new Date(),
         appointment_time: '',
-        appointment_status: "scheduled"
+        appointment_status: "scheduled",
+        job_proposal_id: proposalId!
     })
     const [payment, setPayment] = useState({
         phone_number: '',
@@ -73,26 +76,46 @@ const AppointmentForm = () => {
         }
     }
 
-    const bookAppointment = async (payload: AppointmentFormProps) => {
-        console.log('payload', payload)
-        // try {
-        //     setLoading(true)
-        //     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer ${authState?.token}`
-        //         },
-        //         body: JSON.stringify(payload)
-        //     })
-        //     console.log(response)
-        // }
-        // catch (e) {
-        //     console.log(e)
-        // }
-        // finally {
-        //     setLoading(false)
-        // }
+    const bookAppointment = async (values: AppointmentFormProps) => {
+
+        try {
+            setLoading(true)
+            const payload = {
+                ...values,
+                duration: parseInt(values.duration!.toString()),
+                appointment_date: new Date(values.appointment_date!).toISOString()
+            }
+
+            console.log('payload', payload)
+
+
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authState?.token}`
+                },
+                body: JSON.stringify(payload)
+            })
+
+            console.log('response', response)
+            const data = await response.json()
+            if (response.ok) {
+                console.log('data', data)
+                createNewChat()
+                router.push('/(tabs)/messages')
+            }
+
+            if (!response.ok) {
+                throw new Error(data?.error)
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     const createNewChat = async () => {
@@ -168,7 +191,9 @@ const AppointmentForm = () => {
                     phone_number: payment.phone_number,
                 })
             })
+
             const data = await response.json()
+            console.log('data', data)
             if (response.ok) {
                 setPaymentResponse(data?.success?.CheckoutRequestID)
 
@@ -219,7 +244,7 @@ const AppointmentForm = () => {
                             showsVerticalScrollIndicator={false}>
                             <View style={appointmentStyles.calendarContainer}>
                                 <CalendarPicker
-                                    onDateChange={(date) => { console.log(date) }}
+                                    onDateChange={(date) => { handleChange('appointment_date')(date.toString()) }}
                                     width={350}
                                     height={400}
                                     startFromMonday={true}
@@ -295,11 +320,9 @@ const AppointmentForm = () => {
                                         </Text>
                                     </Pressable>
                                     <Pressable
-                                        disabled={paymentResponse === ''}
-                                        style={[appointmentStyles.button, { backgroundColor: isValid && paymentResponse ? Colors.primary : '#a5c9ca' }]} onPress={async () => {
+                                        // disabled={paymentResponse === ''}
+                                        style={[appointmentStyles.button, { backgroundColor: isValid && !paymentResponse ? Colors.primary : '#a5c9ca' }]} onPress={async () => {
                                             handleSubmit()
-                                            // createNewChat()
-                                            router.push('/(tabs)/messages')
                                         }}>
                                         {loading && <ActivityIndicator size="large" color="white" />}
                                         <Text style={[appointmentStyles.buttonTitle,]}>

@@ -2,7 +2,7 @@ import { View, Text, Modal, SafeAreaView, StyleSheet, Pressable, FlatList } from
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Animated, { FadeOutDown, FadeOutUp } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
-import { FontAwesome5, Ionicons, Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Octicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import Divider from '@/components/divider';
 import ProposalNotFound from '@/components/proposal-not-found';
@@ -10,13 +10,16 @@ import { useRouter } from 'expo-router';
 import { ProposalType } from './handyman-proposal';
 import Loader from '@/components/loader';
 import { useHandymanId } from '@/contexts/HandymanIdContext';
+import { useTask } from '@/contexts/TaskContext';
+import { useTaskId } from '@/contexts/TaskIdContext';
 
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {
-    const { authState, userState } = useAuth()
+    const { authState, } = useAuth()
     const { visible, setVisible, taskId } = props
     const [proposals, setProposals] = useState<ProposalType[]>([])
     const [loading, setLoading] = useState(false)
     const { proposal_status, setProposalStatus } = useHandymanId()
+    const { setTaskId, setProposalId } = useTaskId()
     const router = useRouter()
     useEffect(() => {
         const fetchProposals = async () => {
@@ -34,7 +37,8 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                         return {
                             id: proposal.id,
                             handyman_id: proposal.handyman_id,
-                            proposal_text: proposal.proposal_text
+                            proposal_text: proposal.proposal_text,
+                            task_id: proposal.task_id
                         }
                     }))
                 }
@@ -82,6 +86,9 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
             if (response.ok) {
                 console.log("Proposal accepted", data)
                 setProposalStatus!(data?.data.job_status)
+                setTaskId!(data?.data.task_id)
+                setProposalId!(data?.data.id)
+
                 router.push(`/handyman-listing/${data?.data.handyman_id}`)
             }
 
