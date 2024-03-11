@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext"
 import { useEffect, useState } from "react"
-import { HandymanProps } from "@/types/handyman"
+import { HandymanProps, HandymanPropsForm } from "@/types/handyman"
 import { FormikHelpers } from "formik"
 import { request } from "@/utils/executePostRequest"
 import { setItemAsync } from "expo-secure-store"
@@ -9,7 +9,7 @@ export const useHandymanUpdate = () => {
     const [alertVisible, setAlertVisible] = useState<boolean>(false)
     const [image, setImage] = useState<string>(require('@/assets/images/placeholder.jpg'))
     const { authState, userState } = useAuth();
-    const handleSubmit = async (handyman: HandymanProps) => {
+    const handleSubmit = async (handyman: HandymanPropsForm) => {
         try {
             setIsLoading(true)
             const location = handyman.location_attributes?.split(', ')
@@ -63,7 +63,7 @@ export const useHandymanUpdate = () => {
 }
 
 export const useHandyman = () => {
-    const [handyman, setHandyman] = useState<HandymanProps>({
+    const [handyman, setHandyman] = useState<HandymanPropsForm>({
         first_name: '',
         last_name: '',
         title: '',
@@ -143,8 +143,8 @@ export const useHandymanPost = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [alertVisible, setAlertVisible] = useState<boolean>(false)
     const handleSubmit = async (
-        handyman: HandymanProps,
-        resetForm: FormikHelpers<HandymanProps>) => {
+        handyman: HandymanPropsForm,
+        resetForm: FormikHelpers<HandymanPropsForm>) => {
         try {
             setIsLoading(true)
             const location = handyman.location_attributes?.split(', ')

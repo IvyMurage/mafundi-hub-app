@@ -3,8 +3,11 @@ import { Image, View, StyleSheet, SafeAreaView, Pressable, Text, FlatList, Activ
 import * as ImagePicker from 'expo-image-picker';
 import Colors from '@/constants/Colors';
 import * as FileSystem from 'expo-file-system'
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { getItemAsync } from 'expo-secure-store';
+import { Stack, useRouter } from 'expo-router';
+import CustomAlert from '@/components/customAlert';
+import { set } from 'lodash';
 
 
 const imgDir = FileSystem.documentDirectory + 'images/';
@@ -19,6 +22,9 @@ export default function ImagePickerExample() {
 
     const [images, setImages] = useState<string[]>([]);
     const [loading, setLoading] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [data, setData] = useState<string | null>(null)
+    const router = useRouter()
 
 
     function ImageIcon(props: {
@@ -79,7 +85,7 @@ export default function ImagePickerExample() {
             const formData = new FormData();
             formData.append('work_photos', {
                 uri: uri,
-                name: 'image.jpg', 
+                name: 'image.jpg',
                 type: 'image/jpeg',
             } as any);
             console.log(formData)
@@ -89,7 +95,10 @@ export default function ImagePickerExample() {
             })
             const data = await response.json()
             if (response.ok) {
-                Alert.alert(data?.message)
+                setData(data?.message)
+                setVisible(true)
+
+
             }
         }
         catch (error) {
@@ -118,25 +127,42 @@ export default function ImagePickerExample() {
             </View>
         )
     }
+    const handleBack = () => {
+        router.back()
+    }
+
+    const handleRight = () => {
+        router.push('/(auth)/login')
+    }
 
     return (
-        <SafeAreaView style={imagePickerStyles.safeAreaStyle}>
-            <Text style={imagePickerStyles.title}>Uplaod images of your work now</Text>
-            <View style={imagePickerStyles.pickerStyle}>
-                <Pressable style={imagePickerStyles.pickerBtn} onPress={pickImage}><Text style={imagePickerStyles.pickerBtnText}>Upload Image</Text></Pressable>
-            </View>
+        <>
+            <SafeAreaView style={imagePickerStyles.safeAreaStyle}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingHorizontal: 12 }}>
+                    <Ionicons name="arrow-back" size={24} color={Colors.secondary} onPress={handleBack} />
+                    <Text style={[imagePickerStyles.headerRight]} onPress={() => handleRight()}>Next</Text>
+                </View>
+                <Text style={imagePickerStyles.title}>Upload images of your work now</Text>
+                <View style={imagePickerStyles.pickerStyle}>
+                    <Pressable style={imagePickerStyles.pickerBtn} onPress={pickImage}><Text style={imagePickerStyles.pickerBtnText}>Upload Image</Text></Pressable>
+                </View>
 
-            <FlatList style={{ alignSelf: 'flex-start', paddingVertical: 25, paddingHorizontal: 20 }} data={images} renderItem={renderItem} />
+                <FlatList style={{ alignSelf: 'flex-start', paddingVertical: 25, paddingHorizontal: 20 }} data={images} renderItem={renderItem} />
 
-            {loading && <View style={[StyleSheet.absoluteFill, {
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }]}>
-                <ActivityIndicator color={"#fff"} animating size='large' />
-            </View>}
-
-        </SafeAreaView>
+                {loading && <View style={[StyleSheet.absoluteFill, {
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }]}>
+                    <ActivityIndicator color={"#fff"} animating size='large' />
+                </View>}
+                <CustomAlert
+                    message={data!}
+                    visible={visible}
+                    onClose={() => setVisible(false)}
+                />
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -152,12 +178,25 @@ const imagePickerStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    headerStyle: {
+        backgroundColor: Colors.primary,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+
+    },
+    headerRight: {
+        color: Colors.secondary,
+        fontSize: 16,
+        fontFamily: 'roboto-medium',
+        letterSpacing: 1.8
+    },
     safeAreaStyle: {
         flex: 1,
         backgroundColor: Colors.primary,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        paddingTop: 20,
+        paddingTop: 30
     },
     pickerBtn: {
         backgroundColor: Colors.secondary,

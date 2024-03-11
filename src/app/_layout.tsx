@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors';
 import { useFonts } from 'expo-font';
-import { Stack, } from 'expo-router';
+import { Stack, useRouter, } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, } from 'react-native';
@@ -59,48 +59,12 @@ export default function RootLayout() {
 
 
 function RootLayoutNav() {
-  const { authState: auth, userState } = useAuth()
-  const [authState, setAuthState] = useState<{ token?: null | string; authenicated?: null | boolean }>({ token: null, authenicated: null })
 
-  useEffect(() => {
-    setAuthState(auth!)
-  }, [])
   return (
-    <>
-      {
-
-        <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
-          <Stack.Screen name={
-            authState?.authenicated ? '(tabs)' : '(modals)/login'
-          } options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
-          {/* <Stack.Screen name='(screens)/maps' options={{
-            headerShown: true,
-            animation: 'fade',
-            headerTitle: 'Maps',
-            headerTitleAlign: 'center',
-            headerTitleStyle: { color: Colors.lighter, fontFamily: 'roboto-medium', },
-            headerTintColor: Colors.lighter,
-          }} /> */}
-
-        </Stack>
-      }
-      {/* {
-        userState === null ?
-          <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
-
-            <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
-
-          </Stack>
-          :
-          authState?.token === null && authState?.authenicated === null || authState?.authenicated === false ?
-            <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
-              <Stack.Screen name='(modals)/login' options={{ headerShown: false, animation: 'fade' }} />
-            </Stack>
-            :
-            null
-      } */}
-    </>
-
+    <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
+      <Stack.Screen name='(auth)/login' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
+      {/* <Stack.Screen name='(tabs)' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} /> */}
+    </Stack>
   );
 }
 

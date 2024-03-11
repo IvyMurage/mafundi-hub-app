@@ -151,7 +151,7 @@ const SignUp = () => {
 
                             <Text style={[defaultStyles.authOption]}>
                                 Already Have an account?
-                                <Link href={'/(modals)/login'}>
+                                <Link href={'/(auth)/login'}>
                                     <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
                                         Login
                                     </Text>

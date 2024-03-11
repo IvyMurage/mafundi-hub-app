@@ -82,7 +82,7 @@ export default function TabLayout() {
         options={{
           headerShown: true,
           tabBarLabel: "Home",
-          headerTitle: `${userState?.user_role === 'client' ? '' : 'Mafundi Jobs'}`,
+          headerTitle: `${userState?.user_role === 'client' ? '' : userState?.user_role === 'handyman' ? 'Mafundi Jobs' : null}`,
           headerTitleStyle: {
             fontFamily: 'roboto-medium',
             fontSize: 18,
@@ -129,7 +129,7 @@ export default function TabLayout() {
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
                     onLogout!()
-                    router.push('/(modals)/login')
+                    router.push('/(auth)/login')
                   }} text='Logout' />
                 </MenuOptions>
               </Menu>
@@ -211,7 +211,7 @@ export default function TabLayout() {
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
                     onLogout!()
-                    router.push('/(modals)/login')
+                    router.push('/(auth)/login')
                   }} text='Logout' />
                 </MenuOptions>
               </Menu>

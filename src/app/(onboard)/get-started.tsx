@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Link, useRouter } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +11,9 @@ export default function GetStarted() {
     const handlePress = () => {
         router.push('/(onboard)/auth-options')
     }
-    return (
+    return (<>
+        <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
+
         <SafeAreaView style={{
             flex: 1,
             padding: 20,
@@ -31,6 +33,7 @@ export default function GetStarted() {
                 </Link>
             </View>
         </SafeAreaView>
+    </>
     )
 }
 

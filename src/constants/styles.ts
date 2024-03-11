@@ -298,13 +298,13 @@ export const handymanRegisterStyles = StyleSheet.create({
         backgroundColor: Colors.light,
         justifyContent: "space-evenly",
         alignItems: "center",
-        overflow: "scroll",
         paddingBottom: 30,
+
     },
     textInput: {
         borderColor: Colors.secondary,
         borderWidth: 1,
-        width: 380,
+        width: 350,
         borderRadius: 40,
     },
     textArea: {
@@ -315,7 +315,7 @@ export const handymanRegisterStyles = StyleSheet.create({
     submitBtn: {
         padding: 20,
         borderRadius: 40,
-        width: 380,
+        width: 350,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -337,6 +337,8 @@ export const handymanRegisterStyles = StyleSheet.create({
         backgroundColor: Colors.light,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        paddingHorizontal: 20,
+
     },
 });
 

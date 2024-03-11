@@ -75,9 +75,9 @@ const selectStyles = StyleSheet.create({
         borderColor: Colors.secondary,
         borderWidth: 1,
         borderRadius: 40,
-        width: 380,
-        height: 55,
+        width: 350,
         alignItems: 'center',
+        marginBottom:10,
         justifyContent: 'center'
     },
     dropdownButtonText: {

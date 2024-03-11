@@ -3,12 +3,25 @@ import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import React, { useEffect, useRef, useState } from 'react'
 import { LocationProvider, MapPropType, useLocations } from '@/contexts/LocationContext'
 import { getItemAsync } from 'expo-secure-store'
+import { Stack } from 'expo-router'
+import Colors from '@/constants/Colors'
 
 const MapsView = () => {
-    return (
+    return (<>
+        <Stack.Screen name='(screens)/maps' options={{
+            headerShown: true,
+            animation: 'fade',
+            headerTitle: 'Maps',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { color: Colors.lighter, fontFamily: 'roboto-medium', },
+            headerTintColor: Colors.lighter,
+        }} />
+
         <LocationProvider>
             <Maps />
         </LocationProvider>
+    </>
+
     )
 }
 

@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from 'expo-router';
-
+import { useNavigationContainerRef, useRouter, useSegments } from 'expo-router';
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -40,6 +39,8 @@ export const useAuth = () => {
     return context
 
 }
+
+
 export const AuthProvider = ({ children }: any) => {
     const router = useRouter()
     const [authState, setAuthState] = useState<
@@ -77,6 +78,55 @@ export const AuthProvider = ({ children }: any) => {
         return false
     }
 
+    const useProtectedRout = (user: {
+        id: number | null;
+        email: string | null;
+        user_role: string | null;
+        user_id: number | null,
+        avatar_url: string | null
+    }) => {
+        const segements = useSegments()
+        const router = useRouter()
+        const [isNavigationReady, setIsNavigationReady] = useState(false)
+        const rootNavigation = useNavigationContainerRef()
+
+        useEffect(() => {
+            const unsubscribe = rootNavigation.addListener('state', async () => {
+                setIsNavigationReady(true)
+            })
+            return () => {
+                if (unsubscribe) {
+                    unsubscribe()
+                }
+            }
+        }, [rootNavigation])
+        useEffect(() => {
+            if (!isNavigationReady) return;
+
+            const isAuthGroup = segements[0] === '(auth)'
+
+            if (!authState?.authenicated) return;
+
+            if (user === null && !isAuthGroup) {
+                router.push('/(onboard)/get-started')
+            }
+            else if (authState?.authenicated) {
+                router.push('/(tabs)/')
+            }
+            else if (authState?.authenicated === null) {
+                router.push('/(auth)/login')
+            }
+
+        }, [isNavigationReady, authState?.authenicated, user, segements])
+
+        useEffect(() => {
+            if (authState?.authenicated === false) {
+                router.push('/(auth)/login')
+            }
+        }, [authState?.authenicated])
+
+    }
+
     useEffect(() => {
         const loadToken = async () => {
             setLoading(true)
@@ -85,7 +135,7 @@ export const AuthProvider = ({ children }: any) => {
                 if (await hasTokenExpired()) {
                     await SecureStore.deleteItemAsync(TOKEN_KEY)
                     setAuthState({ token: null, authenicated: false })
-                    router.push('/login')
+                    router.push('/(auth)/login')
                 }
                 else {
                     const token = await SecureStore.getItemAsync(TOKEN_KEY)
@@ -122,7 +172,6 @@ export const AuthProvider = ({ children }: any) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         })
-        console.log('the registeration', response)
         if (!response.ok) {
             const errorData = await response.json();
             const errorMessage = errorData?.status?.errors || "An unknown error occurred";
@@ -135,7 +184,6 @@ export const AuthProvider = ({ children }: any) => {
             setUser(data?.user)
             await SecureStore.setItemAsync(TOKEN_KEY, token!)
             await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
-            setAuthState({ token: token!, authenicated: true })
             setLoading(false)
         }
         return response
@@ -224,7 +272,7 @@ export const AuthProvider = ({ children }: any) => {
         isLoading: loading,
         authError,
     }
-
+    useProtectedRout(user)
     return (
         <AuthContext.Provider value={value}>
             {children}
