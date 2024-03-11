@@ -1,10 +1,11 @@
 import { View, StyleSheet, Text } from 'react-native'
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import React, { useEffect, useRef, useState } from 'react'
-import { LocationProvider, MapPropType, useLocations } from '@/contexts/LocationContext'
+import { LocationProvider, MapPropType } from '@/contexts/LocationContext'
 import { getItemAsync } from 'expo-secure-store'
-import { Stack } from 'expo-router'
+import { Stack, useRouter } from 'expo-router'
 import Colors from '@/constants/Colors'
+import { Ionicons } from '@expo/vector-icons'
 
 const MapsView = () => {
     return (<>
@@ -26,8 +27,8 @@ const MapsView = () => {
 }
 
 const Maps = () => {
-    const { locations } = useLocations()
     const [regions, setRegions] = useState<MapPropType[]>([])
+    const router = useRouter()
 
     const KENYA_COORDINATES = {
         latitude: 1.2921,
@@ -72,6 +73,10 @@ const Maps = () => {
     }
     return (
         <View style={styles.container}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingHorizontal: 12 }}>
+                <Ionicons name='arrow-back' size={24} color={Colors.lighter} onPress={() => { router.back() }} />
+                <Text style={{ color: Colors.lighter, fontFamily: 'roboto-medium', alignSelf: 'center' }}>Maps</Text>
+            </View>
             <MapView
                 style={StyleSheet.absoluteFill}
                 provider={PROVIDER_GOOGLE}

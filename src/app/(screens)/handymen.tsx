@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
 import { defaultJobStyles } from '@/constants/styles'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { Image } from 'expo-image'
 import Search from '@/components/search'
 import { HandymanProvider, useHandyman } from '@/contexts/HandymanContext'
@@ -52,7 +52,7 @@ const Handymen = () => {
                         width: '100%',
                         paddingHorizontal: 10,
                     }}>
-                        <FontAwesome5 name='arrow-left' size={20} color={Colors.primary} style={{
+                        <Ionicons name='arrow-back' size={20} color={Colors.primary} style={{
                             paddingHorizontal: 12,
                             paddingVertical: 10,
                         }}
@@ -71,7 +71,7 @@ const Handymen = () => {
                         }}>{service}</Text>
 
                         <Image source={{ uri: userState?.avatar_url! } || require('@/assets/images/placeholder.jpg')}
-                            style={{ width: 50, height: 50, borderRadius: 50 }} />
+                            style={{ width: 40, height: 40, borderRadius: 40 }} />
                     </View>
 
                     <View style={{

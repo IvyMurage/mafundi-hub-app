@@ -100,8 +100,11 @@ export const AuthProvider = ({ children }: any) => {
                 }
             }
         }, [rootNavigation])
+
+
         useEffect(() => {
             if (!isNavigationReady) return;
+        console.log('auth', authState?.authenicated)
 
             const isAuthGroup = segements[0] === '(auth)'
 
@@ -110,10 +113,10 @@ export const AuthProvider = ({ children }: any) => {
             if (user === null && !isAuthGroup) {
                 router.push('/(onboard)/get-started')
             }
-            else if (authState?.authenicated) {
+            else if (authState?.authenicated === true && isAuthGroup) {
                 router.push('/(tabs)/')
             }
-            else if (authState?.authenicated === null) {
+            else if (authState === null) {
                 router.push('/(auth)/login')
             }
 

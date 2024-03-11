@@ -39,14 +39,16 @@ const HandymanList = () => {
                             width: '100%',
                             paddingHorizontal: 8
                         }}>
-                            <Image source={{uri:item.avatar_url}}
+                            <Image source={{ uri: item.avatar_url }}
+                                placeholder={require('@/assets/images/placeholder.jpg')}
+                                placeholderContentFit='cover'
                                 style={{ width: 50, height: 50, borderRadius: 50, alignSelf: 'center' }} />
                             <Text style={{
                                 fontSize: 14,
                                 letterSpacing: 1.2,
                                 fontFamily: 'roboto-medium',
                                 color: Colors.lighter,
-                                marginTop:10,
+                                marginTop: 10,
                                 textAlign: 'center'
                             }}>
                                 {item.first_name} {item.last_name}

@@ -63,7 +63,6 @@ function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
       <Stack.Screen name='(auth)/login' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
-      {/* <Stack.Screen name='(tabs)' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} /> */}
     </Stack>
   );
 }
