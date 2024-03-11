@@ -7,7 +7,6 @@ import { HandymanType } from "@/types/handyman";
 interface HandymanProps {
     loading?: boolean
     handymen?: HandymanType[]
-
 }
 interface HandymanProviderProps {
     children: React.ReactNode

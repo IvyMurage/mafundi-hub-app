@@ -93,31 +93,18 @@ const Handymen = () => {
 
                         }}>Community</Text>
                     </View>
-                    <View >
-
-                        <Search handleChange={handleChange} placeholder='Search for Handyman' />
-                        <Divider />
-                        <Pressable style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignSelf: 'flex-end',
-                            position: 'relative',
-                            bottom: 52,
-                        }} onPress={() => {
-                            setVisible(!visible)
-                        }}>
-                            <FontAwesome5
+                    <View style={handymenStyle.filterOPtions}>
+                        <View>
+                            <View style={{ flexGrow: 1 }}><Search handleChange={handleChange} placeholder='Search for Handyman' /></View>
+                            <Ionicons
                                 name='filter'
                                 size={20}
                                 color={Colors.primary}
-                                style={[
-                                    {
-                                        paddingHorizontal: 40,
-                                    }, visible && {
-                                        transform: [{ rotate: '-90deg' }]
-                                    }]} />
-                            {/* 'Filter' */}
-                        </Pressable>
+                                onPress={() => setVisible(!visible)}
+                            />
+                        </View>
+                        <Divider />
+
                         <LocationFilter
                             setLocation={setLocation}
                             visible={visible}
@@ -158,6 +145,12 @@ const handymenStyle = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
+    },
+    filterOPtions: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 10,
     }
 })
 export default Handymen

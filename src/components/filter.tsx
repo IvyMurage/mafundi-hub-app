@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1.4
     },
     clearBtn: {
-        padding: 10,
+        padding: 20,
         backgroundColor: Colors.primary,
         borderRadius: 20,
         marginHorizontal: 20
