@@ -1,9 +1,9 @@
 import Colors from '@/constants/Colors';
 import { useFonts } from 'expo-font';
-import { Stack, useRouter, } from 'expo-router';
+import { Stack, } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { TaskIdProvider } from '@/contexts/TaskIdContext';
 import { HandymanContextIdProvider } from '@/contexts/HandymanIdContext';
@@ -16,7 +16,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(modals)/login',
+  initialRouteName: '(auth)/login',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -50,21 +50,13 @@ export default function RootLayout() {
       <AuthProvider>
         <HandymanContextIdProvider>
           <TaskIdProvider>
-            <RootLayoutNav />
+            <Stack initialRouteName='(auth)/login' screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
+              <Stack.Screen name='(tabs)' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
+            </Stack>
           </TaskIdProvider>
         </HandymanContextIdProvider>
       </AuthProvider>
     </MenuProvider>);
-}
-
-
-function RootLayoutNav() {
-
-  return (
-    <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
-      <Stack.Screen name='(auth)/login' options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }} />
-    </Stack>
-  );
 }
 
 const headerStyles = StyleSheet.create({

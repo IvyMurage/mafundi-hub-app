@@ -152,6 +152,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen name='jobs'
+        redirect={userState?.user_role !== 'client'}
         options={{
           tabBarLabel: 'Jobs',
           headerShown: true,

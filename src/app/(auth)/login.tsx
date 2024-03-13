@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
-import { Link, Stack, useRouter, useSegments } from 'expo-router'
+import { Link, useSegments } from 'expo-router'
 import { useAuth } from '@/contexts/AuthContext'
-import { Formik, FormikHelpers, FormikState } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import { loginSchema } from '@/constants/validation-schema'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
@@ -13,7 +13,6 @@ import { FontAwesome, } from '@expo/vector-icons'
 import Divider from '@/components/divider'
 
 const Login = () => {
-    const router = useRouter()
     const { onLogin, isLoading, } = useAuth()
     const [user] = useState<{ email: string | null, password: string | null }>({
         email: '',
@@ -116,21 +115,13 @@ const Login = () => {
 
                                 <Text style={[defaultStyles.authOption]}>
                                     Don't Have an account?
-                                    <Link href={'/(auth)/sign-up'}>
+                                    <Link href='/(auth)/sign-up'>
                                         <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
                                             Sign Up
                                         </Text>
                                     </Link>
                                 </Text>
 
-                                <CustomAlert
-                                    visible={alertVisible}
-                                    message="You have successfully logged in"
-                                    onClose={() => {
-                                        setAlertVisible(false)
-                                        router.push('/(tabs)/')
-                                    }}
-                                />
 
                                 <CustomAlert
                                     visible={error}
