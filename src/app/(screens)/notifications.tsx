@@ -1,10 +1,10 @@
-import { View, Text, SafeAreaView, SectionList, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, SectionList, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import Colors from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '@/components/loader';
-
+import CustomAlert from '@/components/customAlert';
 
 type AppointmentType = {
     id: number;
@@ -18,6 +18,8 @@ const Appointments = () => {
     const [loading, setLoading] = useState(true)
     const [appointments, setAppointments] = useState([])
     const { userState, authState } = useAuth()
+    const [error, setError] = useState('')
+    const [visible, setVisible] = useState(false)
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
@@ -27,10 +29,7 @@ const Appointments = () => {
                         Authorization: `Bearer ${authState?.token}`
                     }
                 })
-
                 const data = await response.json()
-                console.log('response:', data)
-
                 if (response.ok) {
                     setAppointments(data?.appointment?.map((appointment: AppointmentType) => {
                         return {
@@ -43,9 +42,22 @@ const Appointments = () => {
                         }
                     }))
                 }
+
+                if (!response.ok) {
+                    let error
+                    if (data && data.errors) {
+                        error = data.errors
+                    }
+                    else {
+                        error = "Error fetching appointments"
+                    }
+                    throw new Error(error)
+
+                }
                 setLoading(false)
-            } catch (error) {
-                console.log(error)
+            } catch (error: any) {
+                setError(error.message)
+                setVisible(true)
             }
             finally {
                 setLoading(false)
@@ -53,10 +65,11 @@ const Appointments = () => {
         }
         fetchAppointments()
     }, [authState, userState])
-    console.log('appointments:', appointments)
+
+
     const renderAppointments = (item: AppointmentType) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderLeftWidth: 4, maxHeight: 200, borderLeftColor: Colors.secondary, marginBottom: 10, paddingHorizontal: 12 }}>
+            <View style={styles.appointmentView}>
                 <Ionicons name="calendar-number-outline" size={24} color="black" style={{ paddingRight: 12 }} />
                 <View style={{}}>
                     <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2 }}>{item.task_name}</Text>
@@ -66,13 +79,12 @@ const Appointments = () => {
                 </View>
                 <Ionicons name="pencil" size={20} color={Colors.secondary} style={{ alignSelf: 'flex-start' }} />
             </View>
-
         )
     }
     return (<>
-        <SafeAreaView style={{ flex: 1, paddingTop: 20, paddingHorizontal: 14 }}>
+        <SafeAreaView style={styles.safeareaview}>
             <View>
-                <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', letterSpacing: 1.4, marginBottom: 10 }}>Appointments</Text>
+                <Text style={styles.header}>Appointments</Text>
             </View>
             <View style={{ width: '100%', paddingBottom: 20 }}>
                 <FlatList
@@ -83,11 +95,32 @@ const Appointments = () => {
             </View>
         </SafeAreaView>
         <Loader isLoading={loading} />
+        <CustomAlert visible={visible} message={error} onClose={() => setVisible(false)} />
     </>
-
-
     )
 }
 
-
+const styles = StyleSheet.create({
+    safeareaview: {
+        flex: 1,
+        paddingTop: 20,
+        paddingHorizontal: 14
+    },
+    appointmentView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderLeftWidth: 4,
+        maxHeight: 200,
+        borderLeftColor: Colors.secondary,
+        marginBottom: 10,
+        paddingHorizontal: 12
+    },
+    header: {
+        fontSize: 20,
+        fontFamily: 'roboto-bold',
+        letterSpacing: 1.4,
+        marginBottom: 10
+    }
+})
 export default Appointments
