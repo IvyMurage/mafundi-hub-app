@@ -153,10 +153,9 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                             contentContainerStyle={{ paddingBottom: 50, flexGrow: 1 }}
                             showsVerticalScrollIndicator={false}
                         />
-
+                        {!loading && proposals.length === 0 && <ProposalNotFound />}
                     </View>
 
-                    {!loading && proposals?.length === 0 && <ProposalNotFound />}
 
                 </SafeAreaView>
                 <Loader isLoading={loading} />

@@ -10,39 +10,105 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 import Loader from './loader'
 import NotFound from '@/components/not-found'
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
 
 const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
-    const { userState } = useAuth()
+    const { userState, authState } = useAuth()
     const { setPageNumber, loading, } = useTask()
     const handlePress = (jobId: number) => {
         if (userState?.user_role === 'handyman') {
             router.push(`/job-listing/${jobId}`)
         }
     }
+    const [isloading, setisLoading] = useState(false)
+    const handleDelete = async (taskId: number) => {
+        try {
+            setisLoading(true)
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks/${taskId}/destroy`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${authState?.token}`
+                }
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                let error
+                if (data && data.errors) {
+                    error = data.errors
+                }
+                else {
+                    error = "Error deleting job"
+                }
+                throw new Error(error)
+            }
 
+        } catch (error: any) {
+            console.log("Error deleting job", error.message)
+        }
+        finally {
+            setisLoading(false)
+        }
+    }
     const renderMyJobs = ({ item }: { item: JobPropType }) => {
         return (
             <Pressable onPress={() => handlePress(item.id!)}>
                 <View key={item.id} style={jobListStyle.jobContainer}>
-                    <Text
-                        onPress={() => {
-                            setJobId(item.id!)
-                            setVisible(!visible)
-                            // router.push('/(modals)/appointment-form')
-                        }}
-                        style={[jobListStyle.jobText,
-                        ...[userState?.user_role === 'client' ?
-                            { color: Colors.secondary } : item.available ?
-                                { color: 'green' } : { color: 'red' }],
-                        { textAlign: 'right' },
-                        { fontFamily: 'roboto-bold' }]}>
-                        {userState?.user_role === 'client' ? "View Proposals" :
-                            item.available ? "Available" : "Not Available"}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'center' }}>
+                        <Text
+                            onPress={() => {
+                                setJobId(item.id!)
+                                setVisible(!visible)
+                                // router.push('/(modals)/appointment-form')
+                            }}
+                            style={[jobListStyle.jobText,
+                            ...[userState?.user_role === 'client' ?
+                                { color: Colors.secondary } : item.available ?
+                                    { color: 'green' } : { color: 'red' }],
+                            { textAlign: 'right' },
+                            { fontFamily: 'roboto-bold' }]}>
+                            {userState?.user_role === 'client' ? "View Proposals" :
+                                item.available ? "Available" : "Not Available"}
+                        </Text>
+                        <Menu>
+                            <MenuTrigger
+                                style={{
+                                    padding: 5,
+                                    paddingHorizontal: 10
+                                }}>
+                                <Ionicons name="ellipsis-vertical" size={18} color="gray" />
+                            </MenuTrigger>
+                            <MenuOptions customStyles={
+                                {
+                                    optionsContainer: {
+                                        backgroundColor: 'white',
+                                        padding: 5,
+                                        borderRadius: 5,
+                                        width: 100,
+                                    }
+                                }
+                            }>
+                                <MenuOption style={{ width: 100, }}>
+                                    <Text style={{
+                                        padding: 5,
+                                        paddingHorizontal: 10,
+                                        fontFamily: 'roboto-bold'
+                                    }} >Edit</Text>
+                                </MenuOption>
+                                <MenuOption onSelect={() => handleDelete(item.id!)} style={{ width: 100, }}>
+                                    <Text style={{
+                                        padding: 5,
+                                        paddingHorizontal: 10,
+                                        fontFamily: 'roboto-bold'
+                                    }} >Delete</Text>
+                                </MenuOption>
+                            </MenuOptions>
+                        </Menu>
+                    </View>
+
                     <View style={jobListStyle.jobBody}>
                         <Text style={
                             [jobListStyle.jobText,
@@ -62,7 +128,7 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center'
-                        }} onPress={() => { router.push('/maps') }}>
+                        }}>
                             <MaterialIcons name="location-pin" size={16} color={Colors.secondary} />
                             <Text style={[jobListStyle.jobText, { fontSize: 10 }]}>
                                 {item.job_location}
@@ -125,7 +191,7 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                 </Pressable>
 
             </View>
-            <Loader isLoading={loading!} />
+            <Loader isLoading={loading! || isloading} />
         </>
     )
 }

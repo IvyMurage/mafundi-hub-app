@@ -7,11 +7,12 @@ const ProposalNotFound = () => {
     const { userState } = useAuth()
     return (
         <View style={{
-            justifyContent: 'center',
+            // flexGrow: 1,
+            // justifyContent: 'center',
             alignItems: 'center',
-            height: userState?.user_role === 'client' ? '80%' : 'auto',
+            height: userState?.user_role === 'client' ? '100%' : 'auto',
         }}>
-            <Image source={require('@/assets/images/proposal_empty.svg')} style={{ width: 300, height: 300 }} />
+            <Image source={require('@/assets/images/proposal_empty.svg')} style={{ width: 300, height: 300 }} contentFit='contain' />
             <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 16, textAlign: 'center' }}>
                 No Proposals Found
             </Text>
