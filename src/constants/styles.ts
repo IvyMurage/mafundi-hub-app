@@ -160,12 +160,12 @@ export const clientProfileStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-evenly",
         alignItems: "center",
-        overflow: "scroll",
     },
     subContainer: {
+        flex: 1,
         justifyContent: "space-evenly",
         alignItems: "center",
-        paddingBottom: 50,
+        marginTop: 10,
     },
     scroll: {
         width: "100%",
@@ -173,25 +173,24 @@ export const clientProfileStyles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         backgroundColor: Colors.light,
-        overflow: "scroll",
         paddingHorizontal: 10,
     },
+
     contentContainer: {
-        flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        marginTop: 12,
+        height: "80%",
     },
+
     textInput: {
         borderBottomWidth: 1,
+        padding: 10,
+        width: 150,
         borderColor: Colors.secondary,
-        paddingLeft: 30,
-        marginBottom: 30,
-        width: 350,
+        letterSpacing: 1.2,
+        marginHorizontal: 10,
     },
     cameraContainer: {
         position: "absolute",
-        top: "10%",
+        top: "6%",
         right: "36%",
         bottom: 0,
         backgroundColor: Colors.primary,
@@ -203,7 +202,7 @@ export const clientProfileStyles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: 'space-between',
         alignItems: "center",
     },
 });
@@ -299,7 +298,6 @@ export const handymanRegisterStyles = StyleSheet.create({
         justifyContent: "space-evenly",
         alignItems: "center",
         paddingBottom: 30,
-
     },
     textInput: {
         borderColor: Colors.secondary,
@@ -338,7 +336,6 @@ export const handymanRegisterStyles = StyleSheet.create({
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
         paddingHorizontal: 20,
-
     },
 });
 

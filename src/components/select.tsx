@@ -1,6 +1,6 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet,  } from 'react-native'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
@@ -9,14 +9,15 @@ type SelectProps = {
     defaultButtonText: string;
     searchPlaceHolder: string;
     handleChange: (value: string) => void
-    profile: boolean,
+    profile?: boolean,
     task: boolean,
     search?: boolean,
     name?: string
+    buttonStyle?: any
 
 }
 const Select: React.FC<SelectProps> = (props) => {
-    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile, task, name = 'default' } = props
+    const { data, defaultButtonText, searchPlaceHolder, handleChange, profile, task, name = 'default', buttonStyle } = props
     function SelectIcon(props: {
         name: React.ComponentProps<typeof FontAwesome5>['name'];
         color: string;
@@ -25,14 +26,7 @@ const Select: React.FC<SelectProps> = (props) => {
         return <FontAwesome5 style={{ marginBottom: -3, textAlign: 'center' }} {...props} />;
     }
     return (
-        <View style={profile && [selectStyles.selectContainer]}>
-
-            {profile && name === 'location' && <MaterialIcons name="location-pin" size={20} color={Colors.primary} style={{
-                left: 45,
-                zIndex: 1
-            }} />
-            }
-
+        <>
             {profile && name === 'service' && <MaterialIcons name="home-repair-service" size={24} color={Colors.primary} style={{
                 left: 40,
                 zIndex: 1
@@ -51,15 +45,12 @@ const Select: React.FC<SelectProps> = (props) => {
                 renderDropdownIcon={() => <SelectIcon name='angle-down' color='rgba(69, 90, 100, 0.52)' size={20} />}
                 renderSearchInputLeftIcon={() => <SelectIcon color='rgba(69, 90, 100, 0.52)' name='search' size={20} />}
                 search
-                buttonStyle={[
-                    selectStyles.selectButtonStyle,
-                    { borderBottomWidth: profile ? 1 : 0, borderWidth: profile ? 0 : 1 },
-                    task ? selectStyles.taskStyles : null]}
-                buttonTextStyle={[selectStyles.dropdownButtonText, profile && { padding: 15, paddingLeft: 34, }]}
+                buttonStyle={[buttonStyle]}
+                buttonTextStyle={[selectStyles.dropdownButtonText]}
                 rowTextStyle={selectStyles.dropDownText}
                 dropdownStyle={selectStyles.dropDown}
             />
-        </View>
+        </>
     )
 }
 
@@ -77,7 +68,7 @@ const selectStyles = StyleSheet.create({
         borderRadius: 40,
         width: 350,
         alignItems: 'center',
-        marginBottom:10,
+        marginBottom: 10,
         justifyContent: 'center'
     },
     dropdownButtonText: {
@@ -91,11 +82,10 @@ const selectStyles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: 14,
         letterSpacing: 1.8,
-        textAlign: 'left'
-
+        textAlign: 'left',
     },
     dropDown: {
-        width: 357,
+        width: 300,
         height: 'auto',
         alignItems: 'center',
         justifyContent: 'center',
