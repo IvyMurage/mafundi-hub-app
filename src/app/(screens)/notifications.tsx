@@ -1,10 +1,11 @@
-import { View, Text, SafeAreaView, SectionList, FlatList, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import Colors from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '@/components/loader';
 import CustomAlert from '@/components/customAlert';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
 type AppointmentType = {
     id: number;
@@ -22,8 +23,8 @@ const Appointments = () => {
     const [visible, setVisible] = useState(false)
     useEffect(() => {
         const fetchAppointments = async () => {
+            setLoading(true)
             try {
-                setLoading(true)
                 const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments?client_id=${userState?.user_id}`, {
                     headers: {
                         Authorization: `Bearer ${authState?.token}`
@@ -67,6 +68,24 @@ const Appointments = () => {
     }, [authState, userState])
 
 
+    const handleDelete = async (id: number) => {
+        setLoading(true)
+        try {
+            await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments/${id}/destroy`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${authState?.token}`
+                }
+            })
+        }
+        catch (error) {
+            console.error(error)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+    const handleUpdate = (id: number) => { }
     const renderAppointments = (item: AppointmentType) => {
         return (
             <View style={styles.appointmentView}>
@@ -77,7 +96,8 @@ const Appointments = () => {
                     <Text style={{ fontFamily: 'roboto', letterSpacing: 1.2 }}>{item.appointment_date}</Text>
                     <Text style={{ fontFamily: 'roboto', letterSpacing: 1.2, color: Colors.secondary }}>{item.appointment_status}</Text>
                 </View>
-                <Ionicons name="pencil" size={20} color={Colors.secondary} style={{ alignSelf: 'flex-start' }} />
+                <Ionicons name="pencil" size={20} color={Colors.secondary} style={{ alignSelf: 'flex-start' }} onPress={() => handleUpdate(item.id)} />
+                <Ionicons name="trash" size={20} color={Colors.secondary} style={{ alignSelf: 'flex-start' }} onPress={() => handleDelete(item.id)} />
             </View>
         )
     }
