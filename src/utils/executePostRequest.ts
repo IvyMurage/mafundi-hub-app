@@ -15,6 +15,7 @@ export const request = async (
       body,
     }
   );
+  console.log(response);
   const data = await response.json();
   if (!response.ok) {
     let error;
@@ -25,7 +26,6 @@ export const request = async (
     } else {
       error = response.statusText;
     }
-    console.log(data);
     throw new Error(error);
   }
 

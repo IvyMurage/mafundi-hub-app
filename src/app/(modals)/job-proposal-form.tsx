@@ -36,11 +36,8 @@ const ProposalForm = () => {
                 task_id: parseInt(taskId!),
                 handyman_id: userState?.user_id
             }
-
-            console.log(payload)
             const { response, data } = await request('POST', JSON.stringify(payload), '/job_proposals', authState?.token!)
             if (response.ok) {
-                console.log("This is data from job proposal", data)
                 setSuccess(data?.success)
 
             }
@@ -96,7 +93,7 @@ const ProposalForm = () => {
                                 visible={success}
                                 onClose={() => {
                                     setSuccess(false)
-                                    router.push('/(tabs)/alert')
+                                    router.push('/(tabs)/appointment')
                                 }}
                                 message="Your proposal has been sent successfully"
                             />
