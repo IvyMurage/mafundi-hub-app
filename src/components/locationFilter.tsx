@@ -1,21 +1,19 @@
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { Dispatch, SetStateAction } from 'react'
 import Select from './select'
 import { useLocation } from '@/hooks/useLocation'
 import { stringfy } from '@/utils/stringify'
 import { useService } from '@/hooks/useService'
+import Colors from '@/constants/Colors'
 
 export const LocationFilter = ({ setLocation, visible, setVisible }: { setLocation: Dispatch<SetStateAction<string>>, setVisible: Dispatch<SetStateAction<boolean>>, visible: boolean }) => {
     const locations = useLocation()
+    console.log('visible', visible)
     return (
         <>
             {
                 visible &&
-                <View style={{
-                    justifyContent: 'center',
-                    marginHorizontal: 20,
-                }}>
-
+                <View style={{ justifyContent: 'center', marginHorizontal: 20, }}>
                     <Select
                         data={locations?.length > 0 &&
                             locations !== undefined &&
@@ -34,6 +32,7 @@ export const LocationFilter = ({ setLocation, visible, setVisible }: { setLocati
                         }}
                         searchPlaceHolder='Search for a Location'
                         task={true}
+                        buttonStyle={styles.taskStyles}
                     />
                 </View>
             }
@@ -41,6 +40,19 @@ export const LocationFilter = ({ setLocation, visible, setVisible }: { setLocati
     )
 
 }
+
+const styles = StyleSheet.create(
+    {
+        taskStyles: {
+            width: 180,
+            height: 60,
+            backgroundColor: "transparent",
+            borderWidth: 1,
+            borderColor: Colors.secondary,
+            borderRadius: 40,
+        },
+    }
+)
 
 export const ServiceFilter = ({ setService, visible, setVisible }: { setService: Dispatch<SetStateAction<string>>, setVisible: Dispatch<SetStateAction<boolean>>, visible: boolean }) => {
     const services = useService()
@@ -98,11 +110,3 @@ export const AvailabilityFilter = ({ setAvailable, visible, setVisible }: { setA
         </>
     )
 }
-{/* <Select
-data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
-searchPlaceHolder='Instant booking'
-handleChange={(value) => setFieldValue('instant_booking', value)}
-defaultButtonText='Instant Booking'
-profile={false}
-task={true}
-/> */}

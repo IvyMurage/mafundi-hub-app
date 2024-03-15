@@ -202,7 +202,7 @@ export const clientProfileStyles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: "row",
-        justifyContent: 'space-between',
+        justifyContent: "space-between",
         alignItems: "center",
     },
 });
@@ -355,6 +355,14 @@ export const taskFormStyles = StyleSheet.create({
         alignItems: "center",
         marginTop: 12,
     },
+    taskStyles: {
+        width: 180,
+        height: 60,
+        backgroundColor: "transparent",
+        borderWidth: 1,
+        borderColor: Colors.secondary,
+        borderRadius: 40,
+    },
     container: {
         flex: 1,
         flexDirection: "column",
@@ -377,9 +385,8 @@ export const taskFormStyles = StyleSheet.create({
         paddingBottom: 50,
     },
     headerTextStyle: {
-        fontFamily: "roboto",
+        fontFamily: "roboto-bold",
         fontSize: 16,
-        fontWeight: "bold",
         letterSpacing: 1.8,
         color: Colors.secondary,
     },
