@@ -28,16 +28,17 @@ const Handymen = () => {
         console.log('searching...')
     }
 
-    const getService = async () => {
-        const service_id = await getItemAsync('service_id')
-        const service = services.find((service) => service.value === service_id)
-        setService(service?.label!)
-    }
     useEffect(() => {
-        getService()
-    }, [])
+        (
+            async () => {
+                const service_id = await getItemAsync('service_id')
+                const service = services.find((service) => service.value === service_id)
+                setService(service?.label!)
+            }
+        )()
+    }, [services])
 
-    // console.log("Service", service)
+    console.log(visible)
     return (
         <HandymanProvider>
             <SafeAreaView style={{ flex: 1, paddingTop: 12, backgroundColor: Colors.light }}>
@@ -94,7 +95,7 @@ const Handymen = () => {
                         }}>Community</Text>
                     </View>
                     <View style={handymenStyle.filterOPtions}>
-                        <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <View style={{ flexGrow: 1 }}><Search handleChange={handleChange} placeholder='Search for Handyman' /></View>
                             <Ionicons
                                 name='filter'
@@ -103,14 +104,16 @@ const Handymen = () => {
                                 onPress={() => setVisible(!visible)}
                             />
                         </View>
+
                         <Divider />
 
-                        <LocationFilter
-                            setLocation={setLocation}
-                            visible={visible}
-                            setVisible={() => { }}
-                        />
-
+                        <View style={{ borderWidth: 1, margin: 40 }}>
+                            <LocationFilter
+                                setLocation={setLocation}
+                                visible={visible}
+                                setVisible={setVisible}
+                            />
+                        </View>
                     </View>
                     <View style={{
                         flex: 1,
