@@ -46,53 +46,32 @@ export const useProtectedRoute = (user: {
     user_role: string | null;
     user_id: number | null,
     avatar_url: string | null
+}, authState: {
+    authenicated: boolean | null
+    token: string | null
 }) => {
     const segements = useSegments()
     const router = useRouter()
-    const [isNavigationReady, setIsNavigationReady] = useState(false)
-    const rootNavigation = useNavigationContainerRef()
-    const { authState } = useAuth()
 
     useEffect(() => {
-        const unsubscribe = rootNavigation.addListener('state', async () => {
-            setIsNavigationReady(true)
-        })
-        return () => {
-            if (unsubscribe) {
-                unsubscribe()
-            }
-        }
-    }, [rootNavigation])
-
-
-    useEffect(() => {
-        if (!isNavigationReady) return;
-
-        // const isAuthGroup = segements[0] === '(auth)'
-        console.log(authState?.authenicated)
-        if (!authState?.authenicated) return;
+        // if (!isNavigationReady) return null
+        const isAuthGroup = segements[0] === '(auth)'
+        console.log('not defined', authState?.authenicated)
+        console.log('segments', segements)
 
         if (user === null) {
             router.push('/(onboard)/get-started')
         }
-        else if (authState?.authenicated === true) {
+        else if (authState?.authenicated === true && isAuthGroup) {
             router.push('/(tabs)/')
         }
-        else if (authState.authenicated === null) {
+        else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
             router.push('/(auth)/login')
         }
 
-    }, [isNavigationReady, authState?.authenicated, user, segements])
-
-    useEffect(() => {
-        if (authState?.authenicated === false) {
-            router.push('/(auth)/login')
-        }
-    }, [authState?.authenicated])
+    }, [authState, user, segements])
 
 }
-
-
 
 export const AuthProvider = ({ children }: any) => {
     const router = useRouter()
@@ -265,59 +244,7 @@ export const AuthProvider = ({ children }: any) => {
         await SecureStore.deleteItemAsync(TOKEN_KEY)
         setAuthState({ token: null, authenicated: false })
     }
-
-
-    const useProtectedRoute = (user: {
-        id: number | null;
-        email: string | null;
-        user_role: string | null;
-        user_id: number | null,
-        avatar_url: string | null
-    }) => {
-        const segements = useSegments()
-        const router = useRouter()
-        const [isNavigationReady, setIsNavigationReady] = useState(false)
-        const rootNavigation = useNavigationContainerRef()
-
-        useEffect(() => {
-            const unsubscribe = rootNavigation.addListener('state', async () => {
-                setIsNavigationReady(true)
-            })
-            return () => {
-                if (unsubscribe) {
-                    unsubscribe()
-                }
-            }
-        }, [rootNavigation])
-
-
-        useEffect(() => {
-            if (!isNavigationReady) return;
-
-            const isAuthGroup = segements[0] === '(auth)'
-            console.log(authState?.authenicated)
-            if (!authState?.authenicated) return;
-
-            if (user === null) {
-                router.push('/(onboard)/get-started')
-            }
-            else if (authState?.authenicated === true && isAuthGroup) {
-                router.push('/(tabs)')
-            }
-            else if (authState.authenicated === null && isAuthGroup) {
-                router.replace('/(auth)/login')
-            }
-
-        }, [isNavigationReady, authState?.authenicated, user, segements])
-
-        useEffect(() => {
-            if (authState?.authenicated === false) {
-                router.push('/(auth)/login')
-            }
-        }, [authState?.authenicated])
-
-    }
-
+    useProtectedRoute(user, authState)
     const value = {
         onRegister: register,
         setUserState: setUser,
@@ -329,7 +256,6 @@ export const AuthProvider = ({ children }: any) => {
         isLoading: loading,
         authError,
     }
-    useProtectedRoute(user)
     return (
         <AuthContext.Provider value={value}>
             {children}
