@@ -10,7 +10,7 @@ import { clientSchema } from '@/constants/validation-schema'
 import CustomAlert from '@/components/customAlert'
 import { useClientFetcher, useClientUpdate } from '@/hooks/useClient'
 import Loader from '@/components/loader'
-import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
+import {Ionicons } from '@expo/vector-icons'
 import { useProfileUpload } from '@/hooks/useProfileUpload'
 import { useAuth } from '@/contexts/AuthContext'
 

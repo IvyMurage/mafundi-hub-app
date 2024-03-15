@@ -10,7 +10,6 @@ import { useRouter } from 'expo-router';
 import { ProposalType } from './handyman-proposal';
 import Loader from '@/components/loader';
 import { useHandymanId } from '@/contexts/HandymanIdContext';
-import { useTask } from '@/contexts/TaskContext';
 import { useTaskId } from '@/contexts/TaskIdContext';
 
 const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction<boolean>>; taskId: number | null }) => {

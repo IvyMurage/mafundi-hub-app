@@ -4,7 +4,6 @@ import HandymanProfile from '../(modals)/handyman-profile'
 
 const Profile = () => {
     const { userState } = useAuth()
-    console.log(userState?.user_role)
     return (
         <>
             {userState?.user_role === 'client' && <ClientProfile />}

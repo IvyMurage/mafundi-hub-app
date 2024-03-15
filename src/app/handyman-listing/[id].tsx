@@ -6,9 +6,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import { HandymanProps } from '@/types/handyman'
 import Colors from '@/constants/Colors'
-import { Octicons } from '@expo/vector-icons'
+import { Ionicons, Octicons } from '@expo/vector-icons'
 import { useHandymanId } from '@/contexts/HandymanIdContext'
 import Reviews from '@/components/reviews'
+import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu'
+import Loader from '@/components/loader'
 
 const Handyman = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -16,6 +18,7 @@ const Handyman = () => {
     const [loading, setLoading] = useState(false)
     const [handyman, setHandyman] = useState<HandymanProps>({} as HandymanProps)
     const { setHandymanId, proposal_status } = useHandymanId()
+    const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         const getHandyman = async () => {
@@ -55,53 +58,90 @@ const Handyman = () => {
         )
     })
     return (
-        <SafeAreaView style={styles.safeView}>
-            <Octicons name='arrow-left' size={20} color={Colors.lighter} style={{ paddingHorizontal: 12, }} onPress={() => router.back()} />
-            <View style={styles.containerHeader}>
-                <Image source={{ uri: handyman?.avatar_url }} placeholder={require('@/assets/images/placeholder.jpg')} placeholderContentFit='cover' style={styles.profileStyle} />
-                <Octicons name="dot-fill" size={24} color={handyman.availability ? 'green' : 'red'} style={styles.iconStyle} />
-            </View>
-            <ScrollView style={styles.scrollView} >
-                <View style={styles.conatiner}>
-
-                    <View style={styles.subConatiner}>
-                        <View style={styles.nameConatiner}>
-                            <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
-                            <Text style={styles.titleText}>{handyman.title}</Text>
-                            <Text style={styles.titleText}>{handyman.location_attributes}</Text>
-                        </View>
-
-                        <Pressable
-                            disabled={proposal_status === null}
-                            style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
-                                setHandymanId(handyman.id.toString())
-                                router.push(`/appointment-form`)
-                            }}>
-                            <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
-                        </Pressable>
-
-                        <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
-                            {handymanSkills}
-                        </ScrollView>
-
-                        <View style={styles.bioContainer}>
-                            <Text style={styles.bioHeader}>Bio</Text>
-                            <Text style={styles.bioDescription}>{handyman.description}</Text>
-                        </View>
-
-                        <Text style={styles.imageHeader}>Images</Text>
-
-                        <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
-                            {workPictures}
-                        </ScrollView>
-                    </View>
-                    <View style={{ paddingHorizontal: 10 }}>
-                        <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 14 }}>Reviews</Text>
-                        <Reviews />
-                    </View>
+        <>
+            <SafeAreaView style={styles.safeView}>
+                <Octicons name='arrow-left' size={20} color={Colors.lighter} style={{ paddingHorizontal: 12, }} onPress={() => router.back()} />
+                <View style={styles.containerHeader}>
+                    <Image source={{ uri: handyman?.avatar_url }} placeholder={require('@/assets/images/placeholder.jpg')} placeholderContentFit='cover' style={styles.profileStyle} />
+                    <Octicons name="dot-fill" size={24} color={handyman.availability ? 'green' : 'red'} style={styles.iconStyle} />
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+                <ScrollView style={styles.scrollView} >
+                    <View style={styles.conatiner}>
+
+                        <View style={styles.subConatiner}>
+                            <View style={styles.nameConatiner}>
+                                <Text style={styles.nameText}>{handyman.first_name} {handyman.last_name}</Text>
+                                <Text style={styles.titleText}>{handyman.title}</Text>
+                                <Text style={styles.titleText}>{handyman.location_attributes}</Text>
+                            </View>
+
+                            <Pressable
+                                disabled={proposal_status === null}
+                                style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
+                                    setHandymanId(handyman.id.toString())
+                                    router.push(`/appointment-form`)
+                                }}>
+                                <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
+                            </Pressable>
+
+                            <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
+                                {handymanSkills}
+                            </ScrollView>
+
+                            <View style={styles.bioContainer}>
+                                <Text style={styles.bioHeader}>Bio</Text>
+                                <Text style={styles.bioDescription}>{handyman.description}</Text>
+                            </View>
+
+                            <Text style={styles.imageHeader}>Images</Text>
+
+                            <ScrollView horizontal={true} style={{ width: '100%', alignSelf: 'flex-start', }} contentContainerStyle={styles.imageScroll}>
+                                {workPictures}
+                            </ScrollView>
+
+                            <View style={{  width:'100%' }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 14, padding:10 }}>Reviews</Text>
+                                    <Menu>
+                                        <MenuTrigger
+                                            style={{
+                                                padding: 5,
+                                                paddingHorizontal: 10
+                                            }}>
+                                            <Ionicons name="ellipsis-vertical" size={18} color="gray" />
+                                        </MenuTrigger>
+                                        <MenuOptions customStyles={
+                                            {
+                                                optionsContainer: {
+                                                    backgroundColor: 'white',
+                                                    padding: 5,
+                                                    borderRadius: 5,
+                                                    width: 100,
+                                                }
+                                            }
+                                        }>
+                                            <MenuOption style={{ width: 100, }} onSelect={() => {
+                                                setVisible(true);
+                                            }}>
+                                                <Text style={{
+                                                    padding: 5,
+                                                    paddingHorizontal: 10,
+                                                    fontFamily: 'roboto-bold'
+                                                }} >Add Review</Text>
+                                            </MenuOption>
+                                        </MenuOptions>
+                                    </Menu>
+                                </View>
+                                <Reviews {...{ id, setVisible, visible }} />
+                            </View>
+                        </View>
+
+                    </View>
+                </ScrollView>
+
+            </SafeAreaView>
+            <Loader isLoading={loading} />
+        </>
     )
 }
 
