@@ -238,8 +238,9 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 setLoading(false)
             }
         }
-        catch (err: any) {
-            console.log("thisss", err.message)
+        catch (err) {
+            if (err instanceof Error) setError(err.message)
+            setIsError(true)
         }
         finally {
             setLoading(false)

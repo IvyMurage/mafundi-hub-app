@@ -15,13 +15,6 @@ const HandymanJobs = () => {
     const { tasks, getMyJobs, service_id, location, available, loading, pageNumber, locations: taskLocations } = useTask()
     const { setLocations } = useLocations()
     const router = useRouter()
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         if (getMyJobs) {
-    //             getMyJobs()
-    //         }
-    //     }, [service_id, location, available, pageNumber])
-    // )
 
     const getLocations = async () => {
         if (taskLocations) {
@@ -32,7 +25,7 @@ const HandymanJobs = () => {
     useEffect(() => {
         getMyJobs()
         getLocations()
-    }, [service_id, location, available, tasks, pageNumber])
+    }, [service_id, location, available, pageNumber])
 
     return (
         <>

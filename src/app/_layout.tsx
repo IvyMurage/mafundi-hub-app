@@ -1,14 +1,13 @@
 import Colors from "@/constants/Colors";
 import { useFonts } from "expo-font";
-import { Stack, useRouter } from "expo-router";
+import { Slot, Stack, } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { useEffect, } from "react";
+import { StyleSheet, } from "react-native";
+import { AuthProvider, } from "../contexts/AuthContext";
 import { TaskIdProvider } from "@/contexts/TaskIdContext";
 import { HandymanContextIdProvider } from "@/contexts/HandymanIdContext";
 import { MenuProvider } from "react-native-popup-menu";
-import Login from "./(auth)/login";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -16,14 +15,30 @@ export {
 } from "expo-router";
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(auth)/login',
+    // Ensure that reloading on `/modal` keeps a back button present.
+    initialRouteName: '(auth)/login',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
+
+    return (
+        <>
+            <MenuProvider>
+                <HandymanContextIdProvider>
+                    <TaskIdProvider>
+                        <RootLayoutNav />
+                    </TaskIdProvider>
+                </HandymanContextIdProvider>
+            </MenuProvider >
+
+        </>
+    );
+}
+
+export default function AuthProviderWrapper() {
     const [loaded, error] = useFonts({
         roboto: require("@/assets/fonts/Roboto-Regular.ttf"),
         "roboto-medium": require("@/assets/fonts/Roboto-Medium.ttf"),
@@ -45,38 +60,21 @@ function RootLayout() {
     if (!loaded) {
         return null;
     }
-
-    const { authState } = useAuth();
     return (
-        <MenuProvider>
-            {authState?.authenicated ? (
-                <HandymanContextIdProvider>
-                    <TaskIdProvider>
-                        <RootLayoutNav />
-                    </TaskIdProvider>
-                </HandymanContextIdProvider>
-            ) : (
-                <Login />
-            )}
-        </MenuProvider>
-    );
-}
+        <>
+            <AuthProvider>
+                <RootLayout />
+            </AuthProvider>
+        </>
 
-export default function AuthProviderWrapper() {
-    return (
-        <AuthProvider>
-            <RootLayout />
-        </AuthProvider>
     );
 }
 
 function RootLayoutNav() {
-    // const { authState } = useAuth();
-    // console.log(authState, "inside the layout nav");
     return (
         <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
             <Stack.Screen
-                name="(auth)/login"
+                name="(tabs)"
                 options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }}
             />
         </Stack>
