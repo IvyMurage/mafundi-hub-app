@@ -74,13 +74,13 @@ const selectStyles = StyleSheet.create({
     dropdownButtonText: {
         fontFamily: 'roboto',
         fontSize: 12,
-        letterSpacing: 1.8,
+        letterSpacing: 1.4,
         textAlign: 'left',
 
     },
     dropDownText: {
         fontFamily: 'roboto',
-        fontSize: 14,
+        fontSize: 12,
         letterSpacing: 1.8,
         textAlign: 'left',
     },

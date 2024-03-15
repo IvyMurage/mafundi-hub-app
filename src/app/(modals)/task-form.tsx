@@ -122,6 +122,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 defaultButtonText='Instant Booking'
                                                 profile={false}
                                                 task={true}
+                                                buttonStyle={taskFormStyles.taskStyles}
                                             />
                                         </View>
 
@@ -137,6 +138,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 handleChange={(value) => setFieldValue('service_id', value)}
                                                 defaultButtonText='Service'
                                                 profile={false}
+                                                buttonStyle={taskFormStyles.taskStyles}
                                                 task={true}
                                             />
 
@@ -161,6 +163,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 searchPlaceHolder='Search for a Location'
                                                 profile={false}
                                                 task={true}
+                                                buttonStyle={taskFormStyles.taskStyles}
                                             />
 
                                             {

@@ -304,7 +304,7 @@ export const AuthProvider = ({ children }: any) => {
             else if (authState?.authenicated === true && isAuthGroup) {
                 router.push('/(tabs)')
             }
-            else if (authState.authenicated === null) {
+            else if (authState.authenicated === null && isAuthGroup) {
                 router.replace('/(auth)/login')
             }
 
