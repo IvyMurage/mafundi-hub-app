@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
 import Colors from '@/constants/Colors'
-import { Link, useSegments } from 'expo-router'
+import { Link } from 'expo-router'
 import { useAuth } from '@/contexts/AuthContext'
 import { Formik, FormikHelpers } from 'formik'
 import { loginSchema } from '@/constants/validation-schema'
@@ -20,7 +20,6 @@ const Login = () => {
     })
     const [alertVisible, setAlertVisible] = useState(false);
     const [error, setError] = useState(false)
-    const segments = useSegments()
 
     const handleLogin = async (user: { email: string | null; password: string | null }, resetForm: FormikHelpers<{ email: string | null; password: string | null }>) => {
         try {
@@ -28,7 +27,6 @@ const Login = () => {
             if (response.ok) {
                 resetForm.resetForm()
                 setAlertVisible(true)
-                segments.pop()
             }
 
         }

@@ -38,7 +38,6 @@ const Handymen = () => {
         )()
     }, [services])
 
-    console.log(visible)
     return (
         <HandymanProvider>
             <SafeAreaView style={{ flex: 1, paddingTop: 12, backgroundColor: Colors.light }}>

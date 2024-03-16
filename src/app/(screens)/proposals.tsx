@@ -83,7 +83,6 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
             const data = await response.json()
 
             if (response.ok) {
-                console.log("Proposal accepted", data)
                 setProposalStatus!(data?.data.job_status)
                 setTaskId!(data?.data.task_id)
                 setProposalId!(data?.data.id)

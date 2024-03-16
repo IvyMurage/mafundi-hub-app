@@ -100,7 +100,6 @@ export const useHandymanFetcher = () => {
                 if (!response.ok) {
                     throw new Error(data.error)
                 }
-                console.log(response)
                 if (response.ok) {
                     setHandyman({
                         first_name: data.first_name,
@@ -113,7 +112,6 @@ export const useHandymanFetcher = () => {
                         description: data.description,
                         handyman_skills: data.handyman_skills?.join(', ')
                     })
-                    console.log(data)
                     setLoading(false)
                 }
             }

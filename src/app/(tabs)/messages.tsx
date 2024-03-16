@@ -39,7 +39,6 @@ const Messages = () => {
             setLoading(false); // Set loading to false in case of error
         }
     }, []);
-    console.log('messages:', messages)
 
     const renderMessage = ({ item }: { item: DocumentData }) => {
         return (

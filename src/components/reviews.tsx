@@ -76,7 +76,6 @@ const Reviews = ({ id, visible, setVisible }: { id: string, visible: boolean; se
         getReview()
     }, [reviewId])
 
-    console.log(reviews)
     const deleteReview = async (reviewId: number) => {
         setLoading(true)
         try {
@@ -86,7 +85,6 @@ const Reviews = ({ id, visible, setVisible }: { id: string, visible: boolean; se
             })
             const data = await response.json()
             if (response.ok) {
-                console.log('data', data)
                 setReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId))
                 setSuccess(data)
             }
