@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { jwtDecode } from "jwt-decode";
-import { useNavigationContainerRef, useRouter, useSegments } from 'expo-router';
+import {  useRouter, useSegments } from 'expo-router';
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -54,7 +54,6 @@ export const useProtectedRoute = (user: {
     const router = useRouter()
 
     useEffect(() => {
-        // if (!isNavigationReady) return null
         const isAuthGroup = segements[0] === '(auth)'
         console.log('not defined', authState?.authenicated)
         console.log('segments', segements)
@@ -131,7 +130,6 @@ export const AuthProvider = ({ children }: any) => {
                         setAuthState({ token, authenicated: true })
                     }
                 }
-
             }
             catch {
                 console.log('error')
@@ -197,7 +195,6 @@ export const AuthProvider = ({ children }: any) => {
                 await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
                 setAuthState({ token: token!, authenicated: true })
                 setLoading(false)
-                console.log(data)
             }
 
             return response

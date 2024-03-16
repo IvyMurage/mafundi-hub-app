@@ -1,6 +1,6 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import React from 'react'
-import { StyleSheet,  } from 'react-native'
+import { StyleSheet, } from 'react-native'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
@@ -69,12 +69,12 @@ const selectStyles = StyleSheet.create({
         width: 350,
         alignItems: 'center',
         marginBottom: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     dropdownButtonText: {
         fontFamily: 'roboto',
         fontSize: 12,
-        letterSpacing: 1.4,
+        letterSpacing: 1.2,
         textAlign: 'left',
 
     },
