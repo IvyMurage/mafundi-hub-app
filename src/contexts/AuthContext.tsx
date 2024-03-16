@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { jwtDecode } from "jwt-decode";
-import {  useRouter, useSegments } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -58,7 +58,7 @@ export const useProtectedRoute = (user: {
         console.log('not defined', authState?.authenicated)
         console.log('segments', segements)
 
-        if (user === null) {
+        if (user === null && !isAuthGroup) {
             router.push('/(onboard)/get-started')
         }
         else if (authState?.authenicated === true && isAuthGroup) {
@@ -161,7 +161,6 @@ export const AuthProvider = ({ children }: any) => {
         }
         if (response.ok) {
             const data = await response.json()
-            console.log(data)
             const token = response.headers.get('authorization')?.split(' ')[1]
             setUser(data?.user)
             await SecureStore.setItemAsync(TOKEN_KEY, token!)
@@ -239,7 +238,7 @@ export const AuthProvider = ({ children }: any) => {
 
     const logout = async () => {
         await SecureStore.deleteItemAsync(TOKEN_KEY)
-        setAuthState({ token: null, authenicated: false })
+        setAuthState({ token: null, authenicated: null })
     }
     useProtectedRoute(user, authState)
     const value = {

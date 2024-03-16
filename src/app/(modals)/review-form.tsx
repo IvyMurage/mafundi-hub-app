@@ -39,7 +39,6 @@ const ReviewForm = ({ visible, setVisible, id, details, setReviews }: {
             const { response, data } = await request('POST', JSON.stringify(payload), 'reviews/create', authState?.token!)
 
             if (response.ok) {
-                console.log('data', data)
                 setReviews(prevReviews => [data?.review, ...prevReviews])
                 setReview({
                     comment: '',

@@ -32,7 +32,6 @@ const AppointmentForm = () => {
 
     const { handymanId } = useHandymanId()
     const { taskId, proposalId } = useTaskId()
-    console.log('taskId', proposalId)
     const { userState, authState } = useAuth()
     const [loading, setLoading] = useState(false)
     const [appointment, setAppointment] = useState<AppointmentFormProps>({
@@ -86,7 +85,6 @@ const AppointmentForm = () => {
                 appointment_date: new Date(values.appointment_date!).toISOString()
             }
 
-            console.log('payload', payload)
 
 
             const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments/create`, {
@@ -98,10 +96,8 @@ const AppointmentForm = () => {
                 body: JSON.stringify(payload)
             })
 
-            console.log('response', response)
             const data = await response.json()
             if (response.ok) {
-                console.log('data', data)
                 createNewChat()
                 router.push('/(tabs)/messages')
             }
@@ -212,7 +208,6 @@ const AppointmentForm = () => {
             setIsLoading(false)
         }
     }
-    console.log('paymentResponse', paymentResponse)
     return (
         <Formik
             initialValues={appointment}
