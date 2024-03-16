@@ -90,7 +90,6 @@ const Appointments = () => {
         }
     }
     const handleUpdate = async (item: AppointmentType, status: string) => {
-        console.log('item:', item)
         setLoading(true)
         try {
             const { response, data } = await request('PATCH', JSON.stringify({ appointment_status: status }), `appointments/${item.id}/update`, authState?.token!)
