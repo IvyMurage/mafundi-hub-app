@@ -8,8 +8,6 @@ import { AuthProvider, useAuth, } from "../contexts/AuthContext";
 import { TaskIdProvider } from "@/contexts/TaskIdContext";
 import { HandymanContextIdProvider } from "@/contexts/HandymanIdContext";
 import { MenuProvider } from "react-native-popup-menu";
-import Login from "./(auth)/login";
-import SignUp from "./(auth)/sign-up";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -29,22 +27,7 @@ function RootLayout() {
 
     return (
         <>
-            {
-                authState?.authenicated ? <MenuProvider>
-                    <HandymanContextIdProvider>
-                        <TaskIdProvider>
-                            <RootLayoutNav />
-                        </TaskIdProvider>
-                    </HandymanContextIdProvider>
-                </MenuProvider >
-                    : authState?.authenicated === null ?
-                        <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
-                            <Stack.Screen
-                                name="(auth)/login"
-                                options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }}
-                            />
-                        </Stack> : userState === null ? <SignUp /> : null
-            }
+            <RootLayoutNav />
         </>
     );
 }
@@ -74,10 +57,16 @@ export default function AuthProviderWrapper() {
 
     return (
         <>
+            <MenuProvider>
+                <AuthProvider>
+                    <HandymanContextIdProvider>
+                        <TaskIdProvider>
+                            <RootLayout />
+                        </TaskIdProvider>
+                    </HandymanContextIdProvider>
+                </AuthProvider>
+            </MenuProvider >
 
-            <AuthProvider>
-                <RootLayout />
-            </AuthProvider>
         </>
 
     );
