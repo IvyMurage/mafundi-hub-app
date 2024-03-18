@@ -257,7 +257,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
     useEffect(() => {
         (async () => {
-            console.log('locationsttt', locations)
             if (locations) {
                 await SecureStore.setItemAsync('locations', JSON.stringify(locations))
             }
