@@ -52,7 +52,6 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                     }
                     throw new Error(error)
                 }
-                // console.log("This is the data", data)
             }
             catch (error: any) {
                 console.log("Error fetching proposals", error.message)
@@ -86,7 +85,6 @@ const Proposal = (props: { visible: boolean; setVisible: Dispatch<SetStateAction
                 setProposalStatus!(data?.data.job_status)
                 setTaskId!(data?.data.task_id)
                 setProposalId!(data?.data.id)
-
                 router.push(`/handyman-listing/${data?.data.handyman_id}`)
             }
 

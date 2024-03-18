@@ -5,7 +5,6 @@ import { request } from "@/utils/executePostRequest";
 import { TaskFormProps } from "@/types/task";
 import { FormikHelpers } from "formik";
 import * as SecureStore from 'expo-secure-store'
-import { useRouter } from "expo-router";
 import { MapPropType } from "./LocationContext";
 
 interface TaskProps {
@@ -19,7 +18,7 @@ interface TaskProps {
     loading?: boolean,
     isLoading?: boolean,
     isError?: boolean,
-    error?: string,
+    error?: string[],
     visible?: boolean,
     setVisible?: Dispatch<SetStateAction<boolean>>,
     setLocation?: Dispatch<SetStateAction<string>>,
@@ -45,7 +44,7 @@ const TaskContext = createContext<TaskProps>({
     loading: false,
     isLoading: false,
     isError: false,
-    error: '',
+    error: [],
     visible: false,
     setVisible: () => { },
     handleSubmit: async () => { },
@@ -87,7 +86,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<string[]>([])
     const [visible, setVisible] = useState<boolean>(false)
     const [task, setTask] = useState<JobPropType>({
         id: null,
@@ -163,10 +162,16 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 resetForm.resetForm()
                 setVisible(true)
             }
+
+            if (!response.ok) {
+                throw new Error(data.error)
+            }
+            if (response.status === 500) throw new Error('Something went wrong')
+
         }
         catch (error: any) {
             setIsError(true)
-            setError(error.message)
+            setError([error.message])
             setVisible(true)
         }
         finally {
@@ -203,6 +208,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 }
                 throw new Error(error);
             }
+
+            if (response.status === 500) throw new Error('Something went wrong')
             if (response.ok) {
                 setTasks(data?.task?.map((item: {
                     id: number | null;
@@ -240,7 +247,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             }
         }
         catch (err) {
-            if (err instanceof Error) setError(err.message)
+            if (err instanceof Error) setError([err.message])
             setIsError(true)
         }
         finally {
@@ -255,7 +262,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                 await SecureStore.setItemAsync('locations', JSON.stringify(locations))
             }
         })()
-    },[locations])
+    }, [locations])
 
 
     const value = {

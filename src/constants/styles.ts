@@ -125,7 +125,7 @@ export const ClientRegisterStyles = StyleSheet.create({
     textInput: {
         borderColor: Colors.secondary,
         borderWidth: 1,
-        width: 380,
+        width: 360,
         borderRadius: 40,
     },
 
@@ -133,7 +133,7 @@ export const ClientRegisterStyles = StyleSheet.create({
         backgroundColor: Colors.primary,
         borderRadius: 20,
         padding: 20,
-        width: 380,
+        width: 360,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 10,
