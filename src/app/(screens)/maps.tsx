@@ -39,7 +39,6 @@ const Maps = () => {
     useEffect(() => {
         (async () => {
             const locations = await getItemAsync('locations')
-            console.log("This is the locations", locations)
             if (locations) {
                 setRegions(JSON.parse(locations)?.map((location: MapPropType) => {
                     return {

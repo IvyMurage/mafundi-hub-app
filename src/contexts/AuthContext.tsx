@@ -1,7 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
-import { jwtDecode } from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import { useRouter, useSegments } from 'expo-router';
+
+const { decode } = require("base-64")
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -28,8 +30,6 @@ interface AuthProps {
     authError?: string
 }
 const AuthContext = createContext<AuthProps>({})
-const TOKEN_KEY = '12345'
-
 
 export const useAuth = () => {
     const context = React.useContext(AuthContext)
@@ -37,38 +37,6 @@ export const useAuth = () => {
         throw new Error('useAuth must be used within an AuthProvider')
     }
     return context
-
-}
-
-export const useProtectedRoute = (user: {
-    id: number | null;
-    email: string | null;
-    user_role: string | null;
-    user_id: number | null,
-    avatar_url: string | null
-}, authState: {
-    authenicated: boolean | null
-    token: string | null
-}) => {
-    const segements = useSegments()
-    const router = useRouter()
-
-    useEffect(() => {
-        const isAuthGroup = segements[0] === '(auth)'
-        console.log('not defined', authState?.authenicated)
-        console.log('segments', segements)
-
-        if (user === null && !isAuthGroup) {
-            router.push('/(onboard)/get-started')
-        }
-        else if (authState?.authenicated === true && isAuthGroup) {
-            router.push('/(tabs)/')
-        }
-        else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
-            router.push('/(auth)/login')
-        }
-
-    }, [authState, user, segements])
 
 }
 
@@ -96,31 +64,53 @@ export const AuthProvider = ({ children }: any) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [authError, setErrors] = useState<string>('')
 
-    const hasTokenExpired = async () => {
-        const token = await SecureStore.getItemAsync(TOKEN_KEY)
-        if (token) {
-            const decodedToken: any = jwtDecode(token)
-            const expiryDate = new Date(decodedToken.exp * 1000)
-            if (new Date() > expiryDate) {
-                return true
+
+    const useProtectedRoute = (user: {
+        id: number | null;
+        email: string | null;
+        user_role: string | null;
+        user_id: number | null,
+        avatar_url: string | null
+    }, authState: {
+        authenicated: boolean | null
+        token: string | null
+    }) => {
+        const segements = useSegments()
+        const router = useRouter()
+
+        const hasTokenExpired = async () => {
+            let token = await SecureStore.getItemAsync('token')
+
+            // Regular expression to validate base64 format
+            const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+
+            if (token !== null) {
+                token.trim()
+                const isValid = base64Regex.test(token);
+                if (isValid) {
+                    const decodedToken: any = decode(token)
+                    console.log('decodedToken:', decodedToken);
+                    const expiryDate = new Date(decodedToken.exp * 1000)
+                    if (new Date() > expiryDate) {
+                        return true
+                    }
+                }
             }
+            return false
         }
-        return false
-    }
 
-
-    useEffect(() => {
         const loadToken = async () => {
             setLoading(true)
             try {
                 // check if token has expired and delete it
                 if (await hasTokenExpired()) {
-                    await SecureStore.deleteItemAsync(TOKEN_KEY)
+                    await SecureStore.deleteItemAsync('token')
                     setAuthState({ token: null, authenicated: false })
                 }
                 else {
-                    const token = await SecureStore.getItemAsync(TOKEN_KEY)
+                    const token = await SecureStore.getItemAsync('token')
                     const user = await SecureStore.getItemAsync('user')
+                    console.log('user logged in:', token)
                     if (user) {
                         setUser(JSON.parse(user))
                     }
@@ -129,16 +119,32 @@ export const AuthProvider = ({ children }: any) => {
                     }
                 }
             }
-            catch {
-                console.log('error')
+            catch (error) {
+                if (error instanceof Error) console.log('error', error.message)
             }
             finally {
                 setLoading(false)
             }
         }
 
-        loadToken()
-    }, [])
+
+        useEffect(() => {
+            loadToken()
+            const isAuthGroup = segements[0] === '(auth)'
+
+            if (user === null && !isAuthGroup) {
+                router.push('/(onboard)/get-started')
+            }
+            else if (authState?.authenicated === true && isAuthGroup) {
+                router.push('/(tabs)/')
+            }
+            else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
+                router.push('/(auth)/login')
+            }
+
+        }, [authState, user, segements])
+
+    }
 
     const register = async (
         user: {
@@ -161,7 +167,7 @@ export const AuthProvider = ({ children }: any) => {
             const data = await response.json()
             const token = response.headers.get('authorization')?.split(' ')[1]
             setUser(data?.user)
-            await SecureStore.setItemAsync(TOKEN_KEY, token!)
+            await SecureStore.setItemAsync('token', token!)
             await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
             setLoading(false)
         }
@@ -188,7 +194,7 @@ export const AuthProvider = ({ children }: any) => {
                 const data = await response.json()
                 const token = response.headers.get('authorization')?.split(' ')[1]
                 setUser(data?.user)
-                await SecureStore.setItemAsync(TOKEN_KEY, token!)
+                await SecureStore.setItemAsync('token', token!)
                 await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
                 setAuthState({ token: token!, authenicated: true })
                 setLoading(false)
@@ -235,10 +241,14 @@ export const AuthProvider = ({ children }: any) => {
     }
 
     const logout = async () => {
-        await SecureStore.deleteItemAsync(TOKEN_KEY)
+        await SecureStore.deleteItemAsync('token')
         setAuthState({ token: null, authenicated: null })
     }
-    // useProtectedRoute(user, authState)
+
+
+
+
+    useProtectedRoute(user, authState)
     const value = {
         onRegister: register,
         setUserState: setUser,
