@@ -36,13 +36,13 @@ const Filter = ({ setVisible, visible }: { visible: boolean; setVisible: Dispatc
                                 />
                             </View>
                         </View>
-                        <View style={{ marginTop: 20 }}>
+                        {/* <View style={{ marginTop: 20 }}>
                             <AvailabilityFilter
                                 visible={true}
                                 setVisible={setVisible}
                                 setAvailable={setAvailable!}
                             />
-                        </View>
+                        </View> */}
                     </View>
                     <Pressable onPress={() => {
                         if (location) {

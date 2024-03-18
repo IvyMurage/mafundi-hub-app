@@ -73,7 +73,6 @@ export const useProtectedRoute = (user: {
 }
 
 export const AuthProvider = ({ children }: any) => {
-    const router = useRouter()
     const [authState, setAuthState] = useState<
         { token: string | null; authenicated: boolean | null }>
         ({
@@ -118,7 +117,6 @@ export const AuthProvider = ({ children }: any) => {
                 if (await hasTokenExpired()) {
                     await SecureStore.deleteItemAsync(TOKEN_KEY)
                     setAuthState({ token: null, authenicated: false })
-                    router.push('/(auth)/login')
                 }
                 else {
                     const token = await SecureStore.getItemAsync(TOKEN_KEY)
@@ -240,7 +238,7 @@ export const AuthProvider = ({ children }: any) => {
         await SecureStore.deleteItemAsync(TOKEN_KEY)
         setAuthState({ token: null, authenicated: null })
     }
-    useProtectedRoute(user, authState)
+    // useProtectedRoute(user, authState)
     const value = {
         onRegister: register,
         setUserState: setUser,
