@@ -118,7 +118,7 @@ export const useClientPost = () => {
             if (response.ok) {
                 resetForm.resetForm()
                 router.push('/(auth)/login')
-                await setItemAsync('client_id', data.id)
+                await setItemAsync('client_id', JSON.stringify(data.id))
             }
             setIsLoading(false)
         }

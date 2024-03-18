@@ -10,6 +10,8 @@ import { clientSchema } from '@/constants/validation-schema'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useClient, useClientPost } from '@/hooks/useClient'
+import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
 
 
 
@@ -17,6 +19,7 @@ const ClientRegister = () => {
     const locations = useLocation()
     const { user: client, } = useClient()
     const { handleSubmit, error, alertVisible, setAlertVisible, isLoading, errorMessage } = useClientPost()
+    const router = useRouter()
 
     return (
         <Formik
@@ -32,6 +35,10 @@ const ClientRegister = () => {
                         borderBottomRightRadius: 50,
                         backgroundColor: Colors.primary
                     }}>
+
+                        <View style={{ flexDirection: 'row', backgroundColor: Colors.primary, paddingTop: 20, height: 60, alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingHorizontal: 12 }}>
+                            <Ionicons name='arrow-back' size={20} color={Colors.lighter} onPress={() => { router.back() }} />
+                        </View>
                         <Image
                             style={{ width: 200, height: 100, resizeMode: 'contain' }}
                             source={require('@/assets/images/client.svg')}
@@ -109,8 +116,8 @@ const ClientRegister = () => {
                                     defaultButtonText='Location'
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
-                                    profile={false}
                                     task={false}
+                                    buttonStyle={{ width: 360, height:60, borderWidth: 1, borderRadius: 40, borderColor: Colors.secondary}}
                                 />
                                 {
                                     touched.location_attributes && errors.location_attributes && (
