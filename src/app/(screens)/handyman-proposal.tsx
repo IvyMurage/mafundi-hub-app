@@ -74,7 +74,7 @@ const HandymanProposals = () => {
     }
     return (
         <SafeAreaView style={proposalScreenStyles.safeView}>
-            <Ionicons name='arrow-back' color={Colors.lighter} size={24} style={{ marginLeft: 18, marginTop: 30 }} onPress={() => router.back()} />
+            <Ionicons name='arrow-back' color={Colors.lighter} size={20} style={{ marginLeft: 18, marginTop: 30 }} onPress={() => router.back()} />
             <View style={proposalScreenStyles.container}>
                 <Text style={proposalScreenStyles.headerText}>Proposals</Text>
                 {!loading && proposals.length === 0 && <ProposalNotFound />}

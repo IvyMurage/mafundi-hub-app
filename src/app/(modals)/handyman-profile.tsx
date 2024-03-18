@@ -11,7 +11,7 @@ import { useService } from '@/hooks/useService'
 import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { useHandymanFetcher, useHandymanUpdate } from '@/hooks/useHandyman'
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { useProfileUpload } from '@/hooks/useProfileUpload'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -38,9 +38,9 @@ const HandymanProfile = () => {
                             <View style={{ alignItems: 'center' }}>
                                 <Image
                                     style={{
-                                        width: 80,
-                                        height: 80,
-                                        borderRadius: 80,
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 60,
                                         marginBottom: 20,
                                         marginTop: 1
                                     }}
@@ -50,7 +50,7 @@ const HandymanProfile = () => {
                                 <Pressable style={HandymanProfileStyles.cameraContainer} onPress={() => {
                                     pickImage()
                                 }}>
-                                    <FontAwesome5 name="camera" color={Colors.lighter} size={20} />
+                                    <Ionicons name='camera' color={Colors.lighter} size={20} />
                                 </Pressable>
                             </View>
                             <ScrollView
@@ -58,11 +58,7 @@ const HandymanProfile = () => {
                                 style={HandymanProfileStyles.scroll}>
                                 <View style={HandymanProfileStyles.subContainer}>
                                     <View style={HandymanProfileStyles.textContainer}>
-                                        <FontAwesome name="user" size={20} color={Colors.primary} style={{
-                                            left: 30,
-                                            paddingBottom: 15,
-                                            zIndex: 1
-                                        }} />
+
 
                                         <TextInput
                                             autoCapitalize='none'
@@ -70,7 +66,7 @@ const HandymanProfile = () => {
                                             value={values.first_name!}
                                             onChangeText={handleChange('first_name')}
                                             onBlur={() => setFieldTouched('first_name')}
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                            style={[HandymanProfileStyles.textInput]}
                                         />
                                     </View>
 
@@ -83,18 +79,14 @@ const HandymanProfile = () => {
                                     }
 
                                     <View style={HandymanProfileStyles.textContainer}>
-                                        <FontAwesome name="user" size={20} color={Colors.primary} style={{
-                                            left: 30,
-                                            paddingBottom: 15,
-                                            zIndex: 1
-                                        }} />
+
                                         <TextInput
                                             autoCapitalize='none'
                                             placeholder='Last Name'
                                             value={values.last_name!}
                                             onChangeText={handleChange('last_name')}
                                             onBlur={() => setFieldTouched('last_name')}
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                            style={[HandymanProfileStyles.textInput]}
                                         />
                                     </View>
 
@@ -107,11 +99,7 @@ const HandymanProfile = () => {
                                         )
                                     }
                                     <View style={HandymanProfileStyles.textContainer}>
-                                        <FontAwesome name="briefcase" size={20} color={Colors.primary} style={{
-                                            left: 30,
-                                            paddingBottom: 15,
-                                            zIndex: 1
-                                        }} />
+
 
                                         <TextInput
                                             autoCapitalize='none'
@@ -119,7 +107,7 @@ const HandymanProfile = () => {
                                             value={values.title!}
                                             onChangeText={handleChange('title')}
                                             onBlur={() => setFieldTouched('title')}
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                            style={[HandymanProfileStyles.textInput]}
                                         />
                                     </View>
 
@@ -133,11 +121,7 @@ const HandymanProfile = () => {
                                     }
 
                                     <View style={HandymanProfileStyles.textContainer}>
-                                        <FontAwesome name="phone" size={20} color={Colors.primary} style={{
-                                            left: 30,
-                                            paddingBottom: 15,
-                                            zIndex: 1
-                                        }} />
+
                                         <TextInput
                                             autoCapitalize='none'
                                             placeholder='Phone number (e.g 07xxxx)'
@@ -145,7 +129,7 @@ const HandymanProfile = () => {
                                             value={values.phone_number!}
                                             onChangeText={handleChange('phone_number')}
                                             onBlur={() => setFieldTouched('phone_number')}
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
+                                            style={[HandymanProfileStyles.textInput]}
                                         />
                                     </View>
 
@@ -157,48 +141,18 @@ const HandymanProfile = () => {
                                         )
                                     }
 
-                                    <TextInput
-                                        autoCapitalize='none'
-                                        placeholder='year of  Experience (e.g 1)'
-                                        value={values.year_of_experience?.toString()}
-                                        onChangeText={handleChange('year_of_experience')}
-                                        onBlur={() => setFieldTouched('year_of_experience')}
-                                        style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput]}
-                                    />
+                                    <View style={[HandymanProfileStyles.textContainer]}>
+                                        <TextInput
+                                            autoCapitalize='none'
+                                            placeholder='year of  Experience (e.g 1)'
+                                            value={values.year_of_experience?.toString()}
+                                            onChangeText={handleChange('year_of_experience')}
+                                            onBlur={() => setFieldTouched('year_of_experience')}
+                                            style={[HandymanProfileStyles.textInput]}
+                                        />
 
-                                    <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center',  }}>
-                                        <View>
-                                            <Select
-                                                data={services || []}
-                                                searchPlaceHolder='Search for a service'
-                                                handleChange={(value) => setFieldValue('service', value)}
-                                                defaultButtonText={services.find(service => service.key === parseInt(values.service!))?.label || 'Service'}
-                                                profile={true}
-                                                task={true}
-                                                name='service'
-                                            />
-                                            {
-                                                touched.service && errors.service && (
-                                                    <Text style={[defaultStyles.errorText]}>
-                                                        {errors.service}
-                                                    </Text>
-                                                )
-                                            }
-                                        </View>
-                                        <View >
-                                            <Select
-                                                data={locations?.length > 0 &&
-                                                    locations !== undefined &&
-                                                    locations?.map(location => { return { label: stringfy(location), value: stringfy(location) } }) || []}
-                                                defaultButtonText={values.location_attributes! || 'Location'}
-                                                handleChange={(value) => setFieldValue('location_attributes', value)}
-                                                searchPlaceHolder='Search for a Location'
-                                                profile={true}
-                                                task={true}
-                                                name='location'
-                                            />
-                                        </View>
                                     </View>
+
                                     <View>
                                         <TextInput
                                             autoCapitalize='none'
@@ -208,7 +162,7 @@ const HandymanProfile = () => {
                                             onChangeText={handleChange('description')}
                                             onBlur={() => setFieldTouched('description')}
                                             placeholder='Description(e.g I am a plumber .. '
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput, HandymanProfileStyles.textArea]}
+                                            style={[HandymanProfileStyles.textInput, HandymanProfileStyles.textArea]}
                                         />
                                         {
                                             touched.description && errors.description && (
@@ -228,8 +182,43 @@ const HandymanProfile = () => {
                                             onChangeText={handleChange('handyman_skills')}
                                             onBlur={() => setFieldTouched('handyman_skills')}
                                             placeholder='Task Responsibilities e.g(cleaning, house arrangement) '
-                                            style={[defaultStyles.inputTextField, HandymanProfileStyles.textInput, HandymanProfileStyles.textArea]}
+                                            style={[HandymanProfileStyles.textInput, HandymanProfileStyles.textArea]}
                                         />
+                                    </View>
+
+
+                                    <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <View>
+                                            <Select
+                                                data={services || []}
+                                                searchPlaceHolder='Search for a service'
+                                                handleChange={(value) => setFieldValue('service', value)}
+                                                defaultButtonText={services.find(service => service.key === parseInt(values.service!))?.label || 'Service'}
+                                                task={false}
+                                                name='service'
+                                                buttonStyle={HandymanProfileStyles.selectBtnStyles}
+                                            />
+                                            {
+                                                touched.service && errors.service && (
+                                                    <Text style={[defaultStyles.errorText]}>
+                                                        {errors.service}
+                                                    </Text>
+                                                )
+                                            }
+                                        </View>
+                                        <View >
+                                            <Select
+                                                data={locations?.length > 0 &&
+                                                    locations !== undefined &&
+                                                    locations?.map(location => { return { label: stringfy(location), value: stringfy(location) } }) || []}
+                                                defaultButtonText={values.location_attributes! || 'Location'}
+                                                handleChange={(value) => setFieldValue('location_attributes', value)}
+                                                searchPlaceHolder='Search for a Location'
+                                                task={false}
+                                                name='location'
+                                                buttonStyle={HandymanProfileStyles.selectBtnStyles}
+                                            />
+                                        </View>
                                     </View>
 
                                     <Pressable

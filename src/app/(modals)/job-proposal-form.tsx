@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { taskFormStyles } from '@/constants/styles'
 import { Image } from 'expo-image'
 import Colors from '@/constants/Colors'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { Formik } from 'formik'
 import { useAuth } from '@/contexts/AuthContext'
@@ -64,8 +64,8 @@ const ProposalForm = () => {
             {({ values, handleChange, setFieldTouched, handleSubmit }) => (
                 <>
                     <SafeAreaView style={proposalFormStyles.modal}>
-                        <FontAwesome5
-                            name="arrow-left"
+                        <Ionicons
+                            name='arrow-back'
                             color={Colors.dark}
                             size={20}
                             onPress={() => { router.back() }}
