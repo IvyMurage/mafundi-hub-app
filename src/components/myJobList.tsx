@@ -73,40 +73,44 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                             {userState?.user_role === 'client' ? "View Proposals" :
                                 item.available ? "Available" : "Not Available"}
                         </Text>
-                        <Menu>
-                            <MenuTrigger
-                                style={{
-                                    padding: 5,
-                                    paddingHorizontal: 10
-                                }}>
-                                <Ionicons name="ellipsis-vertical" size={18} color="gray" />
-                            </MenuTrigger>
-                            <MenuOptions customStyles={
-                                {
-                                    optionsContainer: {
-                                        backgroundColor: 'white',
+                        {
+                            userState?.user_role === 'client' &&
+                            <Menu>
+                                <MenuTrigger
+                                    style={{
                                         padding: 5,
-                                        borderRadius: 5,
-                                        width: 100,
+                                        paddingHorizontal: 10
+                                    }}>
+                                    <Ionicons name="ellipsis-vertical" size={18} color="gray" />
+                                </MenuTrigger>
+                                <MenuOptions customStyles={
+                                    {
+                                        optionsContainer: {
+                                            backgroundColor: 'white',
+                                            padding: 5,
+                                            borderRadius: 5,
+                                            width: 100,
+                                        }
                                     }
-                                }
-                            }>
-                                <MenuOption style={{ width: 100, }}>
-                                    <Text style={{
-                                        padding: 5,
-                                        paddingHorizontal: 10,
-                                        fontFamily: 'roboto-bold'
-                                    }} >Edit</Text>
-                                </MenuOption>
-                                <MenuOption onSelect={() => handleDelete(item.id!)} style={{ width: 100, }}>
-                                    <Text style={{
-                                        padding: 5,
-                                        paddingHorizontal: 10,
-                                        fontFamily: 'roboto-bold'
-                                    }} >Delete</Text>
-                                </MenuOption>
-                            </MenuOptions>
-                        </Menu>
+                                }>
+                                    <MenuOption style={{ width: 100, }}>
+                                        <Text style={{
+                                            padding: 5,
+                                            paddingHorizontal: 10,
+                                            fontFamily: 'roboto-bold'
+                                        }} >Edit</Text>
+                                    </MenuOption>
+                                    <MenuOption onSelect={() => handleDelete(item.id!)} style={{ width: 100, }}>
+                                        <Text style={{
+                                            padding: 5,
+                                            paddingHorizontal: 10,
+                                            fontFamily: 'roboto-bold'
+                                        }} >Delete</Text>
+                                    </MenuOption>
+                                </MenuOptions>
+                            </Menu>
+                        }
+
                     </View>
 
                     <View style={jobListStyle.jobBody}>

@@ -235,7 +235,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
                         longitude: item.location.longitude!
                     }
                 }))
-                setLoading(false)
+
+
             }
         }
         catch (err) {
@@ -246,6 +247,15 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        (async () => {
+            console.log('locationsttt', locations)
+            if (locations) {
+                await SecureStore.setItemAsync('locations', JSON.stringify(locations))
+            }
+        })()
+    },[locations])
 
 
     const value = {

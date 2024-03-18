@@ -77,6 +77,7 @@ export const ServiceFilter = ({ setService, visible, setVisible }: { setService:
                         profile={false}
                         task={true}
                         search={true}
+                        buttonStyle={styles.taskStyles}
                     />
                 </View>
             }

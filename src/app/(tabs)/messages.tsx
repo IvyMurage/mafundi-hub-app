@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 50,
     },
     profile: {
-        width: 60,
-        height: 60,
-        borderRadius: 60,
+        width: 50,
+        height: 50,
+        borderRadius: 50,
         borderColor: Colors.secondary,
         borderWidth: 1,
     },

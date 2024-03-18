@@ -1,13 +1,14 @@
 import Colors from "@/constants/Colors";
 import { useFonts } from "expo-font";
-import { Stack, } from "expo-router";
+import { Slot, Stack, } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, } from "react";
 import { StyleSheet, } from "react-native";
-import { AuthProvider, } from "../contexts/AuthContext";
+import { AuthProvider, useAuth, } from "../contexts/AuthContext";
 import { TaskIdProvider } from "@/contexts/TaskIdContext";
 import { HandymanContextIdProvider } from "@/contexts/HandymanIdContext";
 import { MenuProvider } from "react-native-popup-menu";
+import Login from "./(auth)/login";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -23,17 +24,21 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
+    const { authState } = useAuth()
 
     return (
         <>
-            <MenuProvider>
-                <HandymanContextIdProvider>
-                    <TaskIdProvider>
-                        <RootLayoutNav />
-                    </TaskIdProvider>
-                </HandymanContextIdProvider>
-            </MenuProvider >
-
+            {
+                authState?.authenicated ? <MenuProvider>
+                    <HandymanContextIdProvider>
+                        <TaskIdProvider>
+                            <RootLayoutNav />
+                        </TaskIdProvider>
+                    </HandymanContextIdProvider>
+                </MenuProvider >
+                    : authState?.authenicated === null ?
+                        <Login /> : <Slot />
+            }
         </>
     );
 }
@@ -60,8 +65,10 @@ export default function AuthProviderWrapper() {
     if (!loaded) {
         return null;
     }
+
     return (
         <>
+
             <AuthProvider>
                 <RootLayout />
             </AuthProvider>

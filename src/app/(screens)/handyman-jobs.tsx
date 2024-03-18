@@ -12,19 +12,13 @@ import { setItemAsync } from 'expo-secure-store'
 
 const HandymanJobs = () => {
     const [visible, setVisible] = useState<boolean>(false)
-    const { tasks, getMyJobs, service_id, location, available, loading, pageNumber, locations: taskLocations } = useTask()
+    const { tasks, getMyJobs, service_id, location, available,  pageNumber, locations: taskLocations } = useTask()
     const { setLocations } = useLocations()
     const router = useRouter()
 
-    const getLocations = async () => {
-        if (taskLocations) {
-            await setItemAsync('locations', JSON.stringify(taskLocations))
-            setLocations(taskLocations)
-        }
-    }
+
     useEffect(() => {
         getMyJobs()
-        getLocations()
     }, [service_id, location, available, pageNumber])
 
     return (
@@ -41,7 +35,7 @@ const HandymanJobs = () => {
                     borderRadius: 5,
                     marginBottom: 10,
                     marginRight: 10,
-                }} onPress={() => { router.push('/maps') }}><Text style={{ fontFamily: 'roboto' }}>View on Maps</Text></Pressable>
+                }} onPress={() => { router.push('/(screens)/maps') }}><Text style={{ fontFamily: 'roboto' }}>View on Maps</Text></Pressable>
 
                 <JobList tasks={tasks!} />
                 <Filter
