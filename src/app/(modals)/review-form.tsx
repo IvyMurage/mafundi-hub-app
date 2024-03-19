@@ -1,5 +1,5 @@
 import { View, Text, Modal, SafeAreaView, TextInput, Pressable, ActivityIndicator } from 'react-native'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import Colors from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,14 +20,25 @@ const ReviewForm = ({ visible, setVisible, id, details, setReviews }: {
     setReviews: Dispatch<SetStateAction<ReviewType[]>>,
 }) => {
     const [review, setReview] = useState<ReviewTypeForm>({
-        comment: details?.comment || '',
-        rating: details?.rating || '',
+        comment: '',
+        rating: '',
         handyman_id: parseInt(id),
     });
     const [loading, setLoading] = useState(false)
     const { authState } = useAuth()
     const exists = !!details?.id
 
+    useEffect(() => {
+        let mounted = true
+        if(mounted && exists) {
+            setReview({
+                comment: details?.comment || '',
+                rating: details?.rating || '',
+                handyman_id: parseInt(id),
+            })
+        }
+   
+    }, [details, exists]);
 
     const create = async () => {
         setLoading(true)

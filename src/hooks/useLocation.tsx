@@ -1,7 +1,9 @@
+import handleExeception from "@/utils/handleExeception";
 import { useEffect, useState } from "react";
 
 export const useLocation = () => {
     const [locations, setLocations] = useState<{ city: string; county: string; country: string; location_id: number }[]>([])
+    const [error, setError] = useState('')
     useEffect(() => {
         const getLocation = async () => {
             try {
@@ -26,10 +28,12 @@ export const useLocation = () => {
                 }
             }
             catch (error: any) {
-                console.error('Error fetching data:', error.message)
+                setTimeout(() => {
+                    handleExeception({ error: error.message })
+                }, 3000)
             }
         }
         getLocation()
     }, []);
-    return locations
+    return { locations, error }
 }

@@ -4,11 +4,12 @@ import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface AlertProps {
     visible: boolean;
-    message: string;
+    message: string | string[];
     onClose: () => void
 }
 
 const CustomAlert: React.FC<AlertProps> = ({ visible, message, onClose }) => {
+    const messageList = typeof message === 'object' && message?.map((alert, index) => <Text key={index}>{alert}</Text>)
     return (
         <Modal
             transparent={true}
@@ -18,7 +19,8 @@ const CustomAlert: React.FC<AlertProps> = ({ visible, message, onClose }) => {
         >
             <View style={styles.modalOverlay}>
                 <View style={styles.alertBox}>
-                    <Text style={styles.alertMessage}>{message}</Text>
+                    {message.length > 0 ? messageList : <Text style={styles.alertMessage}>{message}</Text>
+                    }
                     <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                         <Text style={styles.closeButtonText}>Close</Text>
                     </TouchableOpacity>

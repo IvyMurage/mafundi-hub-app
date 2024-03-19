@@ -11,14 +11,12 @@ import { clientHomeStyles } from '@/constants/styles'
 import { iconView } from '@/constants/icons'
 import { TaskProvider } from '@/contexts/TaskContext'
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
-import { useAuth } from '@/contexts/AuthContext'
 
 
 
 const ClientHome = () => {
     const categoriesList = useServiceCategory()
     const [categories, setCategories] = useState<CategoryPropType[]>(categoriesList)
-    const { userState } = useAuth()
     useEffect(() => {
         setCategories(categoriesList)
     }, [categoriesList])

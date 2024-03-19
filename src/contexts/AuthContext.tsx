@@ -99,37 +99,39 @@ export const AuthProvider = ({ children }: any) => {
             return false
         }
 
-        const loadToken = async () => {
-            setLoading(true)
-            try {
-                // check if token has expired and delete it
-                if (await hasTokenExpired()) {
-                    await SecureStore.deleteItemAsync('token')
-                    setAuthState({ token: null, authenicated: false })
-                }
-                else {
-                    const token = await SecureStore.getItemAsync('token')
-                    const user = await SecureStore.getItemAsync('user')
-                    console.log('user logged in:', token)
-                    if (user) {
-                        setUser(JSON.parse(user))
+        useEffect(() => {
+            const loadToken = async () => {
+                setLoading(true)
+                try {
+                    // check if token has expired and delete it
+                    if (await hasTokenExpired()) {
+                        await SecureStore.deleteItemAsync('token')
+                        setAuthState({ token: null, authenicated: false })
                     }
-                    if (token) {
-                        setAuthState({ token, authenicated: true })
+                    else {
+                        const token = await SecureStore.getItemAsync('token')
+                        const user = await SecureStore.getItemAsync('user')
+                        console.log('user logged in:', token)
+                        if (user) {
+                            setUser(JSON.parse(user))
+                        }
+                        if (token) {
+                            setAuthState({ token, authenicated: true })
+                        }
                     }
                 }
+                catch (error) {
+                    if (error instanceof Error) console.log('error', error.message)
+                }
+                finally {
+                    setLoading(false)
+                }
             }
-            catch (error) {
-                if (error instanceof Error) console.log('error', error.message)
-            }
-            finally {
-                setLoading(false)
-            }
-        }
 
+            loadToken()
+        }, [])
 
         useEffect(() => {
-            loadToken()
             const isAuthGroup = segements[0] === '(auth)'
 
             if (user === null && !isAuthGroup) {
