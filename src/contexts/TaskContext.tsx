@@ -106,9 +106,9 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             duration_label: taskForm.duration_label,
             available: true
         })
+        setIsLoading(true)
 
         try {
-            setIsLoading(true)
             const location = taskForm.location_attributes?.split(', ')
             const payload = {
                 ...taskForm,

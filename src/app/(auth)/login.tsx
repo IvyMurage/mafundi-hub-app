@@ -130,7 +130,7 @@ const Login = () => {
                                 />
                             </View>
                         </SafeAreaView>
-                        <Loader isLoading={isLoading!} />
+                        <Loader isLoading={isLoading!} backgroundColor={Colors.primary} />
                     </>
                 )}
             </Formik>

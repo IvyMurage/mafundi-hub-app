@@ -8,6 +8,7 @@ import { AuthProvider, useAuth, } from "../contexts/AuthContext";
 import { TaskIdProvider } from "@/contexts/TaskIdContext";
 import { HandymanContextIdProvider } from "@/contexts/HandymanIdContext";
 import { MenuProvider } from "react-native-popup-menu";
+import Loader from "@/components/loader";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -56,19 +57,15 @@ export default function AuthProviderWrapper() {
     }
 
     return (
-        <>
-            <MenuProvider>
-                <AuthProvider>
-                    <HandymanContextIdProvider>
-                        <TaskIdProvider>
-                            <RootLayout />
-                        </TaskIdProvider>
-                    </HandymanContextIdProvider>
-                </AuthProvider>
-            </MenuProvider >
-
-        </>
-
+        <MenuProvider>
+            <AuthProvider>
+                <HandymanContextIdProvider>
+                    <TaskIdProvider>
+                        <RootLayout />
+                    </TaskIdProvider>
+                </HandymanContextIdProvider>
+            </AuthProvider>
+        </MenuProvider >
     );
 }
 

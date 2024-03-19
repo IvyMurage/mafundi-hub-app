@@ -101,16 +101,6 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                                     <MenuOption style={{ width: 100, }} onSelect={async () => {
                                         const data: TaskType = await fetchTask!(item.id!)
                                         setDetails(data)
-                                        // setTaskForm!({
-                                        //     job_title: data.job_title,
-                                        //     location_attributes: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
-                                        //     job_price: `ksh.${data.job_price}`,
-                                        //     service_id: data.service_name!,
-                                        //     duration_label: data.duration_label!,
-                                        //     instant_booking: data.available ? 'true' : 'false',
-                                        //     task_description: data.task_description,
-                                        //     task_responsibilities: data.task_responsibilities.join(',')
-                                        // })
                                         setIsVisible(true)
                                     }}>
                                         <Text style={{

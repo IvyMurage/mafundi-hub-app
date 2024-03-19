@@ -1,9 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
-import { JwtPayload, jwtDecode } from "jwt-decode";
 import { useRouter, useSegments } from 'expo-router';
+import { decode } from 'base-64'; // Import the base64 decode function
 
-const { decode } = require("base-64")
 
 interface AuthProps {
     authState?: { token: string | null; authenicated: boolean | null }
@@ -78,26 +77,44 @@ export const AuthProvider = ({ children }: any) => {
         const segements = useSegments()
         const router = useRouter()
 
-        const hasTokenExpired = async () => {
-            let token = await SecureStore.getItemAsync('token')
+
+        const hasTokenExpired = async (): Promise<boolean> => {
+            let token = (await SecureStore.getItemAsync('token')) as string;
+
+            if (!token) {
+                return false; // Token is missing, not expired
+            }
+
+            const trimmedToken = token.trim();
 
             // Regular expression to validate base64 format
             const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+            const isValid = base64Regex.test(trimmedToken);
 
-            if (token !== null) {
-                token.trim()
-                const isValid = base64Regex.test(token);
-                if (isValid) {
-                    const decodedToken: any = decode(token)
-                    console.log('decodedToken:', decodedToken);
-                    const expiryDate = new Date(decodedToken.exp * 1000)
-                    if (new Date() > expiryDate) {
-                        return true
+            console.log('Token validity:', isValid);
+
+            if (isValid) {
+                try {
+                    const decodedToken: any = decode(trimmedToken); // Decode the trimmed token
+                    console.log('Decoded token:', decodedToken);
+
+                    const expiryDate = new Date(decodedToken.exp * 1000);
+                    console.log('Expiry date:', expiryDate);
+
+                    const currentDate = new Date();
+
+                    if (currentDate > expiryDate) {
+                        return true; // Token has expired
                     }
+                } catch (error) {
+                    console.log('Error decoding token:', error);
+                    return false; // Error decoding token
                 }
             }
-            return false
-        }
+
+            return false; // Token is not expired or invalid format
+        };
+
 
         useEffect(() => {
             const loadToken = async () => {
@@ -107,11 +124,11 @@ export const AuthProvider = ({ children }: any) => {
                     if (await hasTokenExpired()) {
                         await SecureStore.deleteItemAsync('token')
                         setAuthState({ token: null, authenicated: false })
+                        router.push('/(auth)/login')
                     }
                     else {
                         const token = await SecureStore.getItemAsync('token')
                         const user = await SecureStore.getItemAsync('user')
-                        console.log('user logged in:', token)
                         if (user) {
                             setUser(JSON.parse(user))
                         }
@@ -127,23 +144,24 @@ export const AuthProvider = ({ children }: any) => {
                     setLoading(false)
                 }
             }
-
             loadToken()
         }, [])
 
         useEffect(() => {
-            const isAuthGroup = segements[0] === '(auth)'
+            let mounted = true
+            if (mounted) {
+                const isAuthGroup = segements[0] === '(auth)'
 
-            if (user === null && !isAuthGroup) {
-                router.push('/(onboard)/get-started')
+                if (user === null && !isAuthGroup) {
+                    router.push('/(onboard)/get-started')
+                }
+                else if (authState?.authenicated === true && isAuthGroup) {
+                    router.push('/(tabs)/')
+                }
+                else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
+                    router.push('/(auth)/login')
+                }
             }
-            else if (authState?.authenicated === true && isAuthGroup) {
-                router.push('/(tabs)/')
-            }
-            else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
-                router.push('/(auth)/login')
-            }
-
         }, [authState, user, segements])
 
     }
@@ -195,6 +213,7 @@ export const AuthProvider = ({ children }: any) => {
             if (response.ok) {
                 const data = await response.json()
                 const token = response.headers.get('authorization')?.split(' ')[1]
+                console.log(token)
                 setUser(data?.user)
                 await SecureStore.setItemAsync('token', token!)
                 await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
