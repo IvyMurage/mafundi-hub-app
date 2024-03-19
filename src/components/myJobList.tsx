@@ -5,20 +5,25 @@ import Colors from '@/constants/Colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Proposal from '@/app/(screens)/proposals'
 import { jobListStyle } from '@/constants/styles'
-import { useTask } from '@/contexts/TaskContext'
+import { useTask, useTaskProps } from '@/contexts/TaskContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
 import Loader from './loader'
 import NotFound from '@/components/not-found'
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
+import TaskForm from '@/app/(modals)/task-form'
+import { TaskType } from '@/types/task'
 
 const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     const [jobId, setJobId] = useState<number | null>(null)
     const router = useRouter()
     const [visible, setVisible] = useState<boolean>(false)
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const jobRef = useRef<FlatList<JobPropType> | null>(null)
     const { userState, authState } = useAuth()
-    const { setPageNumber, loading, } = useTask()
+    const { setPageNumber, loading, fetchTask } = useTask()
+    const [details, setDetails] = useState<TaskType | null>(null)
+    const { setTaskForm } = useTaskProps()
     const handlePress = (jobId: number) => {
         if (userState?.user_role === 'handyman') {
             router.push(`/job-listing/${jobId}`)
@@ -93,7 +98,21 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                                         }
                                     }
                                 }>
-                                    <MenuOption style={{ width: 100, }}>
+                                    <MenuOption style={{ width: 100, }} onSelect={async () => {
+                                        const data: TaskType = await fetchTask!(item.id!)
+                                        setDetails(data)
+                                        // setTaskForm!({
+                                        //     job_title: data.job_title,
+                                        //     location_attributes: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
+                                        //     job_price: `ksh.${data.job_price}`,
+                                        //     service_id: data.service_name!,
+                                        //     duration_label: data.duration_label!,
+                                        //     instant_booking: data.available ? 'true' : 'false',
+                                        //     task_description: data.task_description,
+                                        //     task_responsibilities: data.task_responsibilities.join(',')
+                                        // })
+                                        setIsVisible(true)
+                                    }}>
                                         <Text style={{
                                             padding: 5,
                                             paddingHorizontal: 10,
@@ -195,6 +214,7 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                 </Pressable>
 
             </View>
+            <TaskForm {...{ isVisible, setIsVisible , details}} />
             <Loader isLoading={loading! || isloading} />
         </>
     )

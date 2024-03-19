@@ -27,11 +27,6 @@ const Select: React.FC<SelectProps> = (props) => {
     }
     return (
         <>
-            {profile && name === 'service' && <MaterialIcons name="home-repair-service" size={24} color={Colors.primary} style={{
-                left: 40,
-                zIndex: 1
-            }} />
-            }
             <SelectDropdown
                 data={data.map((item) => item.label)}
                 onSelect={(selectedItem) => {
