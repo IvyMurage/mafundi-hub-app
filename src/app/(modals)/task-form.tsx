@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, } from 'react'
 import Select from '@/components/select'
 import { View, Text, TextInput, Pressable, Modal, ScrollView, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -13,13 +13,14 @@ import { Octicons } from '@expo/vector-icons/'
 import CustomAlert from '@/components/customAlert'
 import { useRouter } from 'expo-router'
 import { TaskProvider, useTask, useTaskProps } from '@/contexts/TaskContext'
+import { TaskType } from '@/types/task'
 
-const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) => {
+const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>>, details: TaskType | null }) => {
     const router = useRouter()
-    const { isVisible, setIsVisible } = props
+    const { isVisible, setIsVisible, details } = props
     const services = useService()
-    const locations = useLocation()
-    const { taskForm } = useTaskProps()
+    const { locations } = useLocation()
+    const { taskForm, } = useTaskProps()
     const { handleSubmit, handleRoute, isLoading, error, isError, visible, setVisible } = useTask()
 
     const getValue = async () => {
@@ -32,6 +33,22 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
 
         }
     }
+    const service_id = services?.find(service => service.label === details?.service_name)?.value
+
+    useEffect(() => {
+        let mounted = true
+        if (details && mounted) {
+            taskForm.job_title = details?.job_title
+            taskForm.job_price = details?.job_price!
+            taskForm.duration_label = details?.duration_label!
+            taskForm.instant_booking = details?.available ? 'true' : 'false'
+            taskForm.service_id = service_id!,
+                taskForm.location_attributes = `${details.location.city}, ${details.location.county}, ${details.location.country}`,
+                taskForm.task_description = details?.task_description,
+                taskForm.task_responsibilities = details?.task_responsibilities.join(', ')
+
+        }
+    })
     return (
         <TaskProvider>
             <Formik
@@ -119,7 +136,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
                                                 searchPlaceHolder='Instant booking'
                                                 handleChange={(value) => setFieldValue('instant_booking', value)}
-                                                defaultButtonText='Instant Booking'
+                                                defaultButtonText={taskForm.instant_booking || 'Instant booking'}
                                                 profile={false}
                                                 task={true}
                                                 buttonStyle={taskFormStyles.taskStyles}
@@ -136,7 +153,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 data={services || []}
                                                 searchPlaceHolder='Search for a service'
                                                 handleChange={(value) => setFieldValue('service_id', value)}
-                                                defaultButtonText='Service'
+                                                defaultButtonText={details?.service_name || 'Service'}
                                                 profile={false}
                                                 buttonStyle={taskFormStyles.taskStyles}
                                                 task={true}
@@ -158,7 +175,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                     locations?.map(location => {
                                                         return { label: stringfy(location), value: stringfy(location) }
                                                     }) || []}
-                                                defaultButtonText='Location'
+                                                defaultButtonText={taskForm.location_attributes || 'Location'}
                                                 handleChange={(value) => setFieldValue('location_attributes', value)}
                                                 searchPlaceHolder='Search for a Location'
                                                 profile={false}

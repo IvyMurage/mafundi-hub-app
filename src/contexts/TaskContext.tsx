@@ -2,7 +2,7 @@ import { JobPropType } from "@/types/job";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { request } from "@/utils/executePostRequest";
-import { TaskFormProps } from "@/types/task";
+import { TaskFormProps, TaskType } from "@/types/task";
 import { FormikHelpers } from "formik";
 import * as SecureStore from 'expo-secure-store'
 import { MapPropType } from "./LocationContext";
@@ -28,34 +28,14 @@ interface TaskProps {
     setLocations?: Dispatch<SetStateAction<MapPropType[]>>,
     handleSubmit?: (taskForm: TaskFormProps, resetForm: FormikHelpers<TaskFormProps>) => Promise<void>
     handleRoute?: () => Promise<string | null>
-    getMyJobs: () => Promise<void>
+    getMyJobs?: () => Promise<void>
+    fetchTask?: (taskId: number) => Promise<TaskType>
 }
 
 interface TaskProviderProps {
     children: React.ReactNode
 }
-const TaskContext = createContext<TaskProps>({
-    tasks: [],
-    locations: [],
-    pageNumber: 1,
-    location: '',
-    available: false,
-    setTasks: () => { },
-    loading: false,
-    isLoading: false,
-    isError: false,
-    error: [],
-    visible: false,
-    setVisible: () => { },
-    handleSubmit: async () => { },
-    getMyJobs: async () => { },
-    service_id: '',
-    setServiceId: () => { },
-    setAvailable: () => { },
-    setLocation: () => { },
-    setLocations: () => { },
-    setPageNumber: () => { }
-})
+const TaskContext = createContext<TaskProps>({})
 
 export const useTask = () => {
     const context = useContext(TaskContext)
@@ -190,9 +170,27 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         return instant_book
     }
 
-    const getMyJobs = async () => {
+    const fetchTask = async (taskId: number) => {
+        setLoading(true)
         try {
-            setLoading(true)
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks/${taskId}/show`, {
+                headers: { Authorization: `Bearer ${authState?.token}` }
+            })
+            const data = await response.json()
+            if (response.ok) {
+                return data
+            }
+        }
+        catch (err) { }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const getMyJobs = async () => {
+        setLoading(true)
+
+        try {
             const response = await fetch(url, {
                 headers: { Authorization: `Bearer ${authState?.token}` }
             })
@@ -285,7 +283,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         setServiceId,
         setAvailable,
         setLocation,
-        setLocations
+        setLocations,
+        fetchTask
     }
     return (
         <TaskContext.Provider value={value}>
