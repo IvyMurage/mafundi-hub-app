@@ -28,14 +28,16 @@ const HandymanList = () => {
                         width: 160,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: Colors.primary,
+                        // backgroundColor: Colors.primary,
                         padding: 10,
                         margin: 10,
-                        borderRadius: 10
+                        borderRadius: 20,
+                        borderWidth:1,
+                        borderColor: Colors.primary
                     }}>
                         <View style={{
                             borderBottomWidth: 1,
-                            borderBottomColor: Colors.light,
+                            borderBottomColor: Colors.dark,
                             width: '100%',
                             paddingHorizontal: 8
                         }}>
@@ -47,7 +49,7 @@ const HandymanList = () => {
                                 fontSize: 14,
                                 letterSpacing: 1.2,
                                 fontFamily: 'roboto-medium',
-                                color: Colors.lighter,
+                                color: Colors.dark,
                                 marginTop: 10,
                                 textAlign: 'center'
                             }}>
@@ -66,7 +68,7 @@ const HandymanList = () => {
                                     fontSize: 12,
                                     letterSpacing: 1.2,
                                     fontFamily: 'roboto',
-                                    color: Colors.lighter,
+                                    color: Colors.dark,
                                     paddingLeft: 2
                                 }}>{item.location}</Text>
                             </View>
@@ -85,7 +87,7 @@ const HandymanList = () => {
                                 fontSize: 14,
                                 letterSpacing: 1.2,
                                 fontFamily: 'roboto',
-                                color: Colors.lighter,
+                                color: Colors.dark,
                                 paddingLeft: 5
 
                             }}>{item.user_rating}</Text>

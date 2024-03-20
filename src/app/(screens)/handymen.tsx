@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
-import { defaultJobStyles } from '@/constants/styles'
-import { FontAwesome5, Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { Image } from 'expo-image'
 import Search from '@/components/search'
 import { HandymanProvider, useHandyman } from '@/contexts/HandymanContext'
@@ -15,7 +14,6 @@ import Divider from '@/components/divider'
 import { LocationFilter } from '@/components/locationFilter'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'expo-router'
-
 const Handymen = () => {
     const { loading } = useHandyman()
     const [service, setService] = useState<string>('Handyman Service')

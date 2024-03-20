@@ -72,6 +72,7 @@ export const defaultStyles = StyleSheet.create({
         borderRadius: 50,
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "row",
     },
     authButtonText: {
         fontSize: 20,
@@ -264,7 +265,7 @@ export const HandymanProfileStyles = StyleSheet.create({
         alignItems: "center",
     },
     submitBtn: {
-        marginTop:10,
+        marginTop: 10,
         padding: 20,
         borderRadius: 20,
         width: 360,

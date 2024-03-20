@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, SafeAreaView, } from 'react-native'
+import { View, Text, TextInput, Pressable, SafeAreaView, StyleSheet, ActivityIndicator, } from 'react-native'
 import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { defaultStyles } from '@/constants/styles'
@@ -11,6 +11,8 @@ import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { FontAwesome, } from '@expo/vector-icons'
 import Divider from '@/components/divider'
+import { Bounce } from 'react-native-animated-spinkit'
+import AuthLoad from '@/components/auth-load'
 
 const Login = () => {
     const { onLogin, isLoading, } = useAuth()
@@ -108,6 +110,7 @@ const Login = () => {
                                         { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
                                         ]
                                     }>
+                                    {/* {isLoading && <ActivityIndicator size="small" color="white" />} */}
                                     <Text style={[defaultStyles.authButtonText]}>LOGIN</Text>
                                 </Pressable>
 
@@ -120,7 +123,6 @@ const Login = () => {
                                     </Link>
                                 </Text>
 
-
                                 <CustomAlert
                                     visible={error}
                                     message="Invalid email or password. Please try again"
@@ -130,7 +132,7 @@ const Login = () => {
                                 />
                             </View>
                         </SafeAreaView>
-                        <Loader isLoading={isLoading!} backgroundColor={Colors.primary} />
+                        <AuthLoad isLoading={isLoading!} />
                     </>
                 )}
             </Formik>

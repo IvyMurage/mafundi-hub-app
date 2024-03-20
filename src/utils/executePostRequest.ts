@@ -27,6 +27,5 @@ export const request = async (
     }
     throw new Error(error);
   }
-
   return { response, data };
 };

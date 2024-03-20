@@ -85,8 +85,6 @@ const AppointmentForm = () => {
                 appointment_date: new Date(values.appointment_date!).toISOString()
             }
 
-
-
             const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/appointments/create`, {
                 method: 'POST',
                 headers: {
@@ -159,7 +157,7 @@ const AppointmentForm = () => {
             })
             const data = await response.json()
             if (response.ok) {
-                console.log('data', data)
+                console.log('dataaaa', data)
             }
 
             if (!response.ok) {
@@ -189,6 +187,7 @@ const AppointmentForm = () => {
             })
 
             const data = await response.json()
+            console.log(response)
             console.log('data', data)
             if (response.ok) {
                 setPaymentResponse(data?.success?.CheckoutRequestID)
@@ -197,12 +196,10 @@ const AppointmentForm = () => {
                     stkPushQuery()
                 }
             }
-            if (!response.ok) {
-                setPaymentError(data?.errorMessage)
-            }
+
         }
         catch (e: any) {
-            Alert.alert('Error', paymentError)
+            Alert.alert('Something went wrong. Try Again')
         }
         finally {
             setIsLoading(false)
@@ -309,7 +306,7 @@ const AppointmentForm = () => {
                                     <Pressable style={appointmentStyles.button} onPress={() => {
                                         makePayment()
                                     }}>
-                                        {isLoading && <ActivityIndicator size="large" color="white" />}
+                                        {isLoading && <ActivityIndicator size="small" color="white" />}
                                         <Text style={appointmentStyles.buttonTitle}>
                                             Lipa na Mpesa
                                         </Text>
@@ -319,7 +316,7 @@ const AppointmentForm = () => {
                                         style={[appointmentStyles.button, { backgroundColor: isValid && !paymentResponse ? Colors.primary : '#a5c9ca' }]} onPress={async () => {
                                             handleSubmit()
                                         }}>
-                                        {loading && <ActivityIndicator size="large" color="white" />}
+                                        {loading && <ActivityIndicator size="small" color="white" />}
                                         <Text style={[appointmentStyles.buttonTitle,]}>
                                             Confirm and Chat
                                         </Text>

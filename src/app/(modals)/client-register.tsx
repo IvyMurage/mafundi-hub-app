@@ -16,7 +16,7 @@ import { useRouter } from 'expo-router'
 
 
 const ClientRegister = () => {
-    const locations = useLocation()
+    const {locations} = useLocation()
     const { user: client, } = useClient()
     const { handleSubmit, error, alertVisible, setAlertVisible, isLoading, errorMessage } = useClientPost()
     const router = useRouter()

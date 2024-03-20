@@ -19,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext'
 const HandymanProfile = () => {
     const { loading, error, handyman, visible, setVisible } = useHandymanFetcher()
     const { handleSubmit, setAlertVisible, isLoading, alertVisible, } = useHandymanUpdate()
-    const locations = useLocation()
+    const {locations} = useLocation()
     const services = useService()
     const { pickImage } = useProfileUpload()
     const { userState } = useAuth()
