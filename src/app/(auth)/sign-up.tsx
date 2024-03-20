@@ -163,7 +163,7 @@ const SignUp = () => {
                                 message="You have successfully Signed up"
                                 onClose={() => {
                                     setAlertVisible(false)
-                                    router.push('/(onboard)/register-option')
+                                    router.push('/(auth)/register-option')
                                 }}
                             />
 

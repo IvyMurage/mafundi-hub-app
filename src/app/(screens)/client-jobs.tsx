@@ -5,6 +5,9 @@ import JobList from '@/components/myJobList'
 import Loader from '@/components/loader'
 import { defaultJobStyles } from '@/constants/styles'
 import { useTask } from '@/contexts/TaskContext'
+import { Bounce } from 'react-native-animated-spinkit'
+import Colors from '@/constants/Colors'
+
 
 const ClientJobs = () => {
     const { loading, getMyJobs, tasks } = useTask()
@@ -20,9 +23,8 @@ const ClientJobs = () => {
                 </View>
                 <JobList tasks={tasks!} />
             </View>
-            <Loader isLoading={loading!} />
+            {/* <Loader isLoading={loading!} /> */}
         </>
     )
 }
-
 export default ClientJobs

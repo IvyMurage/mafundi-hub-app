@@ -1,4 +1,3 @@
-import handleExeception from "@/utils/handleExeception";
 import { useEffect, useState } from "react";
 
 export const useLocation = () => {
@@ -28,9 +27,7 @@ export const useLocation = () => {
                 }
             }
             catch (error: any) {
-                setTimeout(() => {
-                    handleExeception({ error: error.message })
-                }, 3000)
+                console.log(error.message)
             }
         }
         getLocation()

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Link, Stack, useRouter } from 'expo-router';
+import { Link,  useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,10 +9,12 @@ export default function GetStarted() {
     const router = useRouter()
 
     const handlePress = () => {
-        router.push('/(onboard)/auth-options')
+        router.replace('/(auth)/auth-options')
     }
+
+
+
     return (<>
-        <Stack.Screen name='(onboard)/get-started' options={{ headerShown: false, }} />
 
         <SafeAreaView style={{
             flex: 1,
@@ -26,7 +28,7 @@ export default function GetStarted() {
                 </View>
                 <Image style={{ width: 300, height: 300 }} source={require('@/assets/images/welcome-image.svg')} contentFit='cover' />
 
-                <Link href={"/(onboard)/auth-options"} >
+                <Link href={"/(auth)/auth-options"} >
                     <Pressable style={styles.startButton}>
                         <Text style={styles.buttonText} onPress={handlePress} >Get Started</Text>
                     </Pressable>

@@ -17,27 +17,20 @@ import { TaskFormProps, TaskType } from '@/types/task'
 import { request } from '@/utils/executePostRequest'
 import * as SecureStore from 'expo-secure-store'
 import { useAuth } from '@/contexts/AuthContext'
-import handleExeception from '@/utils/handleExeception'
+import HandleExeception from '@/utils/handleExeception'
 
 const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>>, details: TaskType | null }) => {
     const router = useRouter()
     const { isVisible, setIsVisible, details } = props
     const services = useService()
     const { locations } = useLocation()
-    const { taskForm } = useTaskProps()
-    const [dets, setDetails] = useState<TaskFormProps>({
-        job_title: '',
-        service_id: '',
-        job_price: '',
-        duration_label: '',
-        instant_booking: '',
-        location_attributes: '',
-        task_description: '',
-        task_responsibilities: '',
-    })
-    const { handleSubmit, handleRoute, isLoading, error, isError, visible, setVisible, tasks } = useTask()
+    const { taskForm, setTaskForm } = useTaskProps()
+
+    const { handleSubmit, handleRoute, isLoading, error, isError, visible, setVisible, setTasks } = useTask()
     const { userState, authState } = useAuth()
     const [loading, setLoading] = useState(false)
+
+    const [updateErrors, setErrors] = useState<string[] | string>([] || '')
     const getValue = async () => {
         const value = await handleRoute!()
         if (value && value === 'true') {
@@ -47,12 +40,15 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
             router.push('/(tabs)/jobs')
         }
     }
+
+    const exists = !!details?.id
+
     const service_id = services?.find(service => service.label === details?.service_name)?.value
 
     useEffect(() => {
         let mounted = true
         if (details && mounted) {
-            setDetails({
+            setTaskForm({
                 job_title: details.job_title,
                 job_price: details.job_price!,
                 duration_label: details?.duration_label!,
@@ -65,43 +61,49 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
         }
     }, [details])
 
-    const exists = !!details?.id
-
-
-    const updateTask = async (taskId: number) => {
+    const updateTask = async (taskId: number, values: TaskFormProps) => {
+        
         setLoading(true)
         try {
-            const location = taskForm.location_attributes?.split(', ')
+            const location = values.location_attributes?.split(', ')
             const payload = {
-                ...taskForm,
-                service_id: parseInt(taskForm.service_id!),
+                ...values,
+                service_id: parseInt(values.service_id!),
                 location_attributes: {
                     city: location![0],
                     county: location![1],
                     country: location![2],
                 },
-                job_price: parseInt(taskForm.job_price!),
-                instant_booking: taskForm.instant_booking === 'true' ? true : false,
-                task_responsibilities: taskForm.task_responsibilities?.trim().split(', '),
+                job_price: parseInt(values.job_price!),
+                instant_booking: values.instant_booking === 'true' ? true : false,
+                task_responsibilities: values.task_responsibilities?.trim().split(', '),
                 client_id: userState?.user_id
             }
+            await SecureStore.setItemAsync('service_id', values.service_id!)
+            await SecureStore.setItemAsync('instant_book', values.instant_booking!)
 
-            await SecureStore.setItemAsync('service_id', taskForm.service_id!)
-            await SecureStore.setItemAsync('instant_book', taskForm.instant_booking!)
-
-            const { response, data } = await request('PUT', JSON.stringify(payload), `tasks/${taskId}/create`, authState?.token!)
+            const { response, data } = await request('PATCH', JSON.stringify(payload), `tasks/${taskId}/update`, authState?.token!)
             if (response.ok) {
-                // setTasks(prevTasks => [{
-                //     id: data.id,
-                //     job_title: data.job_title,
-                //     job_location: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
-                //     job_date: data.created_at,
-                //     job_price: `ksh.${data.job_price}`,
-                //     job_category: data.service_name,
-                //     duration_label: data.duration_label,
-                //     available: data.available
-                // }, ...prevTasks,])
-                console.log(data)
+                setTasks!(prevTasks => {
+                    return prevTasks.map(task => {
+                        if (task.id === taskId) {
+                            return {
+                                ...task,
+                                job_title: data.job_title,
+                                job_location: `${data.location.city}, ${data.location.county}, ${data.location.country}`,
+                                job_date: data.created_at,
+                                job_price: `ksh.${data.job_price}`,
+                                job_category: data.service_name,
+                                duration_label: data.duration_label,
+                                available: data.available
+                            }
+                        }
+                        return task
+                    })
+                })
+
+                console.log(data, 'data')
+                router.push('/(screens)/handymen')
             }
 
             if (!response.ok) {
@@ -111,7 +113,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
 
         }
         catch (error) {
-            if (error instanceof Error) handleExeception({ error: error.message })
+            if (error instanceof Error) setErrors(error.message)
         }
         finally {
             setLoading(false)
@@ -121,8 +123,9 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     return (
         <TaskProvider>
             <Formik
-                initialValues={taskForm || dets}
-                onSubmit={exists ? () => updateTask(details.id) : (values, resetForm) => handleSubmit?.(values, resetForm)}
+                initialValues={taskForm}
+                enableReinitialize
+                onSubmit={exists ? (values) => updateTask(details.id, values) : (values, resetForm) => handleSubmit?.(values, resetForm)}
                 validationSchema={taskSchema}
             >
                 {({ handleChange, handleSubmit, values, errors, setFieldValue, setFieldTouched, touched, isValid }) => (
@@ -146,7 +149,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 keyboardType='default'
                                                 placeholder='Title (e.g. "Cleaning")'
                                                 returnKeyLabel='next'
-                                                value={values.job_title || dets.job_title}
+                                                value={values.job_title}
                                                 onChangeText={handleChange('job_title')}
                                                 onBlur={() => setFieldTouched('job_title')}
                                                 style={[taskFormStyles.inputField, taskFormStyles.textInput]}
@@ -169,7 +172,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 keyboardType='default'
                                                 inputMode='decimal'
                                                 placeholder="Job price"
-                                                value={values.job_price || dets.job_price}
+                                                value={values.job_price}
                                                 onChangeText={handleChange('job_price')}
                                                 onBlur={() => setFieldTouched('job_price')}
                                                 style={[taskFormStyles.inputField, taskFormStyles.textInput]}
@@ -194,7 +197,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 keyboardType='default'
                                                 placeholder='Duratuion (e.g. "2 hours")'
                                                 returnKeyLabel='next'
-                                                value={values.duration_label || dets.duration_label}
+                                                value={values.duration_label}
                                                 onChangeText={handleChange('duration_label')}
                                                 onBlur={() => setFieldTouched('duration_label')}
                                                 style={[taskFormStyles.textInput, taskFormStyles.inputField]}
@@ -205,7 +208,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 data={[{ label: 'true', value: 'true' }, { label: 'false', value: 'false' }] || []}
                                                 searchPlaceHolder='Instant booking'
                                                 handleChange={(value) => setFieldValue('instant_booking', value)}
-                                                defaultButtonText={dets.instant_booking || 'Instant booking'}
+                                                defaultButtonText={values.instant_booking || 'Instant booking'}
                                                 profile={false}
                                                 task={true}
                                                 buttonStyle={taskFormStyles.taskStyles}
@@ -222,7 +225,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 data={services || []}
                                                 searchPlaceHolder='Search for a service'
                                                 handleChange={(value) => setFieldValue('service_id', value)}
-                                                defaultButtonText={details?.service_name || 'Service'}
+                                                defaultButtonText={services.find(service => service.key === parseInt(values.service_id!))?.label || 'Service'}
                                                 profile={false}
                                                 buttonStyle={taskFormStyles.taskStyles}
                                                 task={true}
@@ -244,7 +247,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                     locations?.map(location => {
                                                         return { label: stringfy(location), value: stringfy(location) }
                                                     }) || []}
-                                                defaultButtonText={dets.location_attributes || 'Location'}
+                                                defaultButtonText={values.location_attributes || 'Location'}
                                                 handleChange={(value) => setFieldValue('location_attributes', value)}
                                                 searchPlaceHolder='Search for a Location'
                                                 profile={false}
@@ -272,7 +275,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                             placeholder='Description (e.g. "Cleaning")'
                                             numberOfLines={10}
                                             returnKeyLabel='next'
-                                            value={values.task_description || dets.task_description}
+                                            value={values.task_description}
                                             onChangeText={handleChange('task_description')}
                                             onBlur={() => setFieldTouched('task_description')}
                                             style={[taskFormStyles.textarea, taskFormStyles.textInput]}
@@ -296,14 +299,14 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                             placeholder='Task responsibilities separated by comma (e.g. "Cleaning")'
                                             numberOfLines={10}
                                             returnKeyLabel='Done'
-                                            value={values.task_responsibilities || dets.task_responsibilities}
+                                            value={values.task_responsibilities}
                                             onChangeText={handleChange('task_responsibilities')}
                                             onBlur={() => setFieldTouched('task_responsibilities')}
                                             style={[taskFormStyles.textarea, taskFormStyles.textInput]}
                                         />
                                     </View>
                                     <Pressable
-                                        disabled={exists? isValid : !isValid}
+                                        disabled={!isValid}
                                         style={[defaultStyles.authButton,
                                         {
                                             backgroundColor: isValid ? Colors.primary : '#a5c9ca',
@@ -312,8 +315,8 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                             display: "flex",
                                             flexDirection: "row",
                                         }]}
-                                        onPress={exists ? () => updateTask(details.id) : () => handleSubmit()}>
-                                        {isLoading && <ActivityIndicator size="large" color="white" />}
+                                        onPress={exists ? () => updateTask(details.id, values) : () => handleSubmit()}>
+                                        {isLoading || loading && <ActivityIndicator size="large" color="white" />}
                                         <Text style={[defaultStyles.authButtonText]}>{exists ? 'Update Task' : 'Create Task'}</Text>
                                     </Pressable>
                                 </View>
@@ -335,7 +338,11 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         />
                                     )
                                 }
+
                             </ScrollView>
+                            {updateErrors.length > 0 &&
+                                <HandleExeception error={updateErrors} setErrors={setErrors} />
+                            }
                         </SafeAreaView>
                     </Modal>
                 )
