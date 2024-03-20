@@ -17,6 +17,7 @@ const Loader: React.FC<LoaderProps> = (props) => {
             width: '100%'
         }]}>
             <ActivityIndicator color={"#fff"} animating size='large' />
+
         </View>)
 
     )

@@ -16,7 +16,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 const HandymanRegister = () => {
     const router = useRouter()
-    const locations = useLocation()
+    const {locations} = useLocation()
     const services = useService()
     const { handyman } = useHandyman()
     const { handleSubmit, isLoading, alertVisible, setAlertVisible } = useHandymanPost()

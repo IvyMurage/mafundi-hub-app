@@ -159,7 +159,7 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
     return (
         <>
             {
-                !loading && tasks?.length === 0 &&
+                tasks?.length === 0 &&
                 <NotFound />
             }
 
@@ -172,7 +172,6 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                     contentContainerStyle={{ paddingBottom: 120 }}
                 />
                 <Proposal visible={visible} setVisible={setVisible} taskId={jobId} />
-
             </>
 
             <View style={{
@@ -202,9 +201,9 @@ const JobList = ({ tasks }: { tasks?: Array<JobPropType> }) => {
                 }}>
                     <Ionicons name='arrow-forward-circle' color={Colors.primary} size={30} />
                 </Pressable>
-
             </View>
-            <TaskForm {...{ isVisible, setIsVisible , details}} />
+
+            <TaskForm {...{ isVisible, setIsVisible, details }} />
             <Loader isLoading={loading! || isloading} />
         </>
     )

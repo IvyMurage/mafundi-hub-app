@@ -15,7 +15,7 @@ import { useProfileUpload } from '@/hooks/useProfileUpload'
 import { useAuth } from '@/contexts/AuthContext'
 
 const ClientProfile = () => {
-    const locations = useLocation()
+    const {locations} = useLocation()
     const { handleSubmit, loading, visible, setVisible } = useClientUpdate()
     const { isLoading, user } = useClientFetcher()
     const { pickImage } = useProfileUpload()

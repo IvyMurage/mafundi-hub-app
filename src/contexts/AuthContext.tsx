@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useCallback } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { useRouter, useSegments } from 'expo-router';
 import { decode } from 'base-64'; // Import the base64 decode function
@@ -55,13 +55,15 @@ export const AuthProvider = ({ children }: any) => {
     }>({
         email: null,
         id: null,
-        user_role: '',
+        user_role: null,
         user_id: null,
         avatar_url: null
     })
 
     const [loading, setLoading] = useState<boolean>(false)
     const [authError, setErrors] = useState<string>('')
+
+    const router = useRouter()
 
 
     const useProtectedRoute = (user: {
@@ -74,7 +76,7 @@ export const AuthProvider = ({ children }: any) => {
         authenicated: boolean | null
         token: string | null
     }) => {
-        const segements = useSegments()
+        const segments = useSegments()
         const router = useRouter()
 
 
@@ -111,7 +113,6 @@ export const AuthProvider = ({ children }: any) => {
                     return false; // Error decoding token
                 }
             }
-
             return false; // Token is not expired or invalid format
         };
 
@@ -124,7 +125,6 @@ export const AuthProvider = ({ children }: any) => {
                     if (await hasTokenExpired()) {
                         await SecureStore.deleteItemAsync('token')
                         setAuthState({ token: null, authenicated: false })
-                        router.push('/(auth)/login')
                     }
                     else {
                         const token = await SecureStore.getItemAsync('token')
@@ -147,22 +147,23 @@ export const AuthProvider = ({ children }: any) => {
             loadToken()
         }, [])
 
-        useEffect(() => {
-            let mounted = true
-            if (mounted) {
-                const isAuthGroup = segements[0] === '(auth)'
 
-                if (user === null && !isAuthGroup) {
-                    router.push('/(onboard)/get-started')
-                }
-                else if (authState?.authenicated === true && isAuthGroup) {
-                    router.push('/(tabs)/')
-                }
-                else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
-                    router.push('/(auth)/login')
-                }
+        useEffect(() => {
+            const isAuthGroup = segments[0] === '(auth)'
+            console.log(segments)
+            
+            if (user.id === null && authState?.authenicated === null && !isAuthGroup) {
+                router.replace('/(auth)/get-started')
+                return
             }
-        }, [authState, user, segements])
+            else if (authState?.authenicated === true && isAuthGroup) {
+                router.replace('/(tabs)/')
+            }
+            else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
+                router.replace('/(auth)/login')
+                return
+            }
+        }, [authState, user]);
 
     }
 
@@ -203,7 +204,6 @@ export const AuthProvider = ({ children }: any) => {
                 body: JSON.stringify({ user: user })
             })
 
-
             if (!response.ok) {
                 const errorData = await response.json();
                 const errorMessage = errorData || "An unknown error occurred";
@@ -213,7 +213,6 @@ export const AuthProvider = ({ children }: any) => {
             if (response.ok) {
                 const data = await response.json()
                 const token = response.headers.get('authorization')?.split(' ')[1]
-                console.log(token)
                 setUser(data?.user)
                 await SecureStore.setItemAsync('token', token!)
                 await SecureStore.setItemAsync('user', JSON.stringify(data?.user))
@@ -230,8 +229,6 @@ export const AuthProvider = ({ children }: any) => {
             setLoading(false)
         }
     }
-
-
 
     const role = async (
         userRole: {
@@ -264,12 +261,11 @@ export const AuthProvider = ({ children }: any) => {
     const logout = async () => {
         await SecureStore.deleteItemAsync('token')
         setAuthState({ token: null, authenicated: null })
+        router.push('/(auth)/login')
     }
 
-
-
-
     useProtectedRoute(user, authState)
+
     const value = {
         onRegister: register,
         setUserState: setUser,

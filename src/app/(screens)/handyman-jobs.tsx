@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useTask } from '@/contexts/TaskContext'
 import { useLocations } from '@/contexts/LocationContext'
-import { setItemAsync } from 'expo-secure-store'
 
 const HandymanJobs = () => {
     const [visible, setVisible] = useState<boolean>(false)
@@ -18,7 +17,7 @@ const HandymanJobs = () => {
 
 
     useEffect(() => {
-        getMyJobs()
+        getMyJobs!()
     }, [service_id, location, available, pageNumber])
 
     return (
