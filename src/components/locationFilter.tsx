@@ -7,8 +7,7 @@ import { useService } from '@/hooks/useService'
 import Colors from '@/constants/Colors'
 
 export const LocationFilter = ({ setLocation, visible, setVisible }: { setLocation: Dispatch<SetStateAction<string>>, setVisible: Dispatch<SetStateAction<boolean>>, visible: boolean }) => {
-    const locations = useLocation()
-    console.log('visible', visible)
+    const {locations} = useLocation()
     return (
         <>
             {

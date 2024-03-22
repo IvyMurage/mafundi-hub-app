@@ -16,7 +16,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 const HandymanRegister = () => {
     const router = useRouter()
-    const {locations} = useLocation()
+    const { locations } = useLocation()
     const services = useService()
     const { handyman } = useHandyman()
     const { handleSubmit, isLoading, alertVisible, setAlertVisible } = useHandymanPost()
@@ -33,7 +33,7 @@ const HandymanRegister = () => {
                         <Ionicons name='arrow-back' size={20} color={Colors.lighter} style={{
                             marginLeft: 20,
                             marginTop: 20
-                        }} />
+                        }}  onPress={() => router.back()}/>
                         <View style={handymanRegisterStyles.container}>
                             <View style={{ alignItems: 'center' }}>
                                 <Image
@@ -99,7 +99,7 @@ const HandymanRegister = () => {
                                         searchPlaceHolder='Search for a service'
                                         handleChange={(value) => setFieldValue('service', value)}
                                         defaultButtonText='Service'
-                                        profile={false}
+                                        buttonStyle={{ width: 360, height: 60, borderWidth: 1, borderRadius: 40, borderColor: Colors.secondary }}
                                         task={false}
                                     />
 
@@ -136,7 +136,7 @@ const HandymanRegister = () => {
                                         defaultButtonText='Location'
                                         handleChange={(value) => setFieldValue('location_attributes', value)}
                                         searchPlaceHolder='Search for a Location'
-                                        profile={false}
+                                        buttonStyle={{ width: 360, height: 60, borderWidth: 1, borderRadius: 40, borderColor: Colors.secondary }}
                                         task={false}
                                     />
                                     <TextInput
@@ -185,7 +185,7 @@ const HandymanRegister = () => {
                                 message="You have successfully registered as a handyman"
                                 onClose={() => {
                                     setAlertVisible(false)
-                                    router.push('/(image-picker)/image-picker')
+                                    router.push('/(public)/(image-picker)/image-picker')
                                 }}
                             />
                         </View >

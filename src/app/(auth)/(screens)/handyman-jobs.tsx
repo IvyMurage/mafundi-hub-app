@@ -34,7 +34,7 @@ const HandymanJobs = () => {
                     borderRadius: 5,
                     marginBottom: 10,
                     marginRight: 10,
-                }} onPress={() => { router.push('/(screens)/maps') }}><Text style={{ fontFamily: 'roboto' }}>View on Maps</Text></Pressable>
+                }} onPress={() => { router.push('/(auth)/(screens)/maps') }}><Text style={{ fontFamily: 'roboto' }}>View on Maps</Text></Pressable>
 
                 <JobList tasks={tasks!} />
                 <Filter

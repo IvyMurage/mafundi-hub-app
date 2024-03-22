@@ -15,7 +15,7 @@ const RegisterOptions = () => {
     const handlePressHandyman = async () => {
         const result = await onRole!({ user_id: userState?.id!, role: 'handyman' })
         if (result?.ok) {
-            router.push('/(modals)/handyman-register')
+            router.push('/(public)/handyman-register')
         }
         else {
             <CustomAlert
@@ -31,7 +31,7 @@ const RegisterOptions = () => {
     const handlePressClient = async () => {
         const result = await onRole!({ user_id: userState?.id!, role: 'client' })
         if (result.ok) {
-            router.push('/(modals)/client-register')
+            router.push('/(public)/client-register')
         }
 
         else {

@@ -97,7 +97,7 @@ const AppointmentForm = () => {
             const data = await response.json()
             if (response.ok) {
                 createNewChat()
-                router.push('/(tabs)/messages')
+                router.push('/(auth)/(tabs)/messages')
             }
 
             if (!response.ok) {

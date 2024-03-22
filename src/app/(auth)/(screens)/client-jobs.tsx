@@ -2,11 +2,9 @@ import { View } from 'react-native'
 import React, { useEffect } from 'react'
 import Search from '@/components/search'
 import JobList from '@/components/myJobList'
-import Loader from '@/components/loader'
 import { defaultJobStyles } from '@/constants/styles'
 import { useTask } from '@/contexts/TaskContext'
-import { Bounce } from 'react-native-animated-spinkit'
-import Colors from '@/constants/Colors'
+
 
 
 const ClientJobs = () => {
