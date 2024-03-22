@@ -22,7 +22,6 @@ const HandymanProposals = () => {
     const [error, setError] = useState<string[]>([])
     const { userState, authState } = useAuth()
     const router = useRouter()
-
     useEffect(() => {
         const getProposals = async () => {
             try {

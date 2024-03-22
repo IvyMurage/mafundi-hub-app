@@ -19,7 +19,7 @@ import * as SecureStore from 'expo-secure-store'
 import { useAuth } from '@/contexts/AuthContext'
 import HandleExeception from '@/utils/handleExeception'
 
-const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>>, details: TaskType | null }) => {
+const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>>, details?: TaskType | null }) => {
     const router = useRouter()
     const { isVisible, setIsVisible, details } = props
     const services = useService()
@@ -34,10 +34,10 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     const getValue = async () => {
         const value = await handleRoute!()
         if (value && value === 'true') {
-            router.push('/(screens)/handymen')
+            router.push('/(auth)/(screens)/handymen')
         }
         else {
-            router.push('/(tabs)/jobs')
+            router.push('/(auth)/(tabs)/jobs')
         }
     }
 
@@ -62,7 +62,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
     }, [details])
 
     const updateTask = async (taskId: number, values: TaskFormProps) => {
-        
+
         setLoading(true)
         try {
             const location = values.location_attributes?.split(', ')
@@ -103,7 +103,6 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                 })
 
                 console.log(data, 'data')
-                router.push('/(screens)/handymen')
             }
 
             if (!response.ok) {
@@ -241,7 +240,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                         </View>
 
                                         <View style={{ marginHorizontal: 5 }}>
-                                            <Select
+                                            {locations.length > 0 ? <Select
                                                 data={locations?.length > 0 &&
                                                     locations !== undefined &&
                                                     locations?.map(location => {
@@ -253,7 +252,20 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                                 profile={false}
                                                 task={true}
                                                 buttonStyle={taskFormStyles.taskStyles}
-                                            />
+                                            /> : <View style={{ marginHorizontal: 5 }}>
+                                                <TextInput
+                                                    autoCapitalize='none'
+                                                    autoCorrect={false}
+                                                    autoFocus={true}
+                                                    keyboardType='default'
+                                                    placeholder='city, county, country'
+                                                    returnKeyLabel='next'
+                                                    value={values.duration_label}
+                                                    onChangeText={handleChange('location_attributes')}
+                                                    onBlur={() => setFieldTouched('location_attributes')}
+                                                    style={[taskFormStyles.textInput, taskFormStyles.inputField]}
+                                                />
+                                            </View>}
 
                                             {
                                                 touched.location_attributes && errors.location_attributes && (
@@ -316,7 +328,7 @@ const TaskForm = (props: { isVisible: boolean, setIsVisible: Dispatch<SetStateAc
                                             flexDirection: "row",
                                         }]}
                                         onPress={exists ? () => updateTask(details.id, values) : () => handleSubmit()}>
-                                        {isLoading || loading && <ActivityIndicator size="large" color="white" />}
+                                        {(isLoading || loading) && <ActivityIndicator size="large" color="white" />}
                                         <Text style={[defaultStyles.authButtonText]}>{exists ? 'Update Task' : 'Create Task'}</Text>
                                     </Pressable>
                                 </View>

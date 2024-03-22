@@ -13,7 +13,7 @@ const AuthLoad = ({ isLoading }: { isLoading: Boolean }) => {
         return () => clearTimeout(timeout); // Cleanup the timeout on unmount
 
     }, [visible, setVisible])
-    console.log(isLoading)
+
     return (
         <>
             {

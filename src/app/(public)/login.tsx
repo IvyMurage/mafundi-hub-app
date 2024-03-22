@@ -7,23 +7,22 @@ import { Link } from 'expo-router'
 import { useAuth } from '@/contexts/AuthContext'
 import { Formik, FormikHelpers } from 'formik'
 import { loginSchema } from '@/constants/validation-schema'
-import Loader from '@/components/loader'
 import CustomAlert from '@/components/customAlert'
 import { FontAwesome, } from '@expo/vector-icons'
 import Divider from '@/components/divider'
-import { Bounce } from 'react-native-animated-spinkit'
 import AuthLoad from '@/components/auth-load'
 
 const Login = () => {
-    const { onLogin, isLoading, } = useAuth()
+    const { onLogin } = useAuth()
     const [user] = useState<{ email: string | null, password: string | null }>({
         email: '',
         password: ''
     })
+    const [isLoading, setLoading] = useState(false)
     const [alertVisible, setAlertVisible] = useState(false);
     const [error, setError] = useState(false)
-
     const handleLogin = async (user: { email: string | null; password: string | null }, resetForm: FormikHelpers<{ email: string | null; password: string | null }>) => {
+        setLoading(true)
         try {
             const response = await onLogin!(user)
             if (response.ok) {
@@ -34,9 +33,14 @@ const Login = () => {
         }
         catch (error) {
             setError(true)
-            console.log(error)
         }
+        finally {
+            setLoading(false)
+        }
+
     }
+
+    console.log(isLoading)
     return (
         <>
             <Formik
@@ -110,13 +114,13 @@ const Login = () => {
                                         { backgroundColor: isValid ? Colors.secondary : '#a5c9ca' }
                                         ]
                                     }>
-                                    {/* {isLoading && <ActivityIndicator size="small" color="white" />} */}
+                                    {isLoading && <ActivityIndicator size="small" color="white" />}
                                     <Text style={[defaultStyles.authButtonText]}>LOGIN</Text>
                                 </Pressable>
 
                                 <Text style={[defaultStyles.authOption]}>
                                     Don't Have an account?
-                                    <Link href='/(auth)/sign-up'>
+                                    <Link href='/(public)/sign-up'>
                                         <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
                                             Sign Up
                                         </Text>

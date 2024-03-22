@@ -93,7 +93,7 @@ const ProposalForm = () => {
                                 visible={success}
                                 onClose={() => {
                                     setSuccess(false)
-                                    router.push('/(tabs)/appointment')
+                                    router.push('/(auth)/(tabs)/appointment')
                                 }}
                                 message="Your proposal has been sent successfully"
                             />

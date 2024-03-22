@@ -9,7 +9,7 @@ export default function GetStarted() {
     const router = useRouter()
 
     const handlePress = () => {
-        router.replace('/(auth)/auth-options')
+        router.replace('/(public)/auth-options')
     }
 
 
@@ -28,7 +28,7 @@ export default function GetStarted() {
                 </View>
                 <Image style={{ width: 300, height: 300 }} source={require('@/assets/images/welcome-image.svg')} contentFit='cover' />
 
-                <Link href={"/(auth)/auth-options"} >
+                <Link href={"/(public)/auth-options"} >
                     <Pressable style={styles.startButton}>
                         <Text style={styles.buttonText} onPress={handlePress} >Get Started</Text>
                     </Pressable>

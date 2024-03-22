@@ -4,11 +4,10 @@ import { Slot, Stack, } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, } from "react";
 import { StyleSheet, } from "react-native";
-import { AuthProvider, useAuth, } from "../contexts/AuthContext";
+import { AuthProvider,  } from "../contexts/AuthContext";
 import { TaskIdProvider } from "@/contexts/TaskIdContext";
 import { HandymanContextIdProvider } from "@/contexts/HandymanIdContext";
 import { MenuProvider } from "react-native-popup-menu";
-import Loader from "@/components/loader";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -23,17 +22,7 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-function RootLayout() {
-    const { authState, userState } = useAuth()
-
-    return (
-        <>
-            <RootLayoutNav />
-        </>
-    );
-}
-
-export default function AuthProviderWrapper() {
+export default function RootLayout() {
     const [loaded, error] = useFonts({
         roboto: require("@/assets/fonts/Roboto-Regular.ttf"),
         "roboto-medium": require("@/assets/fonts/Roboto-Medium.ttf"),
@@ -61,7 +50,7 @@ export default function AuthProviderWrapper() {
             <AuthProvider>
                 <HandymanContextIdProvider>
                     <TaskIdProvider>
-                        <RootLayout />
+                        <RootLayoutNav />
                     </TaskIdProvider>
                 </HandymanContextIdProvider>
             </AuthProvider>
@@ -73,8 +62,12 @@ function RootLayoutNav() {
     return (
         <Stack screenOptions={{ headerStyle: { ...headerStyles.headerStyle }, headerShown: false }}>
             <Stack.Screen
-                name="(tabs)"
+                name="(auth)/(tabs)"
                 options={{ headerShown: false, headerStyle: { ...headerStyles.headerStyle } }}
+            />
+            <Stack.Screen
+                name="(public)/login"
+                options={{ headerShown: false }}
             />
         </Stack>
     );
