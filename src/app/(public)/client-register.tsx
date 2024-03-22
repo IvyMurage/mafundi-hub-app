@@ -16,11 +16,11 @@ import { useRouter } from 'expo-router'
 
 
 const ClientRegister = () => {
-    const {locations} = useLocation()
+    const  {locations}  = useLocation()
     const { user: client, } = useClient()
     const { handleSubmit, error, alertVisible, setAlertVisible, isLoading, errorMessage } = useClientPost()
     const router = useRouter()
-
+console.log(locations)
     return (
         <Formik
             initialValues={client}
@@ -117,7 +117,7 @@ const ClientRegister = () => {
                                     handleChange={(value) => setFieldValue('location_attributes', value)}
                                     searchPlaceHolder='Search for a Location'
                                     task={false}
-                                    buttonStyle={{ width: 360, height:60, borderWidth: 1, borderRadius: 40, borderColor: Colors.secondary}}
+                                    buttonStyle={{ width: 360, height: 60, borderWidth: 1, borderRadius: 40, borderColor: Colors.secondary }}
                                 />
                                 {
                                     touched.location_attributes && errors.location_attributes && (

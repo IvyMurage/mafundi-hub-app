@@ -64,6 +64,8 @@ export const AuthProvider = ({ children }: any) => {
     const [authError, setErrors] = useState<string>('')
 
     const router = useRouter()
+    const segments = useSegments()
+
 
 
     const useProtectedRoute = (user: {
@@ -76,9 +78,6 @@ export const AuthProvider = ({ children }: any) => {
         authenicated: boolean | null
         token: string | null
     }) => {
-        const segments = useSegments()
-        const router = useRouter()
-
 
         const hasTokenExpired = async (): Promise<boolean> => {
             let token = (await SecureStore.getItemAsync('token')) as string;
@@ -149,21 +148,19 @@ export const AuthProvider = ({ children }: any) => {
 
 
         useEffect(() => {
-            const isAuthGroup = segments[0] === '(auth)'
-            console.log(segments)
-            
-            if (user.id === null && authState?.authenicated === null && !isAuthGroup) {
-                router.replace('/(auth)/get-started')
-                return
+            const inAuthGroup = segments[0] === "(auth)"
+    
+            if (authState?.authenicated === null && inAuthGroup) {
+                router.replace('/(public)/login')
             }
-            else if (authState?.authenicated === true && isAuthGroup) {
-                router.replace('/(tabs)/')
+            else if (authState?.authenicated === true && !inAuthGroup) {
+                router.replace('/(auth)')
             }
-            else if (authState?.authenicated === null || authState?.authenicated === false && !isAuthGroup) {
-                router.replace('/(auth)/login')
-                return
+            else if (user.id === null && authState?.authenicated === null && inAuthGroup) {
+                router.replace('/(public)/get-started')
             }
-        }, [authState, user]);
+
+        }, [authState, user, segments]);
 
     }
 
@@ -203,14 +200,13 @@ export const AuthProvider = ({ children }: any) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user: user })
             })
-
-            if (!response.ok) {
+            if (response.status === 401) {
                 const errorData = await response.json();
-                const errorMessage = errorData || "An unknown error occurred";
+                const errorMessage = errorData?.error || "An unknown error occurred";
                 // Optionally, you can throw an error here or update the state to show an error message in the UI
                 throw new Error(errorMessage);
             }
-            if (response.ok) {
+            if (response.status === 200) {
                 const data = await response.json()
                 const token = response.headers.get('authorization')?.split(' ')[1]
                 setUser(data?.user)
@@ -251,7 +247,7 @@ export const AuthProvider = ({ children }: any) => {
             return response
         }
         catch (error) {
-            console.log(error)
+            console.log('hello', error)
         }
         finally {
             setLoading(false)
@@ -261,10 +257,11 @@ export const AuthProvider = ({ children }: any) => {
     const logout = async () => {
         await SecureStore.deleteItemAsync('token')
         setAuthState({ token: null, authenicated: null })
-        router.push('/(auth)/login')
+        const inAuthGroup = segments[0] === ('auth')
+        inAuthGroup && authState.authenicated === null && router.replace('/(public)/login')
     }
-
     useProtectedRoute(user, authState)
+
 
     const value = {
         onRegister: register,

@@ -27,11 +27,11 @@ const AuthOPtions = () => {
                     <View style={authOptionStyles.btnContainer}>
                         <Pressable style={[authOptionStyles.authButton,
                         { backgroundColor: 'transparent', borderWidth: 1, borderColor: Colors.secondary }]}>
-                            <Link style={authOptionStyles.authButtonText} href={'/(auth)/sign-up'}><Text>Sign Up</Text>
+                            <Link style={authOptionStyles.authButtonText} href={'/(public)/sign-up'}><Text>Sign Up</Text>
                             </Link>
                         </Pressable>
                         <Pressable style={authOptionStyles.authButton}>
-                            <Link style={authOptionStyles.authButtonText} href={'/(auth)/login'}>
+                            <Link style={authOptionStyles.authButtonText} href={'/(public)/login'}>
                                 <Text>Login</Text>
                             </Link>
                         </Pressable>

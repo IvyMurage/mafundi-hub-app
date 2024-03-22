@@ -1,6 +1,6 @@
 import { useAuth } from '@/contexts/AuthContext'
-import ClientProfile from '../(modals)/client-profile'
-import HandymanProfile from '../(modals)/handyman-profile'
+import ClientProfile from '@/app/(auth)/(modals)/client-profile'
+import HandymanProfile from '@/app/(auth)/(modals)/handyman-profile'
 
 const Profile = () => {
     const { userState } = useAuth()

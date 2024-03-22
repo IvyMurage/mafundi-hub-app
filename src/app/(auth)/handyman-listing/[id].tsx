@@ -11,13 +11,16 @@ import { useHandymanId } from '@/contexts/HandymanIdContext'
 import Reviews from '@/components/reviews'
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu'
 import Loader from '@/components/loader'
+import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
+import { FIREBASE_DB } from 'config/firebaseConfig'
+import { setItemAsync } from 'expo-secure-store'
 
 const Handyman = () => {
     const { id } = useLocalSearchParams<{ id: string }>()
-    const { authState } = useAuth()
+    const { authState, userState } = useAuth()
     const [loading, setLoading] = useState(false)
     const [handyman, setHandyman] = useState<HandymanProps>({} as HandymanProps)
-    const { setHandymanId, proposal_status } = useHandymanId()
+    const { setHandymanId, handymanId, proposal_status } = useHandymanId()
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
@@ -57,6 +60,56 @@ const Handyman = () => {
             </View>
         )
     })
+
+    const chatExists = async () => {
+        try {
+            setLoading(true)
+            if (userState?.user_role === "client") {
+                const chatRef = collection(FIREBASE_DB, 'messages')
+                const q = query(chatRef, where('handyman', '==', handymanId), where('client', '==', userState?.user_id?.toString()))
+                const result = await getDocs(q)
+                if (result.empty) {
+                    return false
+                }
+                return true
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const createNewChat = async () => {
+        const exist = await chatExists()
+        if (exist) {
+            return
+        }
+        try {
+            setLoading(true)
+            if (userState?.user_role === "client") {
+                let id = `${Date.now()}`
+                const _doc = {
+                    id: id,
+                    handyman: handymanId,
+                    client: userState?.user_id?.toString(),
+                    createdAt: serverTimestamp()
+                }
+                const docRef = await addDoc(collection(FIREBASE_DB, 'messages'), _doc)
+                await setItemAsync('docRefId', docRef.id)
+                userState.user_role === 'client' && await setItemAsync('client_id', JSON.stringify(userState?.user_id))
+                setLoading(false)
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     return (
         <>
             <SafeAreaView style={styles.safeView}>
@@ -76,12 +129,18 @@ const Handyman = () => {
                             </View>
 
                             <Pressable
-                                disabled={proposal_status === null}
+                                // disabled={proposal_status === null}
                                 style={[styles.appointmentBtn, proposal_status === null && { backgroundColor: '#a5c9ca' }]} onPress={() => {
                                     setHandymanId(handyman.id.toString())
-                                    router.push(`/appointment-form`)
+                                    if (proposal_status) {
+                                        router.push(`/appointment-form`)
+                                    }
+                                    else {
+                                        createNewChat()
+                                        router.push('/(auth)/(tabs)/messages')
+                                    }
                                 }}>
-                                <Text style={styles.appointmentTextStyle}>Book Appointment</Text>
+                                <Text style={styles.appointmentTextStyle}>{proposal_status  ? "Book Appointment" : "Send a message"}</Text>
                             </Pressable>
 
                             <ScrollView horizontal contentContainerStyle={{ marginTop: 10, }}>
@@ -99,9 +158,9 @@ const Handyman = () => {
                                 {workPictures}
                             </ScrollView>
 
-                            <View style={{  width:'100%' }}>
+                            <View style={{ width: '100%' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                                    <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 14, padding:10 }}>Reviews</Text>
+                                    <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1.2, fontSize: 14, padding: 10 }}>Reviews</Text>
                                     <Menu>
                                         <MenuTrigger
                                             style={{

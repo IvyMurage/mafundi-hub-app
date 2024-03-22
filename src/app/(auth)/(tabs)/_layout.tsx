@@ -129,7 +129,7 @@ export default function TabLayout() {
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
                     onLogout!()
-                    router.push('/(auth)/login')
+                    router.push('/(public)/login')
                   }} text='Logout' />
                 </MenuOptions>
               </Menu>
@@ -212,7 +212,7 @@ export default function TabLayout() {
                   <MenuOption onSelect={() => router.push('/(tabs)/profile')} text='Profile' />
                   <MenuOption onSelect={() => {
                     onLogout!()
-                    router.push('/(auth)/login')
+                    router.push('/(public)/login')
                   }} text='Logout' />
                 </MenuOptions>
               </Menu>

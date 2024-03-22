@@ -151,7 +151,7 @@ const SignUp = () => {
 
                             <Text style={[defaultStyles.authOption]}>
                                 Already Have an account?
-                                <Link href='/(auth)/login'>
+                                <Link href='/(public)/login'>
                                     <Text style={{ color: Colors.secondary, fontWeight: '700' }}>
                                         Login
                                     </Text>
@@ -163,7 +163,7 @@ const SignUp = () => {
                                 message="You have successfully Signed up"
                                 onClose={() => {
                                     setAlertVisible(false)
-                                    router.push('/(auth)/register-option')
+                                    router.push('/(public)/register-option')
                                 }}
                             />
 

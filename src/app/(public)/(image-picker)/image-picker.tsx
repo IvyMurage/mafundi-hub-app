@@ -132,7 +132,7 @@ export default function ImagePickerExample() {
     }
 
     const handleRight = () => {
-        router.push('/(auth)/login')
+        router.push('/(public)/login')
     }
 
     return (

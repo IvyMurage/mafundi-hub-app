@@ -44,7 +44,7 @@ const Messages = () => {
         return (
             <Pressable onPress={async () => {
                 await setItemAsync('chatId', item.id)
-                router.push('/(screens)/chatApp')
+                router.push('/(auth)/(screens)/chatApp')
             }} style={styles.chatBtn}>
                 <View style={styles.icon}>
                     <FontAwesome5 name="users" size={24} color={Colors.primary} />

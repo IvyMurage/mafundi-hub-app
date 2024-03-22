@@ -9,7 +9,6 @@ interface AlertProps {
 }
 
 const CustomAlert: React.FC<AlertProps> = ({ visible, message, onClose }) => {
-    const messageList = typeof message === 'object' && message?.map((alert, index) => <Text key={index}>{alert}</Text>)
     return (
         <Modal
             transparent={true}
@@ -19,8 +18,7 @@ const CustomAlert: React.FC<AlertProps> = ({ visible, message, onClose }) => {
         >
             <View style={styles.modalOverlay}>
                 <View style={styles.alertBox}>
-                    {message.length > 0 ? messageList : <Text style={styles.alertMessage}>{message}</Text>
-                    }
+                    <Text style={styles.alertMessage}>{message}</Text>
                     <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                         <Text style={styles.closeButtonText}>Close</Text>
                     </TouchableOpacity>

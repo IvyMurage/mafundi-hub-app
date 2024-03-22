@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Ionicons } from '@expo/vector-icons'
 import { Image } from 'expo-image'
 import Colors from '@/constants/Colors'
-import ReviewForm, { ReviewTypeEntry } from '@/app/(modals)/review-form'
+import ReviewForm, { ReviewTypeEntry } from '@/components/review-form'
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu'
 
 export type ReviewType = {
@@ -62,7 +62,6 @@ const Reviews = ({ id, visible, setVisible }: { id: string, visible: boolean; se
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    console.log('data', data)
                     setDetails(data)
                 }
             }
@@ -138,7 +137,7 @@ const Reviews = ({ id, visible, setVisible }: { id: string, visible: boolean; se
             </View>
             <View style={{ maxWidth: '80%', }}>
                 <View style={{ alignSelf: 'flex-end', justifyContent: 'center', }}>
-                    <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1 }}>{review.client_name}</Text>
+                    <Text style={{ fontFamily: 'roboto-bold', letterSpacing: 1, flexWrap:'wrap' }}>{review.client_name}</Text>
                     {rating(review.rating!)}
                 </View>
                 <View>
